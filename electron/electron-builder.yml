@@ -1,7 +1,7 @@
 appId: com.electron.app
 productName: toolbox-template
 directories:
-  buildResources: electron/build
+  buildResources: build
 files:
   - '!**/.vscode/*'
   - '!electron/src/*'
