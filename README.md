@@ -1,4 +1,5 @@
 # toolbox-template
+
 Template for a pool of miscellaneous functions with GUI
 
 # An Electron application with React and TypeScript
