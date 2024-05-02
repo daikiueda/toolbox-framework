@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:cli": "esbuild ./src/cli.ts --platform=node --bundle --outfile=bin/__cli.js",
-    "postinstall": "npm run build:cli"
+    "postinstall": "npm run build:cli",
+    "gui": "vite"
   },
   "dependencies": {},
   "devDependencies": {}
