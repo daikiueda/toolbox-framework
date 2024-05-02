@@ -1,0 +1,16 @@
+{
+  "name": "@toolbox/template",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "bin": {
+    "toolbox-template": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:cli": "esbuild ./src/cli.ts --platform=node --bundle --outfile=bin/__cli.js",
+    "postinstall": "npm run build:cli"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

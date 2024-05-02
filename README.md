@@ -6,9 +6,10 @@ Template for a pool of miscellaneous features with GUI
 
 ### Steps to add a new feature
 ```shell
-npm init -w packages/<name>
+cp -vR ./packages/__template ./packages/<name>
 ```
 
+Then, rewrite ./packages/<name>/package.json("name" and "bin").
 
 ----
 
