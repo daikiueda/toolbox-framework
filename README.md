@@ -1,6 +1,16 @@
 # toolbox-template
 
-Template for a pool of miscellaneous functions with GUI
+Template for a pool of miscellaneous features with GUI
+
+## for Developer
+
+### Steps to add a new feature
+```shell
+npm init -w packages/<name>
+```
+
+
+----
 
 # An Electron application with React and TypeScript
 

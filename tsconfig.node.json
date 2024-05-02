@@ -3,7 +3,8 @@
   "include": [
     "electron.vite.config.*",
     "electron/src/main/**/*",
-    "electron/src/preload/**/*"
+    "electron/src/preload/**/*",
+    "packages/**/*",
   ],
   "compilerOptions": {
     "composite": true,
