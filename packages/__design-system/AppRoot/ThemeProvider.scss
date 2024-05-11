@@ -1,0 +1,10 @@
+@import '@spectrum-css/tokens';
+
+:root {
+  background-color: var(--spectrum-gray-75);
+  -webkit-tap-highlight-color: var(--spectrum-transparent-black-100);
+}
+
+body {
+  margin: 0;
+}
