@@ -10,8 +10,8 @@ const options: Options<Flags> = {
   who: {
     alias: 'w',
     type: 'string',
-    description: 'Who to greet'
-  }
+    description: 'Who to greet',
+  },
 };
 
 const examples: Examples = [['$0 world'], ['$0 -w world'], ['echo "world" | $0 > ./result.txt']];
@@ -28,7 +28,7 @@ const executor: Executor<Flags> = ({ argv, stdin, yargs }) => {
 export default cli(
   {
     options,
-    examples
+    examples,
   },
   executor
 );

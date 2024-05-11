@@ -5,13 +5,14 @@ Template for a pool of miscellaneous features with GUI
 ## for Developer
 
 ### Steps to add a new feature
+
 ```shell
 cp -vR ./packages/__template ./packages/<name>
 ```
 
 Then, rewrite ./packages/<name>/package.json("name" and "bin").
 
-----
+---
 
 # An Electron application with React and TypeScript
 

@@ -30,7 +30,7 @@ const cli =
   <T extends object>(
     {
       options,
-      examples
+      examples,
     }: {
       options?: { [key in keyof T]: YargsOptions };
       examples?: Examples;
@@ -54,7 +54,7 @@ const cli =
     await exec({
       argv: _yargs.parse() as Argv<T>,
       stdin: await getStdin(),
-      yargs: _yargs
+      yargs: _yargs,
     });
   };
 export default cli;
