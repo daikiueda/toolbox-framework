@@ -1,6 +1,6 @@
-import { text } from 'stream/consumers';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { text } from 'stream/consumers';
 
 import yargs, { Argv as YargsArgv, Options as YargsOptions } from 'yargs';
 import { hideBin } from 'yargs/helpers';
