@@ -12,6 +12,7 @@
     "postinstall": "npm run build:cli",
     "gui": "vite"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@toolbox/design-system": "^0.0.0"
+  }
 }
