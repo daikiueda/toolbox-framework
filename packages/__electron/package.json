@@ -1,0 +1,9 @@
+{
+  "name": "@toolbox/electron",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

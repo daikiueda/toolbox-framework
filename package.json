@@ -13,10 +13,10 @@
     "dev": "electron-vite dev",
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder -c ./electron/electron-builder.yml --dir",
-    "build:win": "npm run build && electron-builder -c ./electron/electron-builder.yml --win",
-    "build:mac": "electron-vite build && electron-builder -c ./electron/electron-builder.yml --mac",
-    "build:linux": "electron-vite build && electron-builder -c ./electron/electron-builder.yml --linux"
+    "build:unpack": "npm run build && electron-builder -c packages/__electron/electron-builder.yml --dir",
+    "build:win": "npm run build && electron-builder -c packages/__electron/electron-builder.yml --win",
+    "build:mac": "electron-vite build && electron-builder -c packages/__electron/electron-builder.yml --mac",
+    "build:linux": "electron-vite build && electron-builder -c packages/__electron/electron-builder.yml --linux"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
