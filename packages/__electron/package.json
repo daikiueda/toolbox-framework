@@ -4,6 +4,10 @@
   "scripts": {
     "dev": "vite"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@spectrum-css/sidenav": "^5.1.0",
+    "@spectrum-icons/workflow": "^4.2.11",
+    "@toolbox/template": "^0.0.0",
+    "react-resizable-panels": "^2.0.19"
+  }
 }

@@ -1,20 +1,24 @@
 import React from 'react';
 
-import { Flex, View } from '../Components/Layout';
+import { Flex } from '../Components/Layout';
 
-import ThemeProvider from './ThemeProvider';
+import { AppEnvProvider } from './AppEnvContext';
+import GlobalThemeProvider from './GlobalThemeProvider';
 
 type Props = {
   children: React.ReactNode;
+  onElectron?: boolean;
 };
 
-const AppRoot: React.FC<Props> = ({ children }) => {
+const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
   return (
-    <ThemeProvider>
-      <View width="100%" minHeight="100vh" backgroundColor="gray-75">
-        <Flex>{children}</Flex>
-      </View>
-    </ThemeProvider>
+    <AppEnvProvider onElectron={onElectron}>
+      <GlobalThemeProvider>
+        <Flex width="100%" minHeight="100vh" justifyContent="start">
+          {children}
+        </Flex>
+      </GlobalThemeProvider>
+    </AppEnvProvider>
   );
 };
 export default AppRoot;

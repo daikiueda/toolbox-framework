@@ -4,7 +4,8 @@
     "packages/__electron/src/renderer/src/env.d.ts",
     "packages/__electron/src/renderer/src/**/*",
     "packages/__electron/src/renderer/src/**/*.tsx",
-    "packages/__electron/src/preload/*.d.ts"
+    "packages/__electron/src/preload/*.d.ts",
+    "packages/__electron/entries.ts"
   ],
   "compilerOptions": {
     "composite": true,

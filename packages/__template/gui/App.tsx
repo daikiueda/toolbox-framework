@@ -11,7 +11,7 @@ function App() {
 
   return (
     <Page>
-      <Heading level={1}>Template</Heading>
+      <Heading level={1}>Example</Heading>
       <Form>
         <TextField
           width="size-3000"

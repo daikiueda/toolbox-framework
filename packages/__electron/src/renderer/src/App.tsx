@@ -1,35 +1,33 @@
-import electronLogo from './assets/electron.svg';
-import Versions from './components/Versions';
+import React from 'react';
+import styled from 'styled-components';
 
-function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping');
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+
+import entries, { Entry as AppEntry } from '../../../entries';
+import Nav from './components/Nav';
+
+const TopPanel = styled(Panel)`
+  min-height: 100vh;
+`;
+const TopResizeHandle = styled(PanelResizeHandle)``;
+
+const App: React.FC = () => {
+  const [currentApp, setCurrentApp] = React.useState(Object.values(entries)[0]);
+
+  const switchApp = React.useCallback(
+    (nextApp: AppEntry) => () => setCurrentApp(nextApp),
+    [setCurrentApp]
+  );
+
+  const CurrentApp = React.useMemo(() => currentApp.App, [currentApp]);
 
   return (
-    <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
-      </div>
-      <Versions></Versions>
-    </>
+    <PanelGroup direction="horizontal">
+      <Nav maxSize={24} menuItems={entries} currentApp={currentApp} switchApp={switchApp} />
+      <TopResizeHandle />
+      <TopPanel>{CurrentApp && <CurrentApp />}</TopPanel>
+    </PanelGroup>
   );
-}
+};
 
 export default App;
