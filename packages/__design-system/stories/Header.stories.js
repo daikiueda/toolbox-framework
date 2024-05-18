@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { fn } from '@storybook/test';
 import { Header } from './Header';
 
