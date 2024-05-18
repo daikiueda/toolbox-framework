@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import main from './main';
+import main from '../main';
 
 describe('main', () => {
   it('returns "Hello World!"', () => {
