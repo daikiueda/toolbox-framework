@@ -5,10 +5,18 @@ import { Flex } from '../Components/Layout';
 import { AppEnvProvider } from './AppEnvContext';
 import GlobalThemeProvider from './GlobalThemeProvider';
 
+import { ToastContainer } from '../GlobalUI/Toast';
+
 type Props = {
   children: React.ReactNode;
   onElectron?: boolean;
 };
+
+// const Compose = ({ items, children }) =>
+//   items.reduceRight(
+//     (acc, [Component, props]) => React.createElement(Component, props, acc),
+//     children
+//   );
 
 const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
   return (
@@ -17,6 +25,7 @@ const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
         <Flex width="100%" minHeight="100vh" justifyContent="start">
           {children}
         </Flex>
+        <ToastContainer />
       </GlobalThemeProvider>
     </AppEnvProvider>
   );
