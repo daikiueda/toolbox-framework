@@ -1,6 +1,6 @@
-import { Heading } from './index';
-
 import { Meta, StoryObj } from '@storybook/react';
+
+import { Heading } from './index';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/Heading.html

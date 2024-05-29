@@ -1,8 +1,8 @@
-import { FileTrigger } from './index';
-
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
+
+import { FileTrigger } from './index';
 
 import { Button } from '../Buttons';
 
@@ -15,11 +15,12 @@ const meta: Meta<typeof FileTrigger> = {
   tags: ['autodocs'],
   argTypes: {
     acceptedFileTypes: {
-      control: 'inline-check',
+      control: 'multi-select',
       options: [
-        'application/json',
-        'text/csv',
+        '.json',
+        '.har',
         'text/plain',
+        'text/csv',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       ],
       description:

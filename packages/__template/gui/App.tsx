@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-import { Heading, Text } from '@toolbox/design-system/Components/Content';
-import { Form, TextField } from '@toolbox/design-system/Components/Forms';
-import { Page, View } from '@toolbox/design-system/Components/Layout';
+import { Form, Heading, Page, Text, TextField, View } from '@toolbox/design-system';
 
 import greet from '../src/main';
 

@@ -1,7 +1,7 @@
-import Toast, { ToastContainer } from './Toast';
-
 import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
+
+import Toast, { ToastContainer } from './Toast';
 
 import { Button } from '../Components/Buttons';
 
@@ -9,7 +9,7 @@ import { Button } from '../Components/Buttons';
  * https://react-spectrum.adobe.com/react-spectrum/Toast.html
  *
  * ```TypeScript
- * import Toast from '@toolbox/design-system';
+ * import { Toast } from '@toolbox/design-system';
  *
  * () => Toast.positive('Toast is done!', {timeout: 5000});
  * ```

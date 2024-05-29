@@ -1,8 +1,8 @@
-import { DropZone } from './index';
-
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import React from 'react';
+
+import { DropZone } from './index';
 
 import FileJson from '@spectrum-icons/workflow/FileJson';
 import { Button, FileTrigger } from '../Buttons';
@@ -66,7 +66,7 @@ export const Composition: StoryObj<typeof DropZone> = {
             allowsMultiple
             onSelect={(e) => {
               if (e) {
-                let files = Array.from(e);
+                const files = Array.from(e);
                 files.forEach((file) => {
                   console.info(file);
                   const reader = new FileReader();
