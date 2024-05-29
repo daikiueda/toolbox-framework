@@ -7,6 +7,8 @@ import GlobalThemeProvider from './GlobalThemeProvider';
 
 import { ToastContainer } from '../GlobalUI/Toast';
 
+import './BaseStyle.scss';
+
 type Props = {
   children: React.ReactNode;
   onElectron?: boolean;
