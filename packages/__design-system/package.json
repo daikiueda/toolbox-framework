@@ -12,6 +12,7 @@
     "@react-spectrum/form": "^3.7.5",
     "@react-spectrum/layout": "^3.6.4",
     "@react-spectrum/provider": "^3.9.6",
+    "@react-spectrum/switch": "^3.5.5",
     "@react-spectrum/table": "^3.12.10",
     "@react-spectrum/text": "^3.5.4",
     "@react-spectrum/textfield": "^3.12.0",
