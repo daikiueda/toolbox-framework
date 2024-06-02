@@ -1,2 +1,2 @@
-export { Button } from '@react-spectrum/button';
+export { ActionButton, Button } from '@react-spectrum/button';
 export { FileTrigger } from '@react-spectrum/filetrigger';
