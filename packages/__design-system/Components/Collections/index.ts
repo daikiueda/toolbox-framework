@@ -4,6 +4,7 @@ import reverse from 'lodash/reverse';
 import sortBy from 'lodash/sortBy';
 
 export { Cell, Column, Row, TableBody, TableHeader, TableView } from '@react-spectrum/table';
+export type Selection = 'all' | Set<string | number>;
 
 // import { SortDescriptor } from "@react-types/shared/src/collections";
 export type SortDescriptor = {
