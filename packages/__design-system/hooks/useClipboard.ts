@@ -1,7 +1,7 @@
+const writeText = (text: string) => navigator.clipboard.writeText(text);
+
 const useClipboard = () => {
-  const { write, writeText } = navigator.clipboard;
   return {
-    write,
     writeText,
   };
 };
