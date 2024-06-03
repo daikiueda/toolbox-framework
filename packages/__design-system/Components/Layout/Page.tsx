@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { View } from '@react-spectrum/view';
+
 import useAppEnv from '../../hooks/useAppEnv';
+import { OneLine } from './Space';
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +19,12 @@ const Page: React.FC<Props> = ({ children }) => {
 
   return (
     <View width="100%">
-      <View paddingX="single-line-height" maxWidth="960px" {...innerProps}>
+      <View
+        paddingX="single-line-height"
+        maxWidth="960px"
+        marginBottom={`calc(${OneLine} * 2)`}
+        {...innerProps}
+      >
         {children}
       </View>
     </View>
