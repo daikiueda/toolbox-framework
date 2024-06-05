@@ -22,7 +22,7 @@ const Page: React.FC<Props> = ({ children }) => {
       <View
         paddingX="single-line-height"
         maxWidth="960px"
-        marginBottom={`calc(${OneLine} * 2)`}
+        paddingBottom={`calc(${OneLine} * 2)`}
         {...innerProps}
       >
         {children}
