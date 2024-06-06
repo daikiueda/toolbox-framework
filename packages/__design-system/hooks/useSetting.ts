@@ -4,7 +4,9 @@ import memoize from 'lodash/memoize';
 
 type Setting = Record<string, unknown>;
 
-export type UpdateSetting<T extends Setting, S = keyof T> = (key: S) => (value: T[S]) => void;
+export type UpdateSetting<T extends Setting> = <S extends keyof T = keyof T>(
+  key: S
+) => (value: T[S]) => void;
 
 const useSetting = <T extends Setting>(initialSetting: T) => {
   const [setting, setSetting] = useState(initialSetting);
