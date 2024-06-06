@@ -59,6 +59,8 @@ const cli =
   };
 export default cli;
 
+export const basename = (pathToFile: string) => path.basename(pathToFile);
+
 export const readFile = (pathToFile: string) =>
   fs.readFile(path.resolve(pathToFile), { encoding: 'utf-8' });
 
