@@ -1,5 +1,5 @@
 {
-  "name": "toolbox-template",
+  "name": "toolbox-framework",
   "version": "0.0.0",
   "description": "Template for a pool of miscellaneous functions with GUI",
   "main": "./out/main/index.js",
