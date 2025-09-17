@@ -1,11 +1,11 @@
 import React, { createContext } from 'react';
 
-type AppEnvContext = {
+type AppEnvContextValue = {
   onElectron?: boolean;
 };
-export const AppEnvContext = createContext<AppEnvContext>({});
+export const AppEnvContext = createContext<AppEnvContextValue>({});
 
-export const AppEnvProvider: React.FC<AppEnvContext & { children: React.ReactNode }> = ({
+export const AppEnvProvider: React.FC<AppEnvContextValue & { children: React.ReactNode }> = ({
   children,
   ...values
 }) => <AppEnvContext.Provider value={values}>{children}</AppEnvContext.Provider>;
