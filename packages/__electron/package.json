@@ -5,9 +5,9 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@spectrum-css/sidenav": "^5.1.0",
-    "@spectrum-icons/workflow": "^4.2.11",
+    "@spectrum-css/sidenav": "^7.2.0",
+    "@spectrum-icons/workflow": "^4.2.24",
     "@toolbox/template": "^0.0.0",
-    "react-resizable-panels": "^2.0.19"
+    "react-resizable-panels": "^3.0.6"
   }
 }

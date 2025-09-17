@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import React from 'react';
-
 import { DropZone } from './index';
 
 import FileJson from '@spectrum-icons/workflow/FileJson';

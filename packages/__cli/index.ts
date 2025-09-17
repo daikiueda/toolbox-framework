@@ -2,10 +2,10 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { text } from 'stream/consumers';
 
-import yargs, { Argv as YargsArgv, Options as YargsOptions } from 'yargs';
+import yargs, { ArgumentsCamelCase, Options as YargsOptions } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-type Argv<T extends object> = YargsArgv & { _: string[] } & T;
+type Argv<T extends object> = ArgumentsCamelCase<T>;
 
 export type Options<Flags extends object> = {
   [key in keyof Flags]: YargsOptions;
@@ -19,10 +19,11 @@ export type Executor<T extends object> = (arg0: {
   yargs: ReturnType<typeof yargs>;
 }) => Promise<void> | void;
 
-const getStdin = () => {
+const getStdin = async () => {
   if (process.stdin.isTTY) {
     return null;
   }
+
   return text(process.stdin);
 };
 
@@ -42,7 +43,7 @@ const cli =
 
     if (options) {
       _yargs = Object.entries(options).reduce(
-        (acc, [key, options]) => acc.option(key, options as YargsOptions),
+        (acc, [key, option]) => acc.option(key, option as YargsOptions),
         _yargs
       );
     }
@@ -51,8 +52,10 @@ const cli =
       _yargs = _yargs.example(examples);
     }
 
+    const parsed = (await _yargs.parseAsync()) as Argv<T>;
+
     await exec({
-      argv: _yargs.parse() as Argv<T>,
+      argv: parsed,
       stdin: await getStdin(),
       yargs: _yargs,
     });

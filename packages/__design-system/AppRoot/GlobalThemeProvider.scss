@@ -1,4 +1,4 @@
-@import '@spectrum-css/tokens/dist';
+@import '@spectrum-css/tokens/dist/index.css';
 
 :root {
   background-color: var(--spectrum-gray-50);
@@ -14,4 +14,8 @@
   @media (prefers-color-scheme: dark) {
     --spectrum-alias-background-color-default: var(--spectrum-gray-100);
   }
+}
+
+[data-app-theme='dark'] {
+  background-color: var(--spectrum-gray-900);
 }
