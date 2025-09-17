@@ -1,9 +1,10 @@
-import React from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import styled from 'styled-components';
 
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import React from 'react';
 
 import entries, { Entry as AppEntry } from '../../../entries';
+
 import Nav from './components/Nav';
 
 const TopPanel = styled(Panel)`

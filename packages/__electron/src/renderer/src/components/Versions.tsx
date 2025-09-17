@@ -1,4 +1,5 @@
 import type { ElectronAPI } from '@electron-toolkit/preload';
+
 import { useState } from 'react';
 
 const getElectron = (): ElectronAPI | undefined =>

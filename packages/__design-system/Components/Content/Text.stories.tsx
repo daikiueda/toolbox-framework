@@ -1,6 +1,6 @@
-import { Text } from './index';
-
 import { Meta, StoryObj } from '@storybook/react';
+
+import { Text } from './index';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/Text.html

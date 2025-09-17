@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Flex } from '../Components/Layout';
-
 import { AppEnvProvider } from './AppEnvContext';
 import GlobalThemeProvider from './GlobalThemeProvider';
 
 import { ToastContainer } from '../GlobalUI/Toast';
+
+import { Flex } from '../Components/Layout';
 
 import './BaseStyle.scss';
 

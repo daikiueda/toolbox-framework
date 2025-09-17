@@ -1,11 +1,12 @@
+import FileJson from '@spectrum-icons/workflow/FileJson';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { DropZone } from './index';
 
-import FileJson from '@spectrum-icons/workflow/FileJson';
 import { Button, FileTrigger } from '../Buttons';
 import { Heading } from '../Content';
 import { Content } from '../Layout';
+
+import { DropZone } from './index';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/DropZone.html

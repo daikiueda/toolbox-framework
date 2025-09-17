@@ -1,7 +1,8 @@
 import { Meta, StoryFn } from '@storybook/react';
-import Toast, { ToastContainer } from './Toast';
 
 import { Button } from '../Components/Buttons';
+
+import Toast, { ToastContainer } from './Toast';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/Toast.html

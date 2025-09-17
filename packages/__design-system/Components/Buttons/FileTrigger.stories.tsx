@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { FileTrigger } from './index';
 
 import { Button } from '../Buttons';
+
+import { FileTrigger } from './index';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/FileTrigger.html
