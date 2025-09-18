@@ -2,11 +2,11 @@
 
 ## プロジェクト構成とモジュール配置
 
-- `packages/__electron`: Electron メインプロセスのエントリ、`electron-builder.yml`、リリース用リソースを保持します。
-- `packages/__template`: React + TypeScript のレンダラと preload、`gui/` と `src/` に UI とビジネスロジックをまとめています。
-- `packages/__design-system`: 共通 UI コンポーネント、`Components/` と `GlobalUI/` に整理されたスタイル定義を提供します。
-- `packages/__cli`: CLI エントリーポイント。GUI と連携する補助スクリプトを配置します。
-- 生成物は `out/` に出力されます。設定ファイルはプロジェクト直下 (`electron.vite.config.ts`, `tsconfig*.json`) に集約されています。
+- `packages/__electron`: Electron 実行基盤。メイン/プリロード/レンダラのエントリと `electron-builder.yml` などビルド設定を提供します。
+- `packages/__design-system`: React Spectrum ベースの共通 UI と Storybook 環境。業務ワークスペースから再利用します。
+- `packages/__cli`: CLI で利用する共通ユーティリティ。GUI と独立したコマンドライン機能の下支えとなります。
+- `packages/__template`: 業務機能ワークスペースのスキャフォールド用テンプレート。複製してドメイン別ワークスペース (`packages/<feature-name>`) を追加します。
+- プロジェクトの生成物は `out/` に出力され、ルート直下に共通設定 (`electron.vite.config.ts`, `tsconfig*.json` など) がまとまっています。
 
 ## ビルド・テスト・開発コマンド
 
@@ -32,7 +32,8 @@
 
 ## コミットとプルリクエストの運用
 
-- コミットメッセージは「Fix build step」のように 50 文字以内の命令形サマリを推奨します。関連するパッケージ名があれば `[cli]` のような接頭語で示します。
+- コミットメッセージは `<type>: <要約>` 形式 (例: `fix: resolve preload crash on mac`) を推奨します。タイプは `feat` / `fix` / `chore` / `style` など Conventional Commits をベースに選択してください。
+- 本文がある場合は空行を挟み、最新方針に倣って「更新内容:」「未対応事項:」の見出しと箇条書きで背景やリスクを明記するとレビューがスムーズです。
 - PR では目的、主要な変更点、テスト結果 (`npm run build` など) を箇条書きで記載し、該当課題があればリンクを付けてください。
 - UI 変更時は `out/` のプレビューキャプチャや短い動画でビュー差分を共有するとレビューが円滑です。
 - 依存追加や Electron 設定変更を伴う場合、影響範囲とロールバック手順を記述し、レビューアが安全に検証できるようにします。
