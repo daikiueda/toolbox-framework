@@ -31,27 +31,30 @@
 
 ## コーディングスタイルと命名規約
 
-- TypeScript/TSX は 2 スペースインデント、セミコロン無し、シングルクォートを基本とします。
+- TypeScript/TSX は 2 スペースインデント、セミコロンあり、シングルクォートを基本とします（Prettier の既定ルールに従います）。
 - React コンポーネントはパスカルケース、フックと util はキャメルケースで命名します。
-- ESLint (`@electron-toolkit/eslint-config-ts`) と Prettier を必須の自動整形に使用し、コミット前に `lint` と `format` を走らせてください。
+- CLI エントリは `src/cli.ts`、ビルド成果は `bin/__cli.js` を既定とし、名称を変える場合は `package.json` の `bin` 定義と `build:cli` スクリプトを合わせて更新します。
+- ESLint (`eslint.config.js` で `@electron-toolkit/eslint-config-ts` を拡張) と Prettier を必須の自動整形に使用し、コミット前に `npm run lint` / `npm run format` を走らせてください。
+- テンプレートを複製した業務ワークスペースでも、個別の `.eslintrc` 等は原則追加せず、ルートの設定に従ってルールを共有します。特別な除外が必要な場合は `eslint.config.js` の `ignores` やルールを調整してください。
 - ファイルは責務ごとに分割し、Electron のメイン／プリロード／レンダラで共有する型は `packages/__electron/src/preload/index.d.ts` に定義を集約しつつ、必要に応じて専用モジュールを追加してください。
 
 ## テストガイドライン
 
-- Node.js 組み込みの `node:test` を採用しています。テストファイルは `__tests__` ディレクトリ内で `.test.ts` サフィックスを付けてください。
-- 重要なユーティリティや副作用を持つ hooks には例示的な入力／出力ケースを最低 1 つ用意し、スナップショットよりもアサーションを優先します。
-- 新規機能では失敗ケースも `describe` ブロックに含め、`--test-reporter=tap` で CI 連携しやすい出力を確保してください。
+- テンプレート (`packages/__template`) では Node.js 組み込みの `node:test` を使用していますが、業務ワークスペースはユースケースに応じて Vitest や Storybook のスナップショットなど適切なフレームワークを採用して構いません。
+- それぞれのワークスペースでテストを追加したら、`package.json` の `test` スクリプトに集約し、ルートの `npm run test:workspaces` で横断的に実行できる状態を維持してください。
+- テンプレート準拠の場合、テストファイルは `src/__tests__` 配下で `.test.ts` サフィックスを付け、`esbuild-register` を通じて TypeScript を実行します。
+- 重要なユーティリティや副作用を持つ hooks では、入力／出力の明示的な検証ケースを最低 1 つ用意し、スナップショットよりもアサーションを優先します。
+- 失敗ケースを含むテストを揃え、CI では `--test-reporter=tap` などログが追いやすい形式で出力することを推奨します。
 
 ## コミットとプルリクエストの運用
 
-- コミットメッセージは `<type>: <要約>` 形式 (例: `fix: resolve preload crash on mac`) を推奨します。タイプは `feat` / `fix` / `chore` / `style` など Conventional Commits をベースに選択してください。
-- 本文がある場合は空行を挟み、最新方針に倣って「更新内容:」「未対応事項:」の見出しと箇条書きで背景やリスクを明記するとレビューがスムーズです。
-- PR では目的、主要な変更点、テスト結果 (`npm run build` など) を箇条書きで記載し、該当課題があればリンクを付けてください。
-- UI 変更時は `out/` のプレビューキャプチャや短い動画でビュー差分を共有するとレビューが円滑です。
-- 依存追加や Electron 設定変更を伴う場合、影響範囲とロールバック手順を記述し、レビューアが安全に検証できるようにします。
+- コミットメッセージは `<type>: <要約>` 形式（例: `fix: handle empty input`）を推奨します。タイプは `feat` / `fix` / `chore` / `style` など [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) をベースに選び、必要に応じて本文で背景や残課題を補足してください。
+- AgentAI が生成した実装コードや変更をコミットする場合は、本文末尾に `Generated-by: Codex (model: gpt-5-codex)` のようなフッターを追加し、生成元が識別できるようにしてください。
+- プルリクエストでは「目的」「主要な変更」「ローカルで確認したコマンド（例: `npm run lint`, `npm run test:workspaces`, 必要に応じて `npm run build`）」を箇条書きで共有します。
+- 画面差分があればスクリーンショットやショート動画を添付し、依存追加や Electron 設定変更時は影響範囲とロールバック方法を一言添えてください。
 
 ## セキュリティと設定のヒント
 
-- 認証トークンや外部 API キーは `.env.local` など未追跡ファイルに保持し、Vite の `import.meta.env` 経由で参照します。`.env` 系ファイルは共有前に内容をサニタイズしてください。
+- 認証トークンや外部 API キーは `.env.local` など未追跡ファイルに保持し、Vite の `import.meta.env` 経由で参照します。`.env` 系ファイルを共有する場合はサニタイズしてから渡してください。
 - Electron の自動署名が必要な場合は `CSC_LINK` と `CSC_KEY_PASSWORD` をシェル環境で設定し、`build:mac` や `build:win` 実行時に読み込ませます。
 - `packages/__electron/src/preload/index.ts` の `contextBridge` で公開する API は最小限にとどめ、レンダラへの新しいブリッジを追加するときは型定義 (`index.d.ts`) も同時に更新して安全性を保ちます。
