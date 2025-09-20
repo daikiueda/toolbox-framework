@@ -1,9 +1,9 @@
 {
   "name": "@toolbox/cli",
   "version": "0.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\""
   },
   "dependencies": {
     "yargs": "^18.0.0"
