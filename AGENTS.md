@@ -10,6 +10,33 @@
 - `out/`: `npm run build` で生成される Electron/Vite の中間バンドルを格納します。`npm run start` や electron-builder の後続処理が参照するため、クリーンアップ有無を判断するときは注意してください。
 - ルート直下には共通設定 (`electron.vite.config.ts`, `tsconfig*.json` など) がまとまっています。
 
+## 新機能ワークスペースの追加
+
+`packages/__template` を複製して新しい業務機能ワークスペース `packages/<feature-name>` を作成する手順です。
+
+```bash
+npm run create:workspace -- <feature-name>
+```
+
+このコマンドで以下の処理が自動実行されます：
+
+- テンプレートの複製
+- `package.json` の `name` と `bin` 調整
+- GUI の初期表示名調整
+- 依存関係インストールと CLI ビルド
+
+### 使用例
+
+```bash
+# "my-feature" という機能ワークスペースを作成
+npm run create:workspace -- my-feature
+
+# 作成後の開発コマンド
+npm run --workspace packages/my-feature gui    # GUI開発
+npm run --workspace packages/my-feature test   # テスト実行
+npm run dev                                     # 統合確認
+```
+
 ## ビルド・テスト・開発コマンド
 
 ### ルート共通
