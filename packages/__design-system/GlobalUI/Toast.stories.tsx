@@ -1,5 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react-vite';
 
+import React from 'react';
+
 import { Button } from '../Components/Buttons';
 
 import Toast, { ToastContainer } from './Toast';
@@ -18,10 +20,10 @@ const meta: Meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <>
+      <React.Fragment>
         <Story />
         <ToastContainer />
-      </>
+      </React.Fragment>
     ),
   ],
 };
