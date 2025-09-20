@@ -14,8 +14,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### コード品質チェック
 
 - `npm run lint`: ESLint を実行してコードスタイルを修正
+- `npm run lint:check`: ESLint でコードスタイルをチェック（修正せず警告0個まで）
 - `npm run format`: Prettier でコード整形
+- `npm run format:check`: Prettier でフォーマットチェック（修正せず）
 - `npm run test:workspaces`: 全ワークスペースのテストを実行
+- `npm run quality:check`: lint・format・typecheck・test を一括実行
 
 ### プラットフォーム別ビルド
 

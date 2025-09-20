@@ -8,10 +8,13 @@
   "main": "./out/main/index.js",
   "scripts": {
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lint:check": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "quality:check": "npm run lint:check && npm run format:check && npm run typecheck && npm run test:workspaces",
     "test:workspaces": "npm run test --workspaces --if-present",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
