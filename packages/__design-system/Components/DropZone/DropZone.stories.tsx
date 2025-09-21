@@ -1,6 +1,9 @@
-import FileJson from '@spectrum-icons/workflow/FileJson';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
+
+import React from 'react';
+
+import FileJson from '@spectrum-icons/workflow/FileJson';
 
 import { Button, FileTrigger } from '../Buttons';
 import { Heading } from '../Content';

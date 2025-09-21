@@ -6,5 +6,21 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 ## Based On "Adobe Spectrum"
 
-- [Spectrum, Adobe’s design system](https://spectrum.adobe.com/)
+- [Spectrum, Adobe's design system](https://spectrum.adobe.com/)
 - [React Spectrum](https://react-spectrum.adobe.com/react-spectrum/index.html)
+
+## 📚 Storybook Catalog
+
+View component catalog at http://localhost:6006:
+
+```bash
+npm run --workspace packages/__design-system storybook
+```
+
+## 🔧 Adding Dependencies
+
+To add @react-spectrum packages:
+
+```bash
+npm install -S --workspace packages/__design-system @react-spectrum/<package-name>
+```

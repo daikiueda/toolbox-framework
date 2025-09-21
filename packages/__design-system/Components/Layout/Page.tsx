@@ -1,6 +1,6 @@
-import { View } from '@react-spectrum/view';
-
 import React from 'react';
+
+import { View } from '@react-spectrum/view';
 
 import useAppEnv from '../../hooks/useAppEnv';
 

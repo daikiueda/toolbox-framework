@@ -38,6 +38,12 @@ export default [
     },
   },
   {
+    files: ['**/*.stories.tsx', '**/*.stories.ts'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
     ignores: ['node_modules/**', 'dist/**', 'out/**', '.gitignore', 'packages/__template/bin/**'],
   },
   ...storybook.configs['flat/recommended'],
