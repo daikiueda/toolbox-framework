@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
+import React from 'react';
+
 import type { SortDescriptor } from '@react-types/shared';
 
 import { ActionButton } from '../Buttons';

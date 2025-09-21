@@ -20,10 +20,10 @@ const meta: Meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <React.Fragment>
+      <>
         <Story />
         <ToastContainer />
-      </React.Fragment>
+      </>
     ),
   ],
 };
