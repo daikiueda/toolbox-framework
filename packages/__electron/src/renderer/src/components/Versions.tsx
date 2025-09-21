@@ -1,6 +1,6 @@
-import type { ElectronAPI } from '@electron-toolkit/preload';
-
 import { useState } from 'react';
+
+import type { ElectronAPI } from '@electron-toolkit/preload';
 
 const getElectron = (): ElectronAPI | undefined =>
   (window as Window & { electron?: ElectronAPI }).electron;

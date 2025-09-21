@@ -1,8 +1,9 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
+
 import Add from '@spectrum-icons/workflow/Add';
 import Delete from '@spectrum-icons/workflow/Delete';
 import Edit from '@spectrum-icons/workflow/Edit';
-import { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
 
 import { ActionButton } from './index';
 

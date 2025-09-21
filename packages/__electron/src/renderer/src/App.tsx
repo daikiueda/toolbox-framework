@@ -1,7 +1,7 @@
+import React from 'react';
+
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import styled from 'styled-components';
-
-import React from 'react';
 
 import entries, { Entry as AppEntry } from '../../../entries';
 

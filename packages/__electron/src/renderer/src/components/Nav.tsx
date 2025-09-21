@@ -1,10 +1,10 @@
+import React from 'react';
+
 import '@spectrum-css/sidenav';
 import Box from '@spectrum-icons/workflow/Box';
 import classnames from 'classnames';
 import { Panel } from 'react-resizable-panels';
 import styled from 'styled-components';
-
-import React from 'react';
 
 import { Heading } from '@toolbox/design-system/Components/Content';
 import { Flex, Header } from '@toolbox/design-system/Components/Layout';
