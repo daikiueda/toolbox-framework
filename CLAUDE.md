@@ -45,10 +45,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### 新機能追加の手順
 
 ```bash
-cp -vR ./packages/__template ./packages/<feature-name>
+npm run create:workspace -- <feature-name>
 ```
 
-その後 `packages/<feature-name>/package.json` の `name` と `bin` を更新。
+自動的にテンプレート複製、設定調整、初期セットアップまで実行されます。
 
 ### Electron 構成
 
@@ -94,7 +94,7 @@ cp -vR ./packages/__template ./packages/<feature-name>
 
 ### 新機能開発時の流れ
 
-1. `__template` を複製して新ワークスペース作成
+1. `npm run create:workspace -- <feature-name>` で新ワークスペース作成
 2. `npm run --workspace packages/<feature-name> gui` で個別 GUI 開発
 3. `npm run --workspace packages/<feature-name> test` で単体テスト
 4. `npm run dev` で全体統合テスト

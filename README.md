@@ -6,11 +6,16 @@ Template for a pool of miscellaneous features with GUI
 
 ### Steps to add a new feature
 
-```shell
-cp -vR ./packages/__template ./packages/<name>
+```bash
+npm run create:workspace -- <feature-name>
 ```
 
-Then, rewrite ./packages/<name>/package.json("name" and "bin").
+This automatically:
+
+- Copies the template to `packages/<feature-name>`
+- Updates `package.json` (name and bin)
+- Adjusts GUI heading text
+- Runs initial setup (npm install + CLI build)
 
 ---
 
