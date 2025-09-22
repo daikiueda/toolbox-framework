@@ -1,11 +1,12 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import electronPrettier from '@electron-toolkit/eslint-config-prettier';
 import electronTs from '@electron-toolkit/eslint-config-ts';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import storybook from 'eslint-plugin-storybook';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

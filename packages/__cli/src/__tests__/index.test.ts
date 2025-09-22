@@ -1,6 +1,7 @@
-import * as fs from 'fs/promises';
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
+
+import * as fs from 'fs/promises';
 import { tmpdir } from 'os';
 import * as path from 'path';
 

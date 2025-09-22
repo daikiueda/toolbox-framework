@@ -4,9 +4,11 @@ trailingComma: es5
 plugins:
   - '@trivago/prettier-plugin-sort-imports'
 importOrder:
+  - '^(?:node:test|node:assert)?$'
+  - '^(?:node:.*|fs|path|os|url|crypto|events|util|child_process)(/.*)?$'
   - '^(?:@storybook/react-vite|storybook/test)$'
-  - '^react$'
-  - '^react-dom$'
+  - '^(react|react-dom)$'
+  - '^(styled-components|classnames)$'
   - '<THIRD_PARTY_MODULES>'
   - '^@toolbox/(.*)$'
   - '^@renderer/(.*)$'
