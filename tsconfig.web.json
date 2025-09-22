@@ -12,9 +12,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@renderer/*": [
-        "electron/src/renderer/src/*"
-      ]
+      "@renderer/*": ["electron/src/renderer/src/*"]
     },
     "moduleResolution": "bundler"
   }
