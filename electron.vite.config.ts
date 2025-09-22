@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import { resolve } from 'path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   main: {
     build: {
       rollupOptions: {
@@ -38,5 +38,13 @@ export default defineConfig({
       },
     },
     plugins: [react()],
+
+    // NOTE: UIライブラリ内部におけるNODE_ENVでの挙動制御をViteのビルドモードに同調させる
+    // @see https://github.com/adobe/react-spectrum/discussions/8189#discussioncomment-13059244
+    define: {
+      'process.env': {
+        NODE_ENV: JSON.stringify(mode === 'production' ? 'production' : 'development'),
+      },
+    },
   },
-});
+}));

@@ -24,15 +24,10 @@ const config = {
   },
 
   viteFinal: async (config) => {
-    // React Spectrumコンポーネント（特に@react-spectrum/picker）の内部で
-    // Node.js固有のprocess.envを参照しているため、ブラウザ環境で
-    // "process is not defined" エラーが発生する。
-    // Viteのdefine設定でコンパイル時にprocess.envを安全な値に置換することで
-    // この問題を解決している。
+    // NOTE: UIライブラリ内部におけるNODE_ENVでの挙動制御用の依存情報
     config.define = {
       ...config.define,
-      global: 'globalThis', // Node.jsのglobalオブジェクトをブラウザ対応
-      'process.env': 'globalThis.process?.env || {}', // process.envを安全にpolyfill
+      'process.env.NODE_ENV': JSON.stringify('development'),
     };
     return config;
   },
