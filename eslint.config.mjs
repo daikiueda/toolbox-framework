@@ -44,7 +44,7 @@ export default [
     },
   },
   {
-    ignores: ['node_modules/**', 'dist/**', 'out/**', '.gitignore', 'packages/__template/bin/**'],
+    ignores: ['**/node_modules/**', 'dist/**', 'out/**', '.gitignore', 'packages/*/bin/**'],
   },
   ...storybook.configs['flat/recommended'],
 ];
