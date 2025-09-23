@@ -1,9 +1,34 @@
 import { join } from 'path';
 
 import { electronApp, is, optimizer } from '@electron-toolkit/utils';
-import { BrowserWindow, app, ipcMain, shell } from 'electron';
+import { BrowserWindow, app, ipcMain, nativeTheme, shell } from 'electron';
 
 import icon from '../../resources/icon.png?asset';
+
+type AppearanceState = {
+  themeSource: typeof nativeTheme.themeSource;
+  shouldUseDarkColors: boolean;
+  shouldUseHighContrastColors: boolean;
+  shouldUseInvertedColorScheme: boolean;
+};
+
+const getAppearanceState = (): AppearanceState => ({
+  themeSource: nativeTheme.themeSource,
+  shouldUseDarkColors: nativeTheme.shouldUseDarkColors,
+  shouldUseHighContrastColors: nativeTheme.shouldUseHighContrastColors,
+  shouldUseInvertedColorScheme: nativeTheme.shouldUseInvertedColorScheme,
+});
+
+const broadcastAppearanceState = () => {
+  const state = getAppearanceState();
+  BrowserWindow.getAllWindows().forEach((window) => {
+    window.webContents.send('appearance:changed', state);
+  });
+};
+
+const isValidThemeSource = (value: unknown): value is typeof nativeTheme.themeSource => {
+  return value === 'system' || value === 'light' || value === 'dark';
+};
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,8 +76,18 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
+  ipcMain.handle('appearance:get-state', () => getAppearanceState());
+  ipcMain.handle('appearance:set-theme-source', (_event, themeSource) => {
+    if (isValidThemeSource(themeSource)) {
+      nativeTheme.themeSource = themeSource;
+      broadcastAppearanceState();
+      return getAppearanceState();
+    }
+
+    return getAppearanceState();
+  });
+
+  nativeTheme.on('updated', broadcastAppearanceState);
 
   createWindow();
 

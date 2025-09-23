@@ -3,9 +3,11 @@ import React from 'react';
 import { Provider } from '@react-spectrum/provider';
 import { theme } from '@react-spectrum/theme-default';
 
+import { type AppearanceMode, useAppearance } from '../hooks';
+
 import './GlobalThemeProvider.scss';
 
-const injectClassNameToDocumentElement = () => {
+const injectClassNameToDocumentElement = (mode: AppearanceMode) => {
   const documentElement = document.documentElement;
 
   const prevClassName = documentElement.className.trim();
@@ -13,7 +15,7 @@ const injectClassNameToDocumentElement = () => {
     ...prevClassName.split(' ').filter((v) => !v.startsWith('spectrum')),
     'spectrum',
     'spectrum--medium',
-    `spectrum--${window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'}`,
+    `spectrum--${mode}`,
   ].join(' ');
 
   if (nextClassName !== prevClassName) {
@@ -22,7 +24,16 @@ const injectClassNameToDocumentElement = () => {
 };
 
 const GlobalThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  React.useEffect(injectClassNameToDocumentElement, []);
-  return <Provider theme={theme}>{children}</Provider>;
+  const { mode } = useAppearance();
+
+  React.useEffect(() => {
+    injectClassNameToDocumentElement(mode);
+  }, [mode]);
+
+  return (
+    <Provider theme={theme} colorScheme={mode}>
+      {children}
+    </Provider>
+  );
 };
 export default GlobalThemeProvider;
