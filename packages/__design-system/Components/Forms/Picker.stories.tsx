@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import React from 'react';
 
-import { Item, Picker, Section } from './index';
+import { Picker, PickerItem, Section } from './index';
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/Picker.html
@@ -30,12 +30,12 @@ export default meta;
 export const Basic: StoryObj<typeof Picker> = {
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -46,12 +46,12 @@ export const WithPlaceholder: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -63,12 +63,12 @@ export const Required: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -80,12 +80,12 @@ export const WithValidation: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -97,19 +97,19 @@ export const WithSections: StoryObj<typeof Picker> = {
   render: (args) => (
     <Picker {...args}>
       <Section title="Mammals">
-        <Item key="dog">Dog</Item>
-        <Item key="cat">Cat</Item>
-        <Item key="elephant">Elephant</Item>
+        <PickerItem key="dog">Dog</PickerItem>
+        <PickerItem key="cat">Cat</PickerItem>
+        <PickerItem key="elephant">Elephant</PickerItem>
       </Section>
       <Section title="Birds">
-        <Item key="eagle">Eagle</Item>
-        <Item key="parrot">Parrot</Item>
-        <Item key="penguin">Penguin</Item>
+        <PickerItem key="eagle">Eagle</PickerItem>
+        <PickerItem key="parrot">Parrot</PickerItem>
+        <PickerItem key="penguin">Penguin</PickerItem>
       </Section>
       <Section title="Fish">
-        <Item key="shark">Shark</Item>
-        <Item key="salmon">Salmon</Item>
-        <Item key="tuna">Tuna</Item>
+        <PickerItem key="shark">Shark</PickerItem>
+        <PickerItem key="salmon">Salmon</PickerItem>
+        <PickerItem key="tuna">Tuna</PickerItem>
       </Section>
     </Picker>
   ),
@@ -121,12 +121,12 @@ export const Disabled: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -137,12 +137,12 @@ export const Quiet: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args}>
-      <Item key="red">Red</Item>
-      <Item key="orange">Orange</Item>
-      <Item key="yellow">Yellow</Item>
-      <Item key="green">Green</Item>
-      <Item key="blue">Blue</Item>
-      <Item key="purple">Purple</Item>
+      <PickerItem key="red">Red</PickerItem>
+      <PickerItem key="orange">Orange</PickerItem>
+      <PickerItem key="yellow">Yellow</PickerItem>
+      <PickerItem key="green">Green</PickerItem>
+      <PickerItem key="blue">Blue</PickerItem>
+      <PickerItem key="purple">Purple</PickerItem>
     </Picker>
   ),
 };
@@ -161,7 +161,7 @@ export const DynamicItems: StoryObj<typeof Picker> = {
   },
   render: (args) => (
     <Picker {...args} items={dynamicItems}>
-      {(item) => <Item key={item.id}>{item.name}</Item>}
+      {(item) => <PickerItem key={item.id}>{item.name}</PickerItem>}
     </Picker>
   ),
 };
