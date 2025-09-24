@@ -5,7 +5,7 @@ import type { DropEvent } from '@react-types/shared';
 import type { DropZoneFileContent, DropZoneReadOptions } from './logics';
 import { readFileContentFromDropEvent, readFileContentFromFileList } from './logics';
 
-export type { DropZoneFileContent } from './logics';
+export { DropZoneFileContent } from './logics';
 
 export interface UseFileSelectionHandlers {
   handleDrop: (event: Pick<DropEvent, 'items'>) => Promise<void>;
