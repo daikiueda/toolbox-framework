@@ -16,6 +16,14 @@ export interface DropZoneFileContent {
   content: string | ArrayBuffer;
   readAs: DropZoneReadMode;
 }
+export const DropZoneFileContent = {
+  ensureTextContent: (file: DropZoneFileContent): string => {
+    if (file.readAs === 'arrayBuffer' && file.content instanceof ArrayBuffer) {
+      return new TextDecoder().decode(file.content);
+    }
+    return typeof file.content === 'string' ? file.content : String(file.content);
+  },
+};
 
 /**
  * DropEvent 全体を受け取るショートカット。
