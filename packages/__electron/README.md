@@ -2,13 +2,13 @@
 
 ## App Icon Generation
 
-The Electron workspace ships with a helper script that regenerates platform-specific app icons from a single PNG source. Drop a high-resolution PNG (512px or larger) into `packages/__electron/resources/app-icon.png` (or replace `resources/icon.png` directly) and run:
+The Electron workspace ships with a helper script that regenerates platform-specific app icons from a single PNG source. Drop a high-resolution PNG (512px or larger; 1024px recommended) into `packages/__electron/resources/app-icon.png` (or replace `resources/icon.png` directly) and run:
 
 ```bash
 npm run icon:generate
 ```
 
-The script will copy the source PNG to `resources/icon.png`, sync `build/icon.png`, and then use the bundled `app-builder` utility to produce the matching `build/icon.icns` and `build/icon.ico` files. If you want to try a one-off file without moving it into `resources/`, pass the path as an argument:
+The script will copy the source PNG to `resources/icon.png`, automatically downscale it to 512px for `build/icon.png` (Linux 用), and then use the bundled `app-builder` utility to produce the matching `build/icon.icns` and `build/icon.ico` files. If you want to try a one-off file without moving it into `resources/`, pass the path as an argument:
 
 ```bash
 npm run icon:generate -- ./path/to/custom-icon.png

@@ -9,6 +9,7 @@
     "@spectrum-css/sidenav": "^7.2.0",
     "@spectrum-icons/workflow": "^4.2.24",
     "@toolbox/template": "^0.0.0",
-    "react-resizable-panels": "^3.0.6"
+    "react-resizable-panels": "^3.0.6",
+    "sharp": "^0.34.4"
   }
 }

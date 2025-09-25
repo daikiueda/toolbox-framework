@@ -6,6 +6,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
+import sharp from 'sharp';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceDir = path.resolve(__dirname, '..');
 const resourcesDir = path.join(workspaceDir, 'resources');
@@ -119,6 +121,40 @@ const runAppBuilder = async (binary, format, inputFile) => {
   });
 };
 
+const ensureLinuxIcon = async (sourcePath) => {
+  const linuxIconSize = 512;
+  const metadata = await sharp(sourcePath).metadata();
+  const { width, height } = metadata;
+
+  if (!width || !height) {
+    throw new Error('PNG のメタデータを取得できませんでした。');
+  }
+
+  if (width !== height) {
+    throw new Error(`正方形の PNG が必要です (検出サイズ: ${width}x${height}).`);
+  }
+
+  if (width < linuxIconSize) {
+    throw new Error(
+      'PNG の一辺は 512px 以上が必要です。より高解像度のアイコンを用意してください。'
+    );
+  }
+
+  const buildIconPath = path.join(buildDir, 'icon.png');
+
+  if (width === linuxIconSize) {
+    await copyFile(sourcePath, buildIconPath);
+    return 'build/icon.png を 512px のままコピーしました。\n';
+  }
+
+  await sharp(sourcePath)
+    .resize(linuxIconSize, linuxIconSize, { fit: 'cover' })
+    .png({ compressionLevel: 9 })
+    .toFile(buildIconPath);
+
+  return `build/icon.png を ${width}px から 512px にリサイズしました。\n`;
+};
+
 const main = async () => {
   const sourcePng = await resolveExistingPng();
   const appBuilderBinary = await resolveAppBuilderBinary();
@@ -130,7 +166,8 @@ const main = async () => {
     await copyFile(sourcePng, resourceIconPath);
   }
 
-  await copyFile(resourceIconPath, path.join(buildDir, 'icon.png'));
+  const linuxMessage = await ensureLinuxIcon(resourceIconPath);
+  process.stdout.write(linuxMessage);
 
   const formats = ['icns', 'ico'];
   for (const format of formats) {
