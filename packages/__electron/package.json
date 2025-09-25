@@ -2,7 +2,8 @@
   "name": "@toolbox/electron",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "icon:generate": "node ./scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@spectrum-css/sidenav": "^7.2.0",

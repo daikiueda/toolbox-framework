@@ -7,6 +7,8 @@
   },
   "main": "./out/main/index.js",
   "scripts": {
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
     "create:workspace": "node scripts/create-workspace.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -17,15 +19,14 @@
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "quality:check": "npm run lint:check && npm run format:check && npm run typecheck && npm run test:workspaces",
     "test:workspaces": "npm run test --workspaces --if-present",
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
+    "icon:generate": "npm run icon:generate --workspace packages/__electron",
     "build": "npm run typecheck && electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder -c packages/__electron/electron-builder.yml --dir",
     "build:win": "npm run build && electron-builder -c packages/__electron/electron-builder.yml --win",
     "build:mac": "electron-vite build && electron-builder -c packages/__electron/electron-builder.yml --mac",
     "build:linux": "electron-vite build && electron-builder -c packages/__electron/electron-builder.yml --linux",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
