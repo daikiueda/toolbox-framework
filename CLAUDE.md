@@ -41,6 +41,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `__design-system/`: React Spectrum ベースの共通 UI コンポーネントと Storybook
 - `__cli/`: CLI 共通ユーティリティ
 - `__template/`: 新機能追加時のスキャフォールド用テンプレート
+- `gui-kitchen-sink/`: デザインシステムのコンポーネントを一覧で試せる Kitchen Sink ワークスペース
 
 ### 新機能追加の手順
 

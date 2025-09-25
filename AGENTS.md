@@ -3,9 +3,10 @@
 ## プロジェクト構成とモジュール配置
 
 - `packages/__electron`: Electron 実行基盤。メイン/プリロード/レンダラのエントリと `electron-builder.yml` などビルド設定を提供します。
-- `packages/__design-system`: React Spectrum ベースの共通 UI と Storybook 環境。業務ワークスペースから再利用します。
+- `packages/__design-system`: GUIのデザインシステム。React Spectrum ベースの共通 UI と Storybook 環境。業務ワークスペースから再利用します。
 - `packages/__cli`: CLI で利用する共通ユーティリティ。GUI と独立したコマンドライン機能の下支えとなります。
 - `packages/__template`: 業務機能ワークスペースのスキャフォールド用テンプレート。実装例を含む複製元 (`__example` 的な位置付け) として扱い、ドメイン別ワークスペース (`packages/<feature-name>`) を追加するときにコピーして使います。
+- `packages/gui-kitchen-sink`: デザインシステムのコンポーネントを“全部入り”で試せるワークスペース。Electron タブや単体 GUI を通して各種コンポーネントの動作確認に利用します。
 - `packages/<feature-name>`: ドメインロジックや GUI/CLI を担う業務機能ワークスペース。元となる `__template` を複製し、機能固有の処理や GUI/CLI の実装を持たせて拡張します。
 - `out/`: `npm run build` で生成される Electron/Vite の中間バンドルを格納します。`npm run start` や electron-builder の後続処理が参照するため、クリーンアップ有無を判断するときは注意してください。
 - ルート直下には共通設定 (`electron.vite.config.ts`, `tsconfig*.json` など) がまとまっています。
@@ -49,6 +50,10 @@ npm run dev                                     # 統合確認
 - `npm run lint` / `npm run format`: ESLint と Prettier を一括適用します。コミット前に走らせて差分のスタイル逸脱を防ぎます。
 - `npm run build`: 事前に `typecheck` を行った上で Electron レンダラ／メインをビルドし、配布用アーティファクトを生成します。
 - `npm run build:unpack` / `npm run build:win` / `npm run build:mac` / `npm run build:linux`: `packages/__electron/electron-builder.yml` を参照してターゲット別の配布物やディレクトリ構成を出力します。
+
+### Kitchen Sink
+
+- `npm run --workspace packages/gui-kitchen-sink gui`: デザインシステムの Kitchen Sink を単体で起動し、ブラウザでコンポーネント挙動を確認します。
 
 ### 業務ワークスペース (`packages/<feature-name>`) で使う例
 
