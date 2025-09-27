@@ -121,28 +121,31 @@ const runAppBuilder = async (binary, format, inputFile) => {
   });
 };
 
-const ensureLinuxIcon = async (sourcePath) => {
-  const linuxIconSize = 512;
+const validateSquarePng = async (sourcePath, label, minimumSize) => {
   const metadata = await sharp(sourcePath).metadata();
   const { width, height } = metadata;
 
   if (!width || !height) {
-    throw new Error('PNG のメタデータを取得できませんでした。');
+    throw new Error(`${label} のサイズ情報を取得できませんでした。`);
   }
 
   if (width !== height) {
-    throw new Error(`正方形の PNG が必要です (検出サイズ: ${width}x${height}).`);
+    throw new Error(`${label} は正方形の PNG が必要です (検出サイズ: ${width}x${height}).`);
   }
 
-  if (width < linuxIconSize) {
-    throw new Error(
-      'PNG の一辺は 512px 以上が必要です。より高解像度のアイコンを用意してください。'
-    );
+  if (width < minimumSize) {
+    throw new Error(`${label} は一辺 ${minimumSize}px 以上の PNG を使用してください。`);
   }
 
+  return width;
+};
+
+const ensureLinuxIcon = async (sourcePath) => {
+  const linuxIconSize = 512;
+  const size = await validateSquarePng(sourcePath, 'icon.png', linuxIconSize);
   const buildIconPath = path.join(buildDir, 'icon.png');
 
-  if (width === linuxIconSize) {
+  if (size === linuxIconSize) {
     await copyFile(sourcePath, buildIconPath);
     return 'build/icon.png を 512px のままコピーしました。\n';
   }
@@ -152,7 +155,26 @@ const ensureLinuxIcon = async (sourcePath) => {
     .png({ compressionLevel: 9 })
     .toFile(buildIconPath);
 
-  return `build/icon.png を ${width}px から 512px にリサイズしました。\n`;
+  return `build/icon.png を ${size}px から 512px にリサイズしました。\n`;
+};
+
+const resolveMacIconSource = async (fallbackPath) => {
+  const macIconCandidate = path.join(resourcesDir, 'icon-with-backdrop.png');
+
+  try {
+    await access(macIconCandidate);
+    const size = await validateSquarePng(macIconCandidate, 'icon-with-backdrop.png', 512);
+    return {
+      path: macIconCandidate,
+      message: `ICNS 生成に icon-with-backdrop.png (${size}px) を使用します。\n`,
+    };
+  } catch {
+    const size = await validateSquarePng(fallbackPath, 'icon.png', 512);
+    return {
+      path: fallbackPath,
+      message: `icon-with-backdrop.png が見つからないため icon.png (${size}px) を使用します。\n`,
+    };
+  }
 };
 
 const main = async () => {
@@ -169,10 +191,17 @@ const main = async () => {
   const linuxMessage = await ensureLinuxIcon(resourceIconPath);
   process.stdout.write(linuxMessage);
 
-  const formats = ['icns', 'ico'];
-  for (const format of formats) {
+  const { path: macIconSource, message: macMessage } = await resolveMacIconSource(resourceIconPath);
+  process.stdout.write(macMessage);
+
+  const formats = [
+    { format: 'icns', input: macIconSource },
+    { format: 'ico', input: resourceIconPath },
+  ];
+
+  for (const { format, input } of formats) {
     process.stdout.write(`Generating ${format.toUpperCase()} icon...\n`);
-    const results = await runAppBuilder(appBuilderBinary, format, resourceIconPath);
+    const results = await runAppBuilder(appBuilderBinary, format, input);
     if (results.length === 0) {
       process.stdout.write(`  No ${format.toUpperCase()} artifacts reported.\n`);
     } else {

@@ -36,3 +36,5 @@ npm run icon:generate -- ./path/to/custom-icon.png
 ```
 
 This keeps the build resources that Electron Builder relies on (`packages/__electron/build`) aligned with the latest PNG source before you run any packaging commands.
+
+- macOS specific artwork: place a square `icon-with-backdrop.png` (typically 1024px) alongside `icon.png` under `packages/__electron/resources/`. The generator prefers this file when producing `icon.icns`, and falls back to `icon.png` if it is absent.
