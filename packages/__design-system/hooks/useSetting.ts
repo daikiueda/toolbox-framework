@@ -17,7 +17,7 @@ type UpdateWithUnknown<S extends Setting> = <K extends keyof S = keyof S>(
   guard: (x: unknown) => x is S[K]
 ) => (value: unknown) => void;
 
-type UpdateSetting<S extends Setting> = UpdateWithTyped<S> & UpdateWithUnknown<S>;
+export type UpdateSetting<S extends Setting> = UpdateWithTyped<S> & UpdateWithUnknown<S>;
 
 type PersistenceOptions<S extends Setting> = {
   storageKey: string;
