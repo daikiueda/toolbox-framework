@@ -1,19 +1,6 @@
 import React from 'react';
 
 import type { Key } from '@react-types/shared';
-import Add from '@spectrum-icons/workflow/Add';
-import CCLibrary from '@spectrum-icons/workflow/CCLibrary';
-import Data from '@spectrum-icons/workflow/Data';
-import Delete from '@spectrum-icons/workflow/Delete';
-import FileCode from '@spectrum-icons/workflow/FileCode';
-import FileJson from '@spectrum-icons/workflow/FileJson';
-import FormIcon from '@spectrum-icons/workflow/Form';
-import ModernGridView from '@spectrum-icons/workflow/ModernGridView';
-import SaveFloppy from '@spectrum-icons/workflow/SaveFloppy';
-import UploadToCloud from '@spectrum-icons/workflow/UploadToCloud';
-import ViewCard from '@spectrum-icons/workflow/ViewCard';
-import ViewColumn from '@spectrum-icons/workflow/ViewColumn';
-import ViewDay from '@spectrum-icons/workflow/ViewDay';
 
 import {
   ActionButton,
@@ -48,7 +35,13 @@ import {
   View,
   Well,
   useFileSelection,
+  useSetting,
 } from '@toolbox/design-system';
+
+import { Framework, Plan } from '../src/models/Project';
+
+import { LayoutType, Setting } from './Setting';
+import * as Icon from './components/icons';
 
 const members = [
   { id: 1, name: 'Alice Johnson', role: 'Product Manager', experience: 8 },
@@ -74,15 +67,10 @@ const layouts: Array<{
   label: string;
   icon: () => React.ReactNode;
 }> = [
-  { id: 'dashboard', label: 'Dashboard', icon: () => <ViewCard size="S" /> },
-  { id: 'timeline', label: 'Timeline', icon: () => <ViewDay size="S" /> },
-  { id: 'board', label: 'Board', icon: () => <ViewColumn size="S" /> },
+  { id: 'dashboard', label: 'Dashboard', icon: () => <Icon.ViewCard size="S" /> },
+  { id: 'timeline', label: 'Timeline', icon: () => <Icon.ViewDay size="S" /> },
+  { id: 'board', label: 'Board', icon: () => <Icon.ViewColumn size="S" /> },
 ];
-
-const defaultSortDescriptor = {
-  column: 'name',
-  direction: 'ascending',
-} as const;
 
 type SectionProps = {
   title: string;
@@ -107,29 +95,26 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
 );
 
 const App: React.FC = () => {
-  const [projectName, setProjectName] = React.useState('Next-gen Collaboration Suite');
-  const [memberCount, setMemberCount] = React.useState(12);
-  const [selectedFramework, setSelectedFramework] = React.useState<Key>('react');
-  const [selectedPlan, setSelectedPlan] = React.useState('team');
-  const [isPublished, setIsPublished] = React.useState(true);
-  const [activeLayout, setActiveLayout] = React.useState('dashboard');
+  const [setting, updateSetting] = useSetting(Setting.default());
+  const {
+    projectName,
+    selectedFramework,
+    memberCount,
+    selectedPlan,
+    isPublished,
+    activeLayout,
+    sortMemberDescriptor,
+  } = setting;
+
   const [droppedFiles, setDroppedFiles] = React.useState<DropZoneFileContent[]>([]);
-
-  const { sortDescriptor, onSortChange } = TableViewUtil.usePropsToSort(defaultSortDescriptor);
-
-  const handleFrameworkChange = React.useCallback((key: Key | null) => {
-    if (key != null) {
-      setSelectedFramework(key);
-    }
-  }, []);
 
   const sortedMembers = React.useMemo(
     () =>
       TableViewUtil.toSorted({
         items: members,
-        sortDescriptor,
+        sortDescriptor: sortMemberDescriptor,
       }),
-    [sortDescriptor]
+    [sortMemberDescriptor]
   );
 
   const showToast = React.useCallback(
@@ -169,7 +154,7 @@ const App: React.FC = () => {
   return (
     <Page>
       <Flex alignItems="center" gap="size-125">
-        <CCLibrary size="L" />
+        <Icon.CCLibrary size="L" />
         <Heading level={1}>Design System Kitchen Sink</Heading>
       </Flex>
       <View marginTop="size-150">
@@ -178,25 +163,25 @@ const App: React.FC = () => {
       <Divider marginTop="size-250" />
 
       <Section
-        icon={<SaveFloppy size="M" />}
+        icon={<Icon.SaveFloppy size="M" />}
         title="Actions"
         description="Typical buttons and toast notifications."
       >
         <Flex gap="size-150" wrap alignItems="center">
           <Button variant="accent" onPress={showToast('positive')}>
-            <SaveFloppy slot="icon" />
+            <Icon.SaveFloppy slot="icon" />
             Save
           </Button>
           <Button variant="secondary" onPress={showToast('info')}>
-            <Add slot="icon" />
+            <Icon.Add slot="icon" />
             Save draft
           </Button>
           <Button variant="negative" onPress={showToast('negative')}>
-            <Delete slot="icon" />
+            <Icon.Delete slot="icon" />
             Delete
           </Button>
           <ActionButton onPress={() => Toast.info(`Active layout: ${activeLayout}`)}>
-            <ModernGridView slot="icon" />
+            <Icon.ModernGridView slot="icon" />
             Show layout
           </ActionButton>
           <FileTrigger
@@ -214,7 +199,7 @@ const App: React.FC = () => {
       <Divider marginTop="size-350" />
 
       <Section
-        icon={<FormIcon size="M" />}
+        icon={<Icon.FormIcon size="M" />}
         title="Forms"
         description="A compact mix of common inputs."
       >
@@ -222,19 +207,19 @@ const App: React.FC = () => {
           <TextField
             label="Project name"
             value={projectName}
-            onChange={setProjectName}
+            onChange={updateSetting('projectName')}
             isRequired
           />
           <NumberField
             label="Team size"
             value={memberCount}
-            onChange={setMemberCount}
+            onChange={updateSetting('memberCount')}
             minValue={1}
           />
           <Picker
             label="Frontend framework"
             selectedKey={selectedFramework}
-            onSelectionChange={handleFrameworkChange}
+            onSelectionChange={updateSetting('selectedFramework', Framework.guard)}
           >
             {frameworks.map((framework) => (
               <PickerItem key={framework.id}>{framework.label}</PickerItem>
@@ -243,7 +228,7 @@ const App: React.FC = () => {
           <RadioGroup
             label="Pricing plan"
             value={selectedPlan}
-            onChange={setSelectedPlan}
+            onChange={updateSetting('selectedPlan', Plan.guard)}
             orientation="horizontal"
           >
             {plans.map((plan) => (
@@ -260,7 +245,7 @@ const App: React.FC = () => {
           <Switch
             aria-labelledby={publishLabelId}
             isSelected={isPublished}
-            onChange={setIsPublished}
+            onChange={updateSetting('isPublished')}
           >
             Enabled
           </Switch>
@@ -270,7 +255,7 @@ const App: React.FC = () => {
       <Divider marginTop="size-350" />
 
       <Section
-        icon={<ModernGridView size="M" />}
+        icon={<Icon.ModernGridView size="M" />}
         title="Layouts"
         description="ActionGroup-driven layout switching."
       >
@@ -278,7 +263,7 @@ const App: React.FC = () => {
           <ActionGroup
             selectionMode="single"
             selectedKeys={selectedLayoutKeys}
-            onAction={(key) => setActiveLayout(String(key))}
+            onAction={updateSetting('activeLayout', LayoutType.guard)}
             aria-label="Choose layout"
           >
             {layouts.map((layout) => (
@@ -299,14 +284,14 @@ const App: React.FC = () => {
       <Divider marginTop="size-350" />
 
       <Section
-        icon={<Data size="M" />}
+        icon={<Icon.Data size="M" />}
         title="Table"
         description="Sortable TableView with team data."
       >
         <TableView
           aria-label="Team roster"
-          sortDescriptor={sortDescriptor}
-          onSortChange={onSortChange}
+          sortDescriptor={sortMemberDescriptor}
+          onSortChange={updateSetting('sortMemberDescriptor')}
           width="100%"
         >
           <TableHeader>
@@ -335,14 +320,14 @@ const App: React.FC = () => {
       <Divider marginTop="size-350" />
 
       <Section
-        icon={<UploadToCloud size="M" />}
+        icon={<Icon.UploadToCloud size="M" />}
         title="Drop zone"
         description="DropZone, FileTrigger, and custom hook working together."
       >
         <DropZone onDrop={handleDrop}>
           <View padding="size-200">
             <Flex direction="column" alignItems="center" gap="size-100">
-              <FileJson size="XXL" />
+              <Icon.FileJson size="XXL" />
               <Heading level={3}>Drop files here</Heading>
               <Text>…or pick files with the button below.</Text>
               <Content>
@@ -362,7 +347,7 @@ const App: React.FC = () => {
               {filePreviews.map((file) => (
                 <Well key={file.path}>
                   <Flex alignItems="center" gap="size-100">
-                    <FileCode size="S" />
+                    <Icon.FileCode size="S" />
                     <Heading level={4}>{file.path}</Heading>
                   </Flex>
                   <View

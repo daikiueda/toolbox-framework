@@ -23,7 +23,7 @@ const usePropsToSort = (initial: SortDescriptor = SortDescriptor.default()) => {
   };
 };
 
-const toSorted = <T extends object>({
+const toSorted = <T>({
   items,
   sortDescriptor,
 }: {
