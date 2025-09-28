@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import memoize from 'lodash/memoize';
 
+import { getGlobalAPI } from '@toolbox/electron';
+
 import { isRecord } from '../utils/TypeUtils';
 
 type Setting = Record<string, unknown>;
@@ -17,79 +19,48 @@ type UpdateWithUnknown<S extends Setting> = <K extends keyof S = keyof S>(
 
 type UpdateSetting<S extends Setting> = UpdateWithTyped<S> & UpdateWithUnknown<S>;
 
-type PersistenceBridge = {
-  read: (scope: string) => Promise<unknown>;
-  write: (scope: string, value: unknown) => Promise<unknown>;
-  delete?: (scope: string) => Promise<unknown>;
-};
-
 type PersistenceOptions<S extends Setting> = {
-  key: string;
-  guard?: (value: unknown) => value is Partial<S>;
-  storage?: PersistenceBridge;
+  storageKey: string;
+  guard?: (value: unknown) => value is S;
 };
 
 type UseSettingOptions<S extends Setting> = {
   persistence?: PersistenceOptions<S>;
 };
 
-const readPersistenceBridge = (): PersistenceBridge | undefined => {
-  if (typeof window === 'undefined') {
-    return undefined;
-  }
+type UseSettingResult<S extends Setting> = readonly [S, UpdateSetting<S>];
 
-  const bridge = (window as typeof window & { api?: { persistence?: PersistenceBridge } }).api;
+// 永続化を使わない呼び出しでは、初期値に含めるプロパティの有無を強制しない。
+function useSetting<S extends Setting>(initialSetting: S): UseSettingResult<S>;
 
-  return bridge?.persistence;
-};
+// 永続化を使う場合は全プロパティを含む初期値を求める。
+function useSetting<S extends Setting>(
+  initialSetting: Required<S>,
+  options: UseSettingOptions<S> & { persistence: PersistenceOptions<S> }
+): UseSettingResult<S>;
 
-const sanitizeStoredValue = <S extends Setting>(
-  stored: unknown,
+function useSetting<S extends Setting>(
   initialSetting: S,
-  guard?: (value: unknown) => value is Partial<S>
-): Partial<S> | undefined => {
-  if (guard) {
-    return guard(stored) ? stored : undefined;
-  }
-
-  if (!isRecord(stored)) {
-    return undefined;
-  }
-
-  const storedRecord = stored as Record<PropertyKey, unknown>;
-  const result: Partial<S> = {};
-
-  (Object.keys(initialSetting) as Array<keyof S>).forEach((key) => {
-    const lookupKey = key as PropertyKey;
-    if (Object.prototype.hasOwnProperty.call(storedRecord, lookupKey)) {
-      result[key] = storedRecord[lookupKey] as S[keyof S];
-    }
-  });
-
-  return result;
-};
-
-const useSetting = <S extends Setting>(initialSetting: S, options: UseSettingOptions<S> = {}) => {
+  options: UseSettingOptions<S> = {}
+): UseSettingResult<S> {
   const [setting, setSetting] = useState(initialSetting);
-  const initialSettingRef = useRef(initialSetting);
+
   const isHydratedRef = useRef(false);
+  const fieldNamesRef = useRef<ReadonlyArray<keyof S>>(
+    Object.keys(initialSetting) as Array<keyof S>
+  );
 
-  initialSettingRef.current = initialSetting;
+  const storageKey = options.persistence?.storageKey;
+  const guard = options.persistence?.guard;
 
-  const persistenceKey = options.persistence?.key;
-  const persistenceGuard = options.persistence?.guard;
-  const storage = useMemo(() => {
-    if (!options.persistence) {
-      return undefined;
-    }
-    if (options.persistence.storage) {
-      return options.persistence.storage;
-    }
-    return readPersistenceBridge();
-  }, [options.persistence]);
+  const storage = useMemo(
+    () => options.persistence && getGlobalAPI()?.persistence,
+    [options.persistence]
+  );
 
+  // 永続化データの初期読み込み
   useEffect(() => {
-    if (!persistenceKey || !storage) {
+    if (!storageKey || !storage) {
       isHydratedRef.current = true;
       return;
     }
@@ -98,16 +69,12 @@ const useSetting = <S extends Setting>(initialSetting: S, options: UseSettingOpt
     isHydratedRef.current = false;
 
     storage
-      .read(persistenceKey)
+      .read(storageKey)
       .then((stored) => {
         if (cancelled || stored === undefined || stored === null) {
           return;
         }
-        const resolved = sanitizeStoredValue<S>(
-          stored,
-          initialSettingRef.current,
-          persistenceGuard
-        );
+        const resolved = sanitizeStoredValue<S>(stored, fieldNamesRef.current, guard);
         if (resolved) {
           setSetting((prevState) => ({ ...prevState, ...resolved }));
         }
@@ -124,17 +91,18 @@ const useSetting = <S extends Setting>(initialSetting: S, options: UseSettingOpt
     return () => {
       cancelled = true;
     };
-  }, [persistenceKey, persistenceGuard, storage]);
+  }, [storageKey, guard, storage]);
 
+  // 入力値の永続化
   useEffect(() => {
-    if (!persistenceKey || !storage || !isHydratedRef.current) {
+    if (!storageKey || !storage || !isHydratedRef.current) {
       return;
     }
 
-    storage.write(persistenceKey, setting).catch((error) => {
+    storage.write(storageKey, setting).catch((error) => {
       console.warn('[design-system] 設定の書き込みに失敗しました:', error);
     });
-  }, [persistenceKey, setting, storage]);
+  }, [storageKey, setting, storage]);
 
   const updateSetting = useMemo(
     () =>
@@ -157,6 +125,19 @@ const useSetting = <S extends Setting>(initialSetting: S, options: UseSettingOpt
   );
 
   return [setting, updateSetting as UpdateSetting<S>] as const;
-};
+}
 
 export default useSetting;
+
+const sanitizeStoredValue = <S extends Setting>(
+  stored: unknown,
+  fieldNames: ReadonlyArray<keyof S>,
+  guard?: (value: unknown) => value is S
+): S | undefined => {
+  if (guard) {
+    return guard(stored) ? stored : undefined;
+  }
+  return isRecord(stored)
+    ? (Object.fromEntries(fieldNames.map((fieldName) => [fieldName, stored[fieldName]])) as S)
+    : undefined;
+};
