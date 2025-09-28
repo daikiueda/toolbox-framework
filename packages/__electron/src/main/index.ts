@@ -1,34 +1,17 @@
 import { join } from 'path';
 
 import { electronApp, is, optimizer } from '@electron-toolkit/utils';
-import { BrowserWindow, app, ipcMain, nativeTheme, shell } from 'electron';
+import { BrowserWindow, app, shell } from 'electron';
 
 import icon from '../../resources/icon.png?asset';
-
-type AppearanceState = {
-  themeSource: typeof nativeTheme.themeSource;
-  shouldUseDarkColors: boolean;
-  shouldUseHighContrastColors: boolean;
-  shouldUseInvertedColorScheme: boolean;
-};
-
-const getAppearanceState = (): AppearanceState => ({
-  themeSource: nativeTheme.themeSource,
-  shouldUseDarkColors: nativeTheme.shouldUseDarkColors,
-  shouldUseHighContrastColors: nativeTheme.shouldUseHighContrastColors,
-  shouldUseInvertedColorScheme: nativeTheme.shouldUseInvertedColorScheme,
-});
-
-const broadcastAppearanceState = () => {
-  const state = getAppearanceState();
-  BrowserWindow.getAllWindows().forEach((window) => {
-    window.webContents.send('appearance:changed', state);
-  });
-};
-
-const isValidThemeSource = (value: unknown): value is typeof nativeTheme.themeSource => {
-  return value === 'system' || value === 'light' || value === 'dark';
-};
+import {
+  registerAppearanceHandlers,
+  unregisterAppearanceHandlers,
+} from '../__extensions/appearance/main';
+import {
+  registerPersistenceHandlers,
+  unregisterPersistenceHandlers,
+} from '../__extensions/persistence/main';
 
 function createWindow(): void {
   // Create the browser window.
@@ -76,18 +59,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  ipcMain.handle('appearance:get-state', () => getAppearanceState());
-  ipcMain.handle('appearance:set-theme-source', (_event, themeSource) => {
-    if (isValidThemeSource(themeSource)) {
-      nativeTheme.themeSource = themeSource;
-      broadcastAppearanceState();
-      return getAppearanceState();
-    }
-
-    return getAppearanceState();
-  });
-
-  nativeTheme.on('updated', broadcastAppearanceState);
+  registerAppearanceHandlers();
+  registerPersistenceHandlers();
 
   createWindow();
 
@@ -105,6 +78,11 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('will-quit', () => {
+  unregisterAppearanceHandlers();
+  unregisterPersistenceHandlers();
 });
 
 // In this file you can include the rest of your app"s specific main process

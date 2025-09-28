@@ -1,0 +1,13 @@
+export { default as Add } from '@spectrum-icons/workflow/Add';
+export { default as CCLibrary } from '@spectrum-icons/workflow/CCLibrary';
+export { default as Data } from '@spectrum-icons/workflow/Data';
+export { default as Delete } from '@spectrum-icons/workflow/Delete';
+export { default as FileCode } from '@spectrum-icons/workflow/FileCode';
+export { default as FileJson } from '@spectrum-icons/workflow/FileJson';
+export { default as FormIcon } from '@spectrum-icons/workflow/Form';
+export { default as ModernGridView } from '@spectrum-icons/workflow/ModernGridView';
+export { default as SaveFloppy } from '@spectrum-icons/workflow/SaveFloppy';
+export { default as UploadToCloud } from '@spectrum-icons/workflow/UploadToCloud';
+export { default as ViewCard } from '@spectrum-icons/workflow/ViewCard';
+export { default as ViewColumn } from '@spectrum-icons/workflow/ViewColumn';
+export { default as ViewDay } from '@spectrum-icons/workflow/ViewDay';
