@@ -8,16 +8,12 @@ import { isRecord } from '../utils/TypeUtils';
 
 type Setting = Record<string, unknown>;
 
-type UpdateWithTyped<S extends Setting> = <K extends keyof S = keyof S>(
-  key: K
-) => (value: S[K]) => void;
-
-type UpdateWithUnknown<S extends Setting> = <K extends keyof S = keyof S>(
-  key: K,
-  guard: (x: unknown) => x is S[K]
-) => (value: unknown) => void;
-
-export type UpdateSetting<S extends Setting> = UpdateWithTyped<S> & UpdateWithUnknown<S>;
+export type UpdateSetting<S extends Setting> = {
+  <K extends keyof S>(key: K): (value: S[K]) => void;
+  <K extends keyof S>(key: K, guard: (x: unknown) => x is S[K]): (value: unknown) => void;
+  (values: Partial<S>): void;
+  (updater: (prev: S) => S): void;
+};
 
 type PersistenceOptions<S extends Setting> = {
   storageKey: string;
@@ -104,7 +100,7 @@ function useSetting<S extends Setting>(
     });
   }, [storageKey, setting, storage]);
 
-  const updateSetting = useMemo(
+  const resolveUpdater = useMemo(
     () =>
       memoize(<K extends keyof S>(key: K, guard?: (x: unknown) => x is S[K]) => {
         if (!guard) {
@@ -124,7 +120,25 @@ function useSetting<S extends Setting>(
     [setSetting]
   );
 
-  return [setting, updateSetting as UpdateSetting<S>] as const;
+  const updateSetting = useMemo<UpdateSetting<S>>(() => {
+    const handler = ((arg: unknown, maybeGuard?: unknown) => {
+      if (typeof arg === 'function' && maybeGuard === undefined) {
+        setSetting((prevState) => (arg as (prev: S) => S)(prevState));
+        return;
+      }
+
+      if (isRecord(arg) && maybeGuard === undefined) {
+        setSetting((prevState) => ({ ...prevState, ...(arg as Partial<S>) }));
+        return;
+      }
+
+      return resolveUpdater(arg as keyof S, maybeGuard as (x: unknown) => x is S[keyof S]);
+    }) as UpdateSetting<S>;
+
+    return handler;
+  }, [resolveUpdater]);
+
+  return [setting, updateSetting] as const;
 }
 
 export default useSetting;
@@ -133,11 +147,22 @@ const sanitizeStoredValue = <S extends Setting>(
   stored: unknown,
   fieldNames: ReadonlyArray<keyof S>,
   guard?: (value: unknown) => value is S
-): S | undefined => {
+): Partial<S> | undefined => {
   if (guard) {
-    return guard(stored) ? stored : undefined;
+    return guard(stored) ? (stored as S) : undefined;
   }
-  return isRecord(stored)
-    ? (Object.fromEntries(fieldNames.map((fieldName) => [fieldName, stored[fieldName]])) as S)
-    : undefined;
+
+  if (!isRecord(stored)) {
+    return undefined;
+  }
+
+  const result: Partial<S> = {};
+
+  fieldNames.forEach((fieldName) => {
+    if (Object.prototype.hasOwnProperty.call(stored, fieldName)) {
+      result[fieldName] = stored[fieldName] as S[keyof S];
+    }
+  });
+
+  return result;
 };

@@ -111,10 +111,7 @@ const App: React.FC = () => {
 
   const [droppedFiles, setDroppedFiles] = React.useState<DropZoneFileContent[]>([]);
   const handleResetSettings = React.useCallback(() => {
-    const defaults = Setting.default();
-    (Object.keys(defaults) as Array<keyof Setting>).forEach((key) => {
-      updateSetting(key)(defaults[key]);
-    });
+    updateSetting(Setting.default());
     Toast.positive('Settings were reset to defaults.');
   }, [updateSetting]);
 
