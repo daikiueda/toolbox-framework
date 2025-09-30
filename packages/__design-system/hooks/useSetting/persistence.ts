@@ -9,7 +9,8 @@ import { Setting } from './shared';
 
 export type PersistenceOptions<S extends Setting> = {
   storageKey: string;
-  isRestorable: (value: unknown) => value is S;
+  // NOTE: 永続化データは本質的にPartial
+  isRestorable: (value: unknown) => value is Partial<S>;
 };
 
 type PersistenceConfig<S extends Setting> = {
@@ -22,10 +23,10 @@ type PersistenceConfig<S extends Setting> = {
 const sanitizeStoredValue = <S extends Setting>(
   stored: unknown,
   fieldNames: ReadonlyArray<keyof S>,
-  guard?: (value: unknown) => value is S
+  isRestorable?: (value: unknown) => value is Partial<S>
 ): Partial<S> | undefined => {
-  if (guard) {
-    return guard(stored) ? (stored as S) : undefined;
+  if (isRestorable) {
+    return isRestorable(stored) ? (stored as Partial<S>) : undefined;
   }
 
   if (!isRecord(stored)) {
@@ -50,7 +51,7 @@ const usePersistence = <S extends Setting>({
   options,
 }: PersistenceConfig<S>) => {
   const storageKey = options?.storageKey;
-  const guard = options?.isRestorable;
+  const isRestorable = options?.isRestorable;
 
   const isHydratedRef = useRef(false);
   const fieldNamesRef = useRef(fieldNames);
@@ -77,7 +78,7 @@ const usePersistence = <S extends Setting>({
         if (cancelled || stored === undefined || stored === null) {
           return;
         }
-        const resolved = sanitizeStoredValue<S>(stored, fieldNamesRef.current, guard);
+        const resolved = sanitizeStoredValue<S>(stored, fieldNamesRef.current, isRestorable);
         if (resolved) {
           setSetting((prevState) => ({ ...prevState, ...resolved }));
         }
@@ -94,7 +95,7 @@ const usePersistence = <S extends Setting>({
     return () => {
       cancelled = true;
     };
-  }, [fieldNamesRef, guard, storage, storageKey, setSetting]);
+  }, [fieldNamesRef, isRestorable, storage, storageKey, setSetting]);
 
   // 自動保存
   useEffect(() => {
