@@ -1,15 +1,8 @@
 import { useMemo, useState } from 'react';
 
-import usePersistence, { resolvePersistenceBridge } from './persistence';
-import type { UpdateSetting } from './update';
-import { createUpdateSetting } from './update';
-
-type Setting = Record<string, unknown>;
-
-type PersistenceOptions<S extends Setting> = {
-  storageKey: string;
-  guard?: (value: unknown) => value is S;
-};
+import usePersistence, { type PersistenceOptions } from './persistence';
+import { type Setting } from './shared';
+import { type UpdateSetting, createUpdateSetting } from './update';
 
 type UseSettingOptions<S extends Setting> = {
   persistence?: PersistenceOptions<S>;
@@ -32,12 +25,12 @@ function useSetting<S extends Setting>(
 
   const updateSetting = useMemo(() => createUpdateSetting(setSetting), [setSetting]);
 
+  const fieldNames = useMemo(() => Object.keys(initialSetting) as Array<keyof S>, [initialSetting]);
   usePersistence<S>({
-    options: options.persistence,
-    storage: resolvePersistenceBridge(),
-    setSetting,
-    fieldNames: Object.keys(initialSetting) as Array<keyof S>,
     setting,
+    setSetting,
+    fieldNames,
+    options: options.persistence,
   });
 
   return [setting, updateSetting] as const;

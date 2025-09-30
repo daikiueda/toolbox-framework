@@ -1,34 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
+
+import { getGlobalAPI } from '@toolbox/electron';
 
 import { isRecord } from '../../utils/TypeUtils';
 
-type Setting = Record<string, unknown>;
+import { Setting } from './shared';
 
-type PersistenceOptions<S extends Setting> = {
+export type PersistenceOptions<S extends Setting> = {
   storageKey: string;
   guard?: (value: unknown) => value is S;
 };
 
-type PersistenceBridge = {
-  read: (scope: string) => Promise<unknown>;
-  write: (scope: string, value: unknown) => Promise<boolean>;
-};
-
 type PersistenceConfig<S extends Setting> = {
-  options: PersistenceOptions<S> | undefined;
-  storage: PersistenceBridge | undefined;
+  setting: S;
   setSetting: Dispatch<SetStateAction<S>>;
   fieldNames: ReadonlyArray<keyof S>;
-  setting: S;
-};
-
-const resolveBridge = (): PersistenceBridge | undefined => {
-  if (typeof window === 'undefined') {
-    return undefined;
-  }
-
-  return (window as typeof window & { api?: { persistence?: PersistenceBridge } }).api?.persistence;
+  options: PersistenceOptions<S> | undefined;
 };
 
 const sanitizeStoredValue = <S extends Setting>(
@@ -56,21 +44,24 @@ const sanitizeStoredValue = <S extends Setting>(
 };
 
 const usePersistence = <S extends Setting>({
-  options,
-  storage,
+  setting,
   setSetting,
   fieldNames,
-  setting,
+  options,
 }: PersistenceConfig<S>) => {
   const storageKey = options?.storageKey;
   const guard = options?.guard;
+
   const isHydratedRef = useRef(false);
   const fieldNamesRef = useRef(fieldNames);
+
+  const storage = useMemo(() => getGlobalAPI()?.persistence, []);
 
   useEffect(() => {
     fieldNamesRef.current = fieldNames;
   }, [fieldNames]);
 
+  // 起動時に復元
   useEffect(() => {
     if (!storageKey || !storage) {
       isHydratedRef.current = true;
@@ -105,6 +96,7 @@ const usePersistence = <S extends Setting>({
     };
   }, [fieldNamesRef, guard, storage, storageKey, setSetting]);
 
+  // 自動保存
   useEffect(() => {
     if (!storageKey || !storage || !isHydratedRef.current) {
       return;
@@ -117,4 +109,3 @@ const usePersistence = <S extends Setting>({
 };
 
 export default usePersistence;
-export { resolveBridge as resolvePersistenceBridge };

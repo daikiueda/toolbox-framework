@@ -4,7 +4,7 @@ import memoize from 'lodash/memoize';
 
 import { isRecord } from '../../utils/TypeUtils';
 
-type Setting = Record<string, unknown>;
+import { Setting } from './shared';
 
 export type UpdateSetting<S extends Setting> = {
   <K extends keyof S>(key: K): (value: S[K]) => void;
@@ -35,7 +35,7 @@ export const createUpdateSetting = <S extends Setting>(
 ): UpdateSetting<S> => {
   const resolveUpdater = createResolveUpdater(setSetting);
 
-  const handler = ((arg: unknown, maybeGuard?: unknown) => {
+  return ((arg: unknown, maybeGuard?: unknown) => {
     if (typeof arg === 'function' && maybeGuard === undefined) {
       setSetting((prevState) => (arg as (prev: S) => S)(prevState));
       return;
@@ -48,6 +48,4 @@ export const createUpdateSetting = <S extends Setting>(
 
     return resolveUpdater(arg as keyof S, maybeGuard as (x: unknown) => x is S[keyof S]);
   }) as UpdateSetting<S>;
-
-  return handler;
 };
