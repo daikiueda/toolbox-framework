@@ -9,7 +9,7 @@ import { Setting } from './shared';
 
 export type PersistenceOptions<S extends Setting> = {
   storageKey: string;
-  guard?: (value: unknown) => value is S;
+  isRestorable: (value: unknown) => value is S;
 };
 
 type PersistenceConfig<S extends Setting> = {
@@ -50,7 +50,7 @@ const usePersistence = <S extends Setting>({
   options,
 }: PersistenceConfig<S>) => {
   const storageKey = options?.storageKey;
-  const guard = options?.guard;
+  const guard = options?.isRestorable;
 
   const isHydratedRef = useRef(false);
   const fieldNamesRef = useRef(fieldNames);
