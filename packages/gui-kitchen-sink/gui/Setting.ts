@@ -17,7 +17,6 @@ export const LayoutType = {
 const STORAGE_KEY = 'gui-kitchen-sink';
 
 export const Setting = {
-  storageKey: STORAGE_KEY,
   default: (): Setting => ({
     projectName: '',
     memberCount: 0,
@@ -28,7 +27,8 @@ export const Setting = {
     activeLayout: 'dashboard',
     sortMemberDescriptor: SortDescriptor.default(),
   }),
-  guard: (value: unknown): value is Setting => {
+  storageKey: STORAGE_KEY,
+  isRestorable: (value: unknown): value is Setting => {
     if (!isRecord(value)) {
       return false;
     }
