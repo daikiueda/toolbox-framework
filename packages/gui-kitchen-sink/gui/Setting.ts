@@ -28,7 +28,7 @@ export const Setting = {
     sortMemberDescriptor: SortDescriptor.default(),
   }),
   storageKey: STORAGE_KEY,
-  isRestorable: (value: unknown): value is Setting => {
+  isRestorable: (value: unknown): value is Partial<Setting> => {
     if (!isRecord(value)) {
       return false;
     }
