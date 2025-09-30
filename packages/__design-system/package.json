@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "glob -c \"node --test -r esbuild-register\" \"hooks/__tests__/**/*.test.ts\""
   },
   "dependencies": {
     "@react-spectrum/actiongroup": "^3.11.3",
