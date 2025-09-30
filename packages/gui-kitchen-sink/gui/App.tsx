@@ -41,6 +41,7 @@ import {
 import { Framework, Plan } from '../src/models/Project';
 
 import { LayoutType, Setting } from './Setting';
+import SettingsDialog from './SettingsDialog';
 import * as Icon from './components/icons';
 
 const members = [
@@ -109,6 +110,10 @@ const App: React.FC = () => {
   } = setting;
 
   const [droppedFiles, setDroppedFiles] = React.useState<DropZoneFileContent[]>([]);
+  const handleResetSettings = React.useCallback(() => {
+    updateSetting(Setting.default());
+    Toast.positive('Settings were reset to defaults.');
+  }, [updateSetting]);
 
   const sortedMembers = React.useMemo(
     () =>
@@ -155,9 +160,12 @@ const App: React.FC = () => {
 
   return (
     <Page>
-      <Flex alignItems="center" gap="size-125">
-        <Icon.CCLibrary size="L" />
-        <Heading level={1}>Design System Kitchen Sink</Heading>
+      <Flex alignItems="center" justifyContent="space-between" gap="size-200">
+        <Flex alignItems="center" gap="size-125">
+          <Icon.CCLibrary size="L" />
+          <Heading level={1}>Design System Kitchen Sink</Heading>
+        </Flex>
+        <SettingsDialog onReset={handleResetSettings} />
       </Flex>
       <View marginTop="size-150">
         <Text>Explore the entire component palette at a glance.</Text>
@@ -172,19 +180,19 @@ const App: React.FC = () => {
         <Flex gap="size-150" wrap alignItems="center">
           <Button variant="accent" onPress={showToast('positive')}>
             <Icon.SaveFloppy slot="icon" />
-            Save
+            <Text>Save</Text>
           </Button>
           <Button variant="secondary" onPress={showToast('info')}>
             <Icon.Add slot="icon" />
-            Save draft
+            <Text>Save draft</Text>
           </Button>
           <Button variant="negative" onPress={showToast('negative')}>
             <Icon.Delete slot="icon" />
-            Delete
+            <Text>Delete</Text>
           </Button>
           <ActionButton onPress={() => Toast.info(`Active layout: ${activeLayout}`)}>
             <Icon.ModernGridView slot="icon" />
-            Show layout
+            <Text>Show layout</Text>
           </ActionButton>
           <FileTrigger
             allowsMultiple

@@ -11,3 +11,4 @@ export { default as UploadToCloud } from '@spectrum-icons/workflow/UploadToCloud
 export { default as ViewCard } from '@spectrum-icons/workflow/ViewCard';
 export { default as ViewColumn } from '@spectrum-icons/workflow/ViewColumn';
 export { default as ViewDay } from '@spectrum-icons/workflow/ViewDay';
+export { default as Settings } from '@spectrum-icons/workflow/Settings';
