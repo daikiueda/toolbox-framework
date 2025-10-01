@@ -1,14 +1,16 @@
 import { useState } from 'react';
 
-import { Form, Heading, Page, Text, TextField, View } from '@toolbox/design-system';
+import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
 
 import greet from '../src/main';
+
+import PageWithTheme from './components/PageWithTheme';
 
 function App() {
   const [whoToGreet, setWhoToGreet] = useState('world');
 
   return (
-    <Page>
+    <PageWithTheme>
       <Heading level={1}>Example</Heading>
       <Form>
         <TextField
@@ -22,7 +24,7 @@ function App() {
           <Text>{greet(whoToGreet)}</Text>
         </View>
       </Form>
-    </Page>
+    </PageWithTheme>
   );
 }
 

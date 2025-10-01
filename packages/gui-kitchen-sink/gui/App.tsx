@@ -18,7 +18,6 @@ import {
   Form,
   Heading,
   NumberField,
-  Page,
   Picker,
   PickerItem,
   Radio,
@@ -41,7 +40,8 @@ import {
 import { Framework, Plan } from '../src/models/Project';
 
 import { LayoutType, Setting } from './Setting';
-import SettingsDialog from './SettingsDialog';
+import PageWithTheme from './components/PageWithTheme';
+import SettingsDialog from './components/SettingsDialog';
 import * as Icon from './components/icons';
 
 const members = [
@@ -97,7 +97,7 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
 
 const App: React.FC = () => {
   const [setting, updateSetting] = useSetting(Setting.default(), {
-    persistence: Setting,
+    persistence: Setting.persistence,
   });
   const {
     projectName,
@@ -159,7 +159,7 @@ const App: React.FC = () => {
   const publishLabelId = React.useId();
 
   return (
-    <Page>
+    <PageWithTheme>
       <Flex alignItems="center" justifyContent="space-between" gap="size-200">
         <Flex alignItems="center" gap="size-125">
           <Icon.CCLibrary size="L" />
@@ -375,7 +375,7 @@ const App: React.FC = () => {
           )}
         </View>
       </Section>
-    </Page>
+    </PageWithTheme>
   );
 };
 

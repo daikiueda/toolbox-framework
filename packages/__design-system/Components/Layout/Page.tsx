@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styled from 'styled-components';
+
 import { View } from '@react-spectrum/view';
 
 import useAppEnv from '../../hooks/useAppEnv';
@@ -7,10 +9,15 @@ import useAppEnv from '../../hooks/useAppEnv';
 import { OneLine } from './Space';
 
 type Props = {
+  className?: string;
   children: React.ReactNode;
 };
 
-const Page: React.FC<Props> = ({ children }) => {
+const PageContainer = styled.div`
+  width: 100%;
+`;
+
+const Page: React.FC<Props> = ({ className, children }) => {
   const appEnv = useAppEnv();
 
   const innerProps = React.useMemo(
@@ -19,7 +26,7 @@ const Page: React.FC<Props> = ({ children }) => {
   );
 
   return (
-    <View width="100%">
+    <PageContainer className={className}>
       <View
         paddingX="single-line-height"
         maxWidth="960px"
@@ -28,7 +35,7 @@ const Page: React.FC<Props> = ({ children }) => {
       >
         {children}
       </View>
-    </View>
+    </PageContainer>
   );
 };
 
