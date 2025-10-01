@@ -97,7 +97,7 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
 
 const App: React.FC = () => {
   const [setting, updateSetting] = useSetting(Setting.default(), {
-    persistence: Setting,
+    persistence: Setting.persistence,
   });
   const {
     projectName,

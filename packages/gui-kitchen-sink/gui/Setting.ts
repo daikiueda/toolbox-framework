@@ -27,48 +27,50 @@ export const Setting = {
     activeLayout: 'dashboard',
     sortMemberDescriptor: SortDescriptor.default(),
   }),
-  storageKey: STORAGE_KEY,
-  isRestorable: (value: unknown): value is Partial<Setting> => {
-    if (!isRecord(value)) {
-      return false;
-    }
+  persistence: {
+    storageKey: STORAGE_KEY,
+    isRestorable: (value: unknown): value is Partial<Setting> => {
+      if (!isRecord(value)) {
+        return false;
+      }
 
-    if ('projectName' in value && typeof value.projectName !== 'string') {
-      return false;
-    }
+      if ('projectName' in value && typeof value.projectName !== 'string') {
+        return false;
+      }
 
-    if ('memberCount' in value && typeof value.memberCount !== 'number') {
-      return false;
-    }
+      if ('memberCount' in value && typeof value.memberCount !== 'number') {
+        return false;
+      }
 
-    if (
-      'selectedFramework' in value &&
-      value.selectedFramework !== undefined &&
-      !Framework.guard(value.selectedFramework)
-    ) {
-      return false;
-    }
+      if (
+        'selectedFramework' in value &&
+        value.selectedFramework !== undefined &&
+        !Framework.guard(value.selectedFramework)
+      ) {
+        return false;
+      }
 
-    if (
-      'selectedPlan' in value &&
-      value.selectedPlan !== undefined &&
-      !Plan.guard(value.selectedPlan)
-    ) {
-      return false;
-    }
+      if (
+        'selectedPlan' in value &&
+        value.selectedPlan !== undefined &&
+        !Plan.guard(value.selectedPlan)
+      ) {
+        return false;
+      }
 
-    if ('isPublished' in value && typeof value.isPublished !== 'boolean') {
-      return false;
-    }
+      if ('isPublished' in value && typeof value.isPublished !== 'boolean') {
+        return false;
+      }
 
-    if ('activeLayout' in value && !LayoutType.guard(value.activeLayout)) {
-      return false;
-    }
+      if ('activeLayout' in value && !LayoutType.guard(value.activeLayout)) {
+        return false;
+      }
 
-    if ('sortMemberDescriptor' in value && !SortDescriptor.guard(value.sortMemberDescriptor)) {
-      return false;
-    }
+      if ('sortMemberDescriptor' in value && !SortDescriptor.guard(value.sortMemberDescriptor)) {
+        return false;
+      }
 
-    return true;
+      return true;
+    },
   },
 };
