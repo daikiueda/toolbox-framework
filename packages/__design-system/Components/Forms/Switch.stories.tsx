@@ -11,6 +11,7 @@ const meta: Meta<typeof Switch> = {
   component: Switch,
   tags: ['autodocs'],
   argTypes: {
+    isEmphasized: { control: 'boolean' },
     isSelected: { control: 'boolean' },
     isDisabled: { control: 'boolean' },
     isReadOnly: { control: 'boolean' },
@@ -23,30 +24,60 @@ const meta: Meta<typeof Switch> = {
 };
 export default meta;
 
-export const Basic: StoryObj<typeof Switch> = {};
+const staticArgs = {
+  isEmphasized: false,
+  isSelected: false,
+  isDisabled: false,
+  isReadOnly: false,
+};
+
+export const Quiet: StoryObj<typeof Switch> = {
+  argTypes: {
+    isEmphasized: { control: false },
+  },
+  args: {
+    ...staticArgs,
+    isSelected: true,
+  },
+};
+
+export const Emphasized: StoryObj<typeof Switch> = {
+  argTypes: {
+    isEmphasized: { control: false },
+  },
+  args: {
+    ...staticArgs,
+    isEmphasized: true,
+    isSelected: true,
+  },
+};
 
 export const Selected: StoryObj<typeof Switch> = {
+  argTypes: {
+    isSelected: { control: false },
+  },
   args: {
+    ...staticArgs,
     isSelected: true,
   },
 };
 
 export const Disabled: StoryObj<typeof Switch> = {
-  args: {
-    isDisabled: true,
+  argTypes: {
+    isDisabled: { control: false },
   },
-};
-
-export const DisabledSelected: StoryObj<typeof Switch> = {
   args: {
+    ...staticArgs,
     isDisabled: true,
-    isSelected: true,
   },
 };
 
 export const ReadOnly: StoryObj<typeof Switch> = {
+  argTypes: {
+    isReadOnly: { control: false },
+  },
   args: {
+    ...staticArgs,
     isReadOnly: true,
-    isSelected: true,
   },
 };
