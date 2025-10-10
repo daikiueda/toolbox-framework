@@ -20,23 +20,17 @@ const meta: Meta<typeof Switch> = {
   args: {
     children: 'Enable notifications',
     onChange: fn(),
+    isEmphasized: false,
+    isSelected: false,
+    isDisabled: false,
+    isReadOnly: false,
   },
 };
 export default meta;
 
-const staticArgs = {
-  isEmphasized: false,
-  isSelected: false,
-  isDisabled: false,
-  isReadOnly: false,
-};
-
-export const Quiet: StoryObj<typeof Switch> = {
-  argTypes: {
-    isEmphasized: { control: false },
-  },
+export const Basic: StoryObj<typeof Switch> = {
+  name: 'Basic (Quiet)',
   args: {
-    ...staticArgs,
     isSelected: true,
   },
 };
@@ -46,7 +40,6 @@ export const Emphasized: StoryObj<typeof Switch> = {
     isEmphasized: { control: false },
   },
   args: {
-    ...staticArgs,
     isEmphasized: true,
     isSelected: true,
   },
@@ -57,7 +50,6 @@ export const Selected: StoryObj<typeof Switch> = {
     isSelected: { control: false },
   },
   args: {
-    ...staticArgs,
     isSelected: true,
   },
 };
@@ -67,7 +59,6 @@ export const Disabled: StoryObj<typeof Switch> = {
     isDisabled: { control: false },
   },
   args: {
-    ...staticArgs,
     isDisabled: true,
   },
 };
@@ -77,7 +68,6 @@ export const ReadOnly: StoryObj<typeof Switch> = {
     isReadOnly: { control: false },
   },
   args: {
-    ...staticArgs,
     isReadOnly: true,
   },
 };
