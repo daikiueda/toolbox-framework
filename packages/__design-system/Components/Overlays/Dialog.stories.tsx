@@ -9,7 +9,7 @@ import { Content, Footer, Header } from '../Layout';
 import { Dialog, DialogTrigger } from './index';
 
 const meta: Meta<typeof Dialog> = {
-  title: 'Components/Dialog/Dialog',
+  title: 'Components/Overlays/Dialog',
   component: Dialog,
   tags: ['autodocs'],
   parameters: {

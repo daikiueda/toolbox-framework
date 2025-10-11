@@ -1,8 +1,26 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { ArgTypes, Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 
 import React from 'react';
 
 import { Picker, PickerItem, Section } from './index';
+import { allCommonArgTypes } from './storybook-helper/common-props';
+
+const allSpecificArgTypes: ArgTypes = {
+  items: { control: { type: 'object' } },
+
+  placeholder: { control: { type: 'text' } },
+
+  isOpen: { control: { type: 'boolean' } },
+  direction: { control: { type: 'inline-radio' }, options: ['bottom', 'top'] },
+  shouldFlip: { control: { type: 'boolean' } },
+
+  menuWidth: {
+    control: { type: 'text' },
+    description:
+      '[DimensionValue](https://react-spectrum.adobe.com/react-spectrum/styling.html#dimension-values)',
+  },
+};
 
 /**
  * https://react-spectrum.adobe.com/react-spectrum/Picker.html
@@ -11,23 +29,21 @@ const meta: Meta<typeof Picker> = {
   title: 'Components/Forms/Picker',
   component: Picker,
   tags: ['autodocs'],
-  argTypes: {
-    label: { control: 'text' },
-    placeholder: { control: 'text' },
-    isDisabled: { control: 'boolean' },
-    isRequired: { control: 'boolean' },
-    validationState: { control: 'inline-radio', options: ['valid', 'invalid'] },
-    description: { control: 'text' },
-    errorMessage: { control: 'text' },
-    isQuiet: { control: 'boolean' },
-  },
   args: {
-    label: 'Choose an option',
+    onSelectionChange: fn(),
   },
 };
 export default meta;
 
 export const Basic: StoryObj<typeof Picker> = {
+  argTypes: {
+    ...allSpecificArgTypes,
+    ...allCommonArgTypes,
+  },
+  args: {
+    label: 'Choose an option',
+    menuWidth: 'size-3000',
+  },
   render: (args) => (
     <Picker {...args}>
       <PickerItem key="red">Red</PickerItem>
@@ -36,6 +52,24 @@ export const Basic: StoryObj<typeof Picker> = {
       <PickerItem key="green">Green</PickerItem>
       <PickerItem key="blue">Blue</PickerItem>
       <PickerItem key="purple">Purple</PickerItem>
+    </Picker>
+  ),
+};
+
+export const DynamicItems: StoryObj<typeof Picker> = {
+  args: {
+    label: 'Choose a fruit',
+    items: [
+      { id: 1, name: 'Apple' },
+      { id: 2, name: 'Banana' },
+      { id: 3, name: 'Orange' },
+      { id: 4, name: 'Strawberry' },
+      { id: 5, name: 'Grapes' },
+    ],
+  },
+  render: ({ items, ...args }) => (
+    <Picker {...args} items={items as Array<{ id: string; name: string }>}>
+      {(item) => <PickerItem key={item.id}>{item.name}</PickerItem>}
     </Picker>
   ),
 };
@@ -44,39 +78,8 @@ export const WithPlaceholder: StoryObj<typeof Picker> = {
   args: {
     placeholder: 'Select a color',
   },
-  render: (args) => (
-    <Picker {...args}>
-      <PickerItem key="red">Red</PickerItem>
-      <PickerItem key="orange">Orange</PickerItem>
-      <PickerItem key="yellow">Yellow</PickerItem>
-      <PickerItem key="green">Green</PickerItem>
-      <PickerItem key="blue">Blue</PickerItem>
-      <PickerItem key="purple">Purple</PickerItem>
-    </Picker>
-  ),
-};
-
-export const Required: StoryObj<typeof Picker> = {
-  args: {
-    isRequired: true,
-    description: 'Please select a color',
-  },
-  render: (args) => (
-    <Picker {...args}>
-      <PickerItem key="red">Red</PickerItem>
-      <PickerItem key="orange">Orange</PickerItem>
-      <PickerItem key="yellow">Yellow</PickerItem>
-      <PickerItem key="green">Green</PickerItem>
-      <PickerItem key="blue">Blue</PickerItem>
-      <PickerItem key="purple">Purple</PickerItem>
-    </Picker>
-  ),
-};
-
-export const WithValidation: StoryObj<typeof Picker> = {
-  args: {
-    validationState: 'invalid',
-    errorMessage: 'Please select a valid option',
+  argTypes: {
+    placeholder: allSpecificArgTypes.placeholder,
   },
   render: (args) => (
     <Picker {...args}>
@@ -91,9 +94,6 @@ export const WithValidation: StoryObj<typeof Picker> = {
 };
 
 export const WithSections: StoryObj<typeof Picker> = {
-  args: {
-    label: 'Choose an animal',
-  },
   render: (args) => (
     <Picker {...args}>
       <Section title="Mammals">
@@ -111,57 +111,6 @@ export const WithSections: StoryObj<typeof Picker> = {
         <PickerItem key="salmon">Salmon</PickerItem>
         <PickerItem key="tuna">Tuna</PickerItem>
       </Section>
-    </Picker>
-  ),
-};
-
-export const Disabled: StoryObj<typeof Picker> = {
-  args: {
-    isDisabled: true,
-  },
-  render: (args) => (
-    <Picker {...args}>
-      <PickerItem key="red">Red</PickerItem>
-      <PickerItem key="orange">Orange</PickerItem>
-      <PickerItem key="yellow">Yellow</PickerItem>
-      <PickerItem key="green">Green</PickerItem>
-      <PickerItem key="blue">Blue</PickerItem>
-      <PickerItem key="purple">Purple</PickerItem>
-    </Picker>
-  ),
-};
-
-export const Quiet: StoryObj<typeof Picker> = {
-  args: {
-    isQuiet: true,
-  },
-  render: (args) => (
-    <Picker {...args}>
-      <PickerItem key="red">Red</PickerItem>
-      <PickerItem key="orange">Orange</PickerItem>
-      <PickerItem key="yellow">Yellow</PickerItem>
-      <PickerItem key="green">Green</PickerItem>
-      <PickerItem key="blue">Blue</PickerItem>
-      <PickerItem key="purple">Purple</PickerItem>
-    </Picker>
-  ),
-};
-
-const dynamicItems = [
-  { id: 1, name: 'Apple' },
-  { id: 2, name: 'Banana' },
-  { id: 3, name: 'Orange' },
-  { id: 4, name: 'Strawberry' },
-  { id: 5, name: 'Grapes' },
-];
-
-export const DynamicItems: StoryObj<typeof Picker> = {
-  args: {
-    label: 'Choose a fruit',
-  },
-  render: (args) => (
-    <Picker {...args} items={dynamicItems}>
-      {(item) => <PickerItem key={item.id}>{item.name}</PickerItem>}
     </Picker>
   ),
 };
