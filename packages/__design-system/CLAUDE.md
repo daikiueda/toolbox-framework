@@ -111,7 +111,7 @@ export const Disabled: StoryObj<typeof Switch> = {
 
 1. **`fn()` でイベントハンドラをモック**
    - `storybook/test` から `fn()` をインポート
-   - `args: { onChange: fn() }` でアクション記録
+   - `meta: { args: { onChange: fn() } }` でアクション記録を共通設置
 
 2. **個別ストーリーで Control を無効化**
    - 特定の状態を固定したいストーリーでは `argTypes: { propName: { control: false } }`

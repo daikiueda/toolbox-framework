@@ -5,27 +5,19 @@ import React from 'react';
 
 import Edit from '@spectrum-icons/workflow/Edit';
 
-import { TextArea } from './index';
+import { TextField } from './index';
 import { allCommonArgTypes } from './storybook-helper/common-props';
 
 const allSpecificArgTypes: ArgTypes = {
   icon: { control: false, description: 'An icon to display at the start of the input.' },
-
-  maxLength: { control: { type: 'number' } },
-  minLength: { control: { type: 'number' } },
-
-  enterKeyHint: {
-    control: { type: 'select' },
-    options: ['enter', 'done', 'go', 'next', 'previous', 'search', 'send'],
-  },
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TextArea.html
+ * https://react-spectrum.adobe.com/react-spectrum/TextField.html
  */
-const meta: Meta<typeof TextArea> = {
-  title: 'Components/Forms/Text Field Family/TextArea',
-  component: TextArea,
+const meta: Meta<typeof TextField> = {
+  title: 'Components/Forms/Text Field Family/TextField',
+  component: TextField,
   tags: ['autodocs'],
   args: {
     onChange: fn(),
@@ -33,24 +25,22 @@ const meta: Meta<typeof TextArea> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof TextArea>;
+type Story = StoryObj<typeof TextField>;
 
 export const Basic: Story = {
+  args: {
+    label: 'Label',
+  },
   argTypes: {
     ...allSpecificArgTypes,
     ...allCommonArgTypes,
-  },
-  args: {
-    label: 'Comment',
   },
 };
 
 export const WithIcon: Story = {
   args: {
+    label: 'With icon',
     icon: <Edit />,
-  },
-  argTypes: {
-    icon: allSpecificArgTypes.icon,
   },
 };
 

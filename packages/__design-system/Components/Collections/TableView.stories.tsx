@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { SortDescriptor } from '@react-types/shared';
 
-import { ActionButton } from '../Buttons';
+import { ActionButton, View } from '../../index';
 
 import { Cell, Column, Row, TableBody, TableHeader, TableView, TableViewUtil } from './index';
 
@@ -45,26 +45,34 @@ const meta: Meta<typeof TableView> = {
 };
 export default meta;
 
+const Stage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <View paddingX="single-line-width" paddingY="single-line-height">
+    {children}
+  </View>
+);
+
 export const Basic: StoryObj<typeof TableView> = {
   render: (args) => (
-    <TableView {...args}>
-      <TableHeader>
-        <Column key="name">Name</Column>
-        <Column key="height">Height</Column>
-        <Column key="mass">Mass</Column>
-        <Column key="birth_year">Birth Year</Column>
-      </TableHeader>
-      <TableBody>
-        {characters.map((character) => (
-          <Row key={character.id}>
-            <Cell>{character.name}</Cell>
-            <Cell>{character.height}</Cell>
-            <Cell>{character.mass}</Cell>
-            <Cell>{character.birth_year}</Cell>
-          </Row>
-        ))}
-      </TableBody>
-    </TableView>
+    <Stage>
+      <TableView {...args}>
+        <TableHeader>
+          <Column key="name">Name</Column>
+          <Column key="height">Height</Column>
+          <Column key="mass">Mass</Column>
+          <Column key="birth_year">Birth Year</Column>
+        </TableHeader>
+        <TableBody>
+          {characters.map((character) => (
+            <Row key={character.id}>
+              <Cell>{character.name}</Cell>
+              <Cell>{character.height}</Cell>
+              <Cell>{character.mass}</Cell>
+              <Cell>{character.birth_year}</Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </TableView>
+    </Stage>
   ),
 };
 
@@ -81,60 +89,66 @@ export const WithSorting: StoryObj<typeof TableView> = {
     });
 
     return (
-      <TableView
-        {...args}
-        sortDescriptor={sortDescriptor as SortDescriptor}
-        onSortChange={onSortChange}
-      >
-        <TableHeader>
-          <Column key="name" allowsSorting>
-            Name
-          </Column>
-          <Column key="height" allowsSorting>
-            Height
-          </Column>
-          <Column key="mass" allowsSorting>
-            Mass
-          </Column>
-          <Column key="birth_year">Birth Year</Column>
-        </TableHeader>
-        <TableBody>
-          {sortedItems.map((character) => (
-            <Row key={character.id}>
-              <Cell>{character.name}</Cell>
-              <Cell>{character.height}</Cell>
-              <Cell>{character.mass}</Cell>
-              <Cell>{character.birth_year}</Cell>
-            </Row>
-          ))}
-        </TableBody>
-      </TableView>
+      <Stage>
+        {' '}
+        <TableView
+          {...args}
+          sortDescriptor={sortDescriptor as SortDescriptor}
+          onSortChange={onSortChange}
+        >
+          <TableHeader>
+            <Column key="name" allowsSorting>
+              Name
+            </Column>
+            <Column key="height" allowsSorting>
+              Height
+            </Column>
+            <Column key="mass" allowsSorting>
+              Mass
+            </Column>
+            <Column key="birth_year">Birth Year</Column>
+          </TableHeader>
+          <TableBody>
+            {sortedItems.map((character) => (
+              <Row key={character.id}>
+                <Cell>{character.name}</Cell>
+                <Cell>{character.height}</Cell>
+                <Cell>{character.mass}</Cell>
+                <Cell>{character.birth_year}</Cell>
+              </Row>
+            ))}
+          </TableBody>
+        </TableView>
+      </Stage>
     );
   },
 };
 
 export const WithActions: StoryObj<typeof TableView> = {
   render: (args) => (
-    <TableView {...args}>
-      <TableHeader>
-        <Column key="name">Name</Column>
-        <Column key="height">Height</Column>
-        <Column key="actions">Actions</Column>
-      </TableHeader>
-      <TableBody>
-        {characters.map((character) => (
-          <Row key={character.id}>
-            <Cell>{character.name}</Cell>
-            <Cell>{character.height}</Cell>
-            <Cell>
-              <ActionButton isQuiet onPress={() => alert(`Edit ${character.name}`)}>
-                Edit
-              </ActionButton>
-            </Cell>
-          </Row>
-        ))}
-      </TableBody>
-    </TableView>
+    <Stage>
+      {' '}
+      <TableView {...args}>
+        <TableHeader>
+          <Column key="name">Name</Column>
+          <Column key="height">Height</Column>
+          <Column key="actions">Actions</Column>
+        </TableHeader>
+        <TableBody>
+          {characters.map((character) => (
+            <Row key={character.id}>
+              <Cell>{character.name}</Cell>
+              <Cell>{character.height}</Cell>
+              <Cell>
+                <ActionButton isQuiet onPress={() => alert(`Edit ${character.name}`)}>
+                  Edit
+                </ActionButton>
+              </Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </TableView>
+    </Stage>
   ),
 };
 
@@ -143,22 +157,24 @@ export const SingleSelection: StoryObj<typeof TableView> = {
     selectionMode: 'single',
   },
   render: (args) => (
-    <TableView {...args}>
-      <TableHeader>
-        <Column key="name">Name</Column>
-        <Column key="height">Height</Column>
-        <Column key="mass">Mass</Column>
-      </TableHeader>
-      <TableBody>
-        {characters.slice(0, 3).map((character) => (
-          <Row key={character.id}>
-            <Cell>{character.name}</Cell>
-            <Cell>{character.height}</Cell>
-            <Cell>{character.mass}</Cell>
-          </Row>
-        ))}
-      </TableBody>
-    </TableView>
+    <Stage>
+      <TableView {...args}>
+        <TableHeader>
+          <Column key="name">Name</Column>
+          <Column key="height">Height</Column>
+          <Column key="mass">Mass</Column>
+        </TableHeader>
+        <TableBody>
+          {characters.slice(0, 3).map((character) => (
+            <Row key={character.id}>
+              <Cell>{character.name}</Cell>
+              <Cell>{character.height}</Cell>
+              <Cell>{character.mass}</Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </TableView>
+    </Stage>
   ),
 };
 
@@ -168,23 +184,26 @@ export const Compact: StoryObj<typeof TableView> = {
     selectionMode: 'none',
   },
   render: (args) => (
-    <TableView {...args}>
-      <TableHeader>
-        <Column key="name">Name</Column>
-        <Column key="height">Height</Column>
-        <Column key="mass">Mass</Column>
-        <Column key="birth_year">Birth Year</Column>
-      </TableHeader>
-      <TableBody>
-        {characters.map((character) => (
-          <Row key={character.id}>
-            <Cell>{character.name}</Cell>
-            <Cell>{character.height}</Cell>
-            <Cell>{character.mass}</Cell>
-            <Cell>{character.birth_year}</Cell>
-          </Row>
-        ))}
-      </TableBody>
-    </TableView>
+    <Stage>
+      {' '}
+      <TableView {...args}>
+        <TableHeader>
+          <Column key="name">Name</Column>
+          <Column key="height">Height</Column>
+          <Column key="mass">Mass</Column>
+          <Column key="birth_year">Birth Year</Column>
+        </TableHeader>
+        <TableBody>
+          {characters.map((character) => (
+            <Row key={character.id}>
+              <Cell>{character.name}</Cell>
+              <Cell>{character.height}</Cell>
+              <Cell>{character.mass}</Cell>
+              <Cell>{character.birth_year}</Cell>
+            </Row>
+          ))}
+        </TableBody>
+      </TableView>
+    </Stage>
   ),
 };
