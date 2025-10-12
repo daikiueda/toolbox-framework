@@ -1,17 +1,15 @@
 import { SortDescriptor } from '@toolbox/design-system';
 import { isRecord } from '@toolbox/design-system/utils/TypeUtils';
 
-import { Framework, Plan } from '../src/models/Project';
+import { Framework } from '../src/models/Framework';
+import type { Layout } from '../src/models/Layout';
+import { Layout as LayoutModel } from '../src/models/Layout';
+import { Plan } from '../src/models/Plan';
 import type { Project } from '../src/models/Project';
 
 export type Setting = Project & {
-  activeLayout: LayoutType;
+  activeLayout: Layout;
   sortMemberDescriptor: SortDescriptor;
-};
-
-export type LayoutType = 'dashboard' | 'timeline' | 'board';
-export const LayoutType = {
-  guard: (x: unknown): x is LayoutType => ['dashboard', 'timeline', 'board'].includes(x as string),
 };
 
 const STORAGE_KEY = 'gui-kitchen-sink';
@@ -62,7 +60,7 @@ export const Setting = {
         return false;
       }
 
-      if ('activeLayout' in value && !LayoutType.guard(value.activeLayout)) {
+      if ('activeLayout' in value && !LayoutModel.guard(value.activeLayout)) {
         return false;
       }
 
