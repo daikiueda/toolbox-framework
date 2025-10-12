@@ -13,7 +13,7 @@ import {
   Text,
 } from '@toolbox/design-system';
 
-import * as Icon from './icons';
+import * as Icon from '../theme/icons';
 
 type SettingsDialogProps = {
   onReset: () => void;
