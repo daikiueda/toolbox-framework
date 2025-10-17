@@ -1,0 +1,22 @@
+{
+  "name": "@toolbox/salesforce",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "bin": {
+    "toolbox-salesforce": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\"",
+    "build:cli": "esbuild ./src/cli.ts --platform=node --bundle --outfile=bin/__cli.js",
+    "postinstall": "npm run build:cli",
+    "gui": "vite"
+  },
+  "dependencies": {
+    "@toolbox/design-system": "^0.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
