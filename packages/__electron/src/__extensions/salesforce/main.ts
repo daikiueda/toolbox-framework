@@ -1,13 +1,8 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
-import {
-  CLIENT_ID,
-  REDIRECT_URI,
-  SalesforceConnection,
-  buildAuthorizationUrl,
-  exchangeCodeForTokens,
-  generatePKCEParams,
-} from '@toolbox/salesforce/src/core';
+import { CLIENT_ID, REDIRECT_URI, SalesforceConnection } from '@toolbox/salesforce/src/core';
+import { buildAuthorizationUrl, exchangeCodeForTokens } from '@toolbox/salesforce/src/core/oauth';
+import { generatePKCEParams } from '@toolbox/salesforce/src/core/pkce';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel, type SalesforceTokens } from './shared';
 
