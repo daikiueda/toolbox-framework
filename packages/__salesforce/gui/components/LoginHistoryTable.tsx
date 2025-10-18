@@ -12,8 +12,8 @@ import {
   Text,
 } from '@toolbox/design-system';
 
-import { useSalesforce } from '../../src/hooks';
-import type { LoginHistoryRecord } from '../../src/models/LoginHistoryRecord';
+import type { LoginHistoryRecord } from '../../src/models';
+import { useSalesforce } from '../../src/react/hooks';
 
 export const LoginHistoryTable = (): JSX.Element => {
   const { query, orgInfo } = useSalesforce();

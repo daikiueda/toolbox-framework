@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { ConnectionState, OrgInfo } from '../models';
+import type { ConnectionState, OrgInfo } from '../../models';
 
 export type SalesforceContextValue = {
   connectionState: ConnectionState;

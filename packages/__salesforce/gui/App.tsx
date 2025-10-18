@@ -1,6 +1,6 @@
 import { Flex, Heading } from '@toolbox/design-system';
 
-import { useSalesforce } from '../src/hooks';
+import { useSalesforce } from '../src/react/hooks';
 
 import { LoginForm } from './components/LoginForm';
 import { LoginHistoryTable } from './components/LoginHistoryTable';
