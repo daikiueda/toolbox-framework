@@ -13,7 +13,8 @@
     "gui": "vite"
   },
   "dependencies": {
-    "@toolbox/design-system": "^0.0.0"
+    "@toolbox/design-system": "^0.0.0",
+    "jsforce": "^3.10.8"
   },
   "peerDependencies": {
     "react": "^18.3.1",
