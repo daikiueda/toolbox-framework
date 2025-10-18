@@ -1,3 +1,11 @@
+import type {
+  ConnectionState,
+  OAuthConfig,
+  OrgInfo,
+  PKCEParams,
+  SalesforceTokens,
+} from '@toolbox/salesforce/src/models';
+
 export const SALESFORCE_CHANNELS = {
   login: 'salesforce:login',
   logout: 'salesforce:logout',
@@ -7,13 +15,7 @@ export const SALESFORCE_CHANNELS = {
 
 export type SalesforceChannel = (typeof SALESFORCE_CHANNELS)[keyof typeof SALESFORCE_CHANNELS];
 
-export type {
-  OAuthConfig,
-  PKCEParams,
-  SalesforceTokens,
-  OrgInfo,
-  ConnectionState,
-} from '@toolbox/salesforce/src/models';
+export type { OAuthConfig, PKCEParams, SalesforceTokens, OrgInfo, ConnectionState };
 
 export type SalesforceAPI = {
   login: (instanceUrl: string) => Promise<boolean>;

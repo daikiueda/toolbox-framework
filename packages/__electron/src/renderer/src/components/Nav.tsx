@@ -12,6 +12,7 @@ import { Flex, Header } from '@toolbox/design-system/Components/Layout';
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 
+import { MenuFooterOrgInfo } from './MenuFooterOrgInfo';
 import Versions from './Versions';
 
 type Props = React.ComponentProps<typeof Panel> & {
@@ -21,6 +22,8 @@ type Props = React.ComponentProps<typeof Panel> & {
 };
 
 const NavPanel = styled(Panel)`
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--spectrum-blue-100);
 
@@ -90,25 +93,33 @@ const Nav: React.ForwardRefRenderFunction<React.ComponentRef<typeof Panel>, Prop
 ) => {
   return (
     <NavPanel tagName="nav" {...navPanelProps} ref={ref}>
-      <Header marginX="24px">
-        <Flex direction="row" alignItems="center">
-          <Box color="informative" size="L" />
-          <Heading level={1} marginStart="size-100" marginY="24px">
-            Toolbox
-          </Heading>
-        </Flex>
-      </Header>
+      {/* スクロール可能な上部エリア */}
+      <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
+        <Header marginX="24px">
+          <Flex direction="row" alignItems="center">
+            <Box color="informative" size="L" />
+            <Heading level={1} marginStart="size-100" marginY="24px">
+              Toolbox
+            </Heading>
+          </Flex>
+        </Header>
 
-      <Spectrum.SideNav>
-        {Object.entries(menuItems).map(([appKey, entry]) => (
-          <Spectrum.Item key={appKey} selected={entry.App === currentApp.App}>
-            <Spectrum.Link onClick={switchApp(entry)} Icon={entry.Icon}>
-              {entry.label}
-            </Spectrum.Link>
-          </Spectrum.Item>
-        ))}
-      </Spectrum.SideNav>
-      <Versions />
+        <Spectrum.SideNav>
+          {Object.entries(menuItems).map(([appKey, entry]) => (
+            <Spectrum.Item key={appKey} selected={entry.App === currentApp.App}>
+              <Spectrum.Link onClick={switchApp(entry)} Icon={entry.Icon}>
+                {entry.label}
+              </Spectrum.Link>
+            </Spectrum.Item>
+          ))}
+        </Spectrum.SideNav>
+      </Flex>
+
+      {/* 固定表示の下部エリア */}
+      <Flex direction="column" UNSAFE_style={{ marginTop: 'auto' }}>
+        <MenuFooterOrgInfo />
+        <Versions />
+      </Flex>
     </NavPanel>
   );
 };

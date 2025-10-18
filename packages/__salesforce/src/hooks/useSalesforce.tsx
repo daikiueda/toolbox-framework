@@ -83,18 +83,12 @@ export const useSalesforce = (): UseSalesforceReturn => {
     }
   };
 
-  const LoginGate = ({ children }: { children: React.ReactNode }): JSX.Element => {
+  const LoginGate = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
     if (connectionState === 'connected') {
       return <>{children}</>;
     }
 
-    // TODO: LoginFormコンポーネントを実装後に差し替え
-    return (
-      <div>
-        <p>Salesforceに接続していません</p>
-        <button onClick={() => login('https://login.salesforce.com')}>ログイン</button>
-      </div>
-    );
+    return null;
   };
 
   return {
