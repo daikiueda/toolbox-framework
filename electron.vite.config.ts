@@ -1,7 +1,11 @@
 import { resolve } from 'path';
 
 import react from '@vitejs/plugin-react';
+import { config } from 'dotenv';
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+
+// 開発時に.envを読み込む
+config({ path: resolve(__dirname, '.env') });
 
 export default defineConfig(({ mode }) => ({
   main: {
@@ -13,6 +17,12 @@ export default defineConfig(({ mode }) => ({
       },
     },
     plugins: [externalizeDepsPlugin()],
+    // ビルド時に環境変数を埋め込む
+    define: {
+      'import.meta.env.VITE_SALESFORCE_CLIENT_ID': JSON.stringify(
+        process.env.VITE_SALESFORCE_CLIENT_ID || ''
+      ),
+    },
   },
   preload: {
     build: {

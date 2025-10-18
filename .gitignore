@@ -7,4 +7,4 @@ out
 packages/*/bin/__cli.js
 
 # 環境変数（ローカル設定）
-.env.local
+.env
