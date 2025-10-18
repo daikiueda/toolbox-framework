@@ -104,6 +104,10 @@ const registerSalesforceHandlers = () => {
         };
 
         // ウィンドウのナビゲーションを監視
+        authWindow?.webContents.on('will-navigate', (_event, url) => {
+          handleNavigation(url);
+        });
+
         authWindow?.webContents.on('will-redirect', (_event, url) => {
           handleNavigation(url);
         });
