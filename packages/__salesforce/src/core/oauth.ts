@@ -1,5 +1,10 @@
 import type { OAuthConfig, PKCEParams, SalesforceTokens } from '../models';
 
+// instanceUrlの末尾スラッシュを削除
+const normalizeInstanceUrl = (url: string): string => {
+  return url.replace(/\/+$/, '');
+};
+
 export const buildAuthorizationUrl = (config: OAuthConfig, pkce: PKCEParams): string => {
   const params = new URLSearchParams({
     response_type: 'code',
@@ -10,7 +15,8 @@ export const buildAuthorizationUrl = (config: OAuthConfig, pkce: PKCEParams): st
     scope: 'api refresh_token id',
   });
 
-  return `${config.instanceUrl}/services/oauth2/authorize?${params.toString()}`;
+  const instanceUrl = normalizeInstanceUrl(config.instanceUrl);
+  return `${instanceUrl}/services/oauth2/authorize?${params.toString()}`;
 };
 
 export const exchangeCodeForTokens = async (
@@ -26,7 +32,10 @@ export const exchangeCodeForTokens = async (
     code_verifier: verifier,
   });
 
-  const response = await fetch(`${config.instanceUrl}/services/oauth2/token`, {
+  const instanceUrl = normalizeInstanceUrl(config.instanceUrl);
+  const tokenUrl = `${instanceUrl}/services/oauth2/token`;
+
+  const response = await fetch(tokenUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -58,7 +67,8 @@ export const refreshAccessToken = async (
     client_id: config.clientId,
   });
 
-  const response = await fetch(`${config.instanceUrl}/services/oauth2/token`, {
+  const instanceUrl = normalizeInstanceUrl(config.instanceUrl);
+  const response = await fetch(`${instanceUrl}/services/oauth2/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
