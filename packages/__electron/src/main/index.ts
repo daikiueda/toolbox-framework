@@ -55,6 +55,48 @@ if (process.defaultApp) {
   app.setAsDefaultProtocolClient('toolbox-framework');
 }
 
+// カスタムプロトコルURLのハンドラー（外部ブラウザからのリダイレクト受信用）
+let protocolUrlHandler: ((url: string) => void) | null = null;
+
+export const setProtocolUrlHandler = (handler: ((url: string) => void) | null): void => {
+  protocolUrlHandler = handler;
+};
+
+// macOS: open-urlイベントでカスタムプロトコルURLを受信
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  console.log('[main] open-url イベント受信:', url);
+  if (protocolUrlHandler) {
+    protocolUrlHandler(url);
+  }
+});
+
+// Windows/Linux: second-instanceイベントでカスタムプロトコルURLを受信
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (_event, commandLine) => {
+    // コマンドライン引数からカスタムプロトコルURLを探す
+    const url = commandLine.find((arg) => arg.startsWith('toolbox-framework://'));
+    if (url) {
+      console.log('[main] second-instance イベント受信:', url);
+      if (protocolUrlHandler) {
+        protocolUrlHandler(url);
+      }
+    }
+
+    // ウィンドウがあればフォーカス
+    const windows = BrowserWindow.getAllWindows();
+    if (windows.length > 0) {
+      const mainWindow = windows[0];
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
