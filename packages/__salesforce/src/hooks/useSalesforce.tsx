@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ConnectionState, OrgInfo } from '../models';
 
@@ -41,7 +41,7 @@ export const useSalesforce = (): UseSalesforceReturn => {
     fetchOrgInfo();
   }, [connectionState]);
 
-  const login = async (instanceUrl: string): Promise<boolean> => {
+  const login = useCallback(async (instanceUrl: string): Promise<boolean> => {
     if (!window.api?.salesforce) {
       console.error('[useSalesforce] Salesforce API が利用できません');
       return false;
@@ -63,9 +63,9 @@ export const useSalesforce = (): UseSalesforceReturn => {
       setConnectionState('error');
       return false;
     }
-  };
+  }, []);
 
-  const logout = async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     if (!window.api?.salesforce) {
       console.error('[useSalesforce] Salesforce API が利用できません');
       return;
@@ -78,25 +78,30 @@ export const useSalesforce = (): UseSalesforceReturn => {
     } catch (error) {
       console.error('[useSalesforce] ログアウトエラー:', error);
     }
-  };
+  }, []);
 
-  const query = async <T extends Record<string, unknown>>(
-    soql: string
-  ): Promise<{ records: T[] }> => {
-    if (!window.api?.salesforce) {
-      throw new Error('[useSalesforce] Salesforce API が利用できません');
-    }
+  const query = useCallback(
+    async <T extends Record<string, unknown>>(soql: string): Promise<{ records: T[] }> => {
+      if (!window.api?.salesforce) {
+        throw new Error('[useSalesforce] Salesforce API が利用できません');
+      }
 
-    return window.api.salesforce.query<T>(soql);
-  };
+      return window.api.salesforce.query<T>(soql);
+    },
+    []
+  );
 
-  const LoginGate = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
-    if (connectionState === 'connected') {
-      return <>{children}</>;
-    }
+  const LoginGate = useMemo(() => {
+    const Component = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
+      if (connectionState === 'connected') {
+        return <>{children}</>;
+      }
 
-    return null;
-  };
+      return null;
+    };
+    Component.displayName = 'LoginGate';
+    return Component;
+  }, [connectionState]);
 
   return {
     connectionState,
