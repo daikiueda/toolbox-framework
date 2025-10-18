@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Logout from '@spectrum-icons/workflow/LogOut';
 
 import { Button, Flex, Text } from '@toolbox/design-system';
-import { useSalesforce } from '@toolbox/salesforce/src/hooks';
+import { useSalesforce } from '@toolbox/salesforce/client';
 
 const Container = styled.div`
   padding: 12px 24px;

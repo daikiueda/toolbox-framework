@@ -1,10 +1,11 @@
 import { electronAPI } from '@electron-toolkit/preload';
 import { contextBridge } from 'electron';
 
+import { buildSalesforceAPI } from '@toolbox/salesforce/electron';
+
 import { buildAppearanceAPI } from '../__extensions/appearance/preload';
 import { buildBrowserWindowAPI } from '../__extensions/browserWindow/preload';
 import { buildPersistenceAPI } from '../__extensions/persistence/preload';
-import { buildSalesforceAPI } from '../__extensions/salesforce/preload';
 
 // Custom APIs for renderer
 const api = {

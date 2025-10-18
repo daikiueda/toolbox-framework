@@ -4,7 +4,7 @@ import type {
   OrgInfo,
   PKCEParams,
   SalesforceTokens,
-} from '@toolbox/salesforce/src/models';
+} from '../models';
 
 export const SALESFORCE_CHANNELS = {
   login: 'salesforce:login',

@@ -5,6 +5,12 @@ import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
 
 import {
+  notifyProtocolUrl,
+  registerSalesforceHandlers,
+  unregisterSalesforceHandlers,
+} from '@toolbox/salesforce/electron';
+
+import {
   registerAppearanceHandlers,
   unregisterAppearanceHandlers,
 } from '../__extensions/appearance/main';
@@ -16,10 +22,6 @@ import {
   registerPersistenceHandlers,
   unregisterPersistenceHandlers,
 } from '../__extensions/persistence/main';
-import {
-  registerSalesforceHandlers,
-  unregisterSalesforceHandlers,
-} from '../__extensions/salesforce/main';
 
 import createWindow from './createWindow';
 
@@ -55,20 +57,12 @@ if (process.defaultApp) {
   app.setAsDefaultProtocolClient('toolbox-framework');
 }
 
-// カスタムプロトコルURLのハンドラー（外部ブラウザからのリダイレクト受信用）
-let protocolUrlHandler: ((url: string) => void) | null = null;
-
-export const setProtocolUrlHandler = (handler: ((url: string) => void) | null): void => {
-  protocolUrlHandler = handler;
-};
-
 // macOS: open-urlイベントでカスタムプロトコルURLを受信
 app.on('open-url', (event, url) => {
   event.preventDefault();
   console.log('[main] open-url イベント受信:', url);
-  if (protocolUrlHandler) {
-    protocolUrlHandler(url);
-  }
+  // Salesforceのプロトコルハンドラーに通知
+  notifyProtocolUrl(url);
 });
 
 // Windows/Linux: second-instanceイベントでカスタムプロトコルURLを受信
@@ -82,9 +76,8 @@ if (!gotTheLock) {
     const url = commandLine.find((arg) => arg.startsWith('toolbox-framework://'));
     if (url) {
       console.log('[main] second-instance イベント受信:', url);
-      if (protocolUrlHandler) {
-        protocolUrlHandler(url);
-      }
+      // Salesforceのプロトコルハンドラーに通知
+      notifyProtocolUrl(url);
     }
 
     // ウィンドウがあればフォーカス

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import { SalesforceProvider } from '@toolbox/salesforce/src/context';
+import { SalesforceProvider } from '@toolbox/salesforce/client';
 
 import entries, { Entry as AppEntry } from '../../../entries';
 
