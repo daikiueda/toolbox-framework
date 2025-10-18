@@ -1,114 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useContext } from 'react';
 
-import type { ConnectionState, OrgInfo } from '../models';
+import { SalesforceContext, type SalesforceContextValue } from '../context';
 
-type UseSalesforceReturn = {
-  connectionState: ConnectionState;
-  orgInfo: OrgInfo | null;
-  query: <T extends Record<string, unknown>>(soql: string) => Promise<{ records: T[] }>;
-  login: (instanceUrl: string) => Promise<boolean>;
-  logout: () => Promise<void>;
-  LoginGate: React.FC<{ children: React.ReactNode }>;
-};
+export const useSalesforce = (): SalesforceContextValue => {
+  const context = useContext(SalesforceContext);
 
-export const useSalesforce = (): UseSalesforceReturn => {
-  const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
-  const [orgInfo, setOrgInfo] = useState<OrgInfo | null>(null);
+  if (!context) {
+    throw new Error('useSalesforce must be used within SalesforceProvider');
+  }
 
-  // 初期状態の取得
-  useEffect(() => {
-    const fetchConnectionState = async () => {
-      if (window.api?.salesforce) {
-        const state = await window.api.salesforce.getConnectionState();
-        setConnectionState(state);
-      }
-    };
-
-    fetchConnectionState();
-  }, []);
-
-  // 組織情報の取得
-  useEffect(() => {
-    const fetchOrgInfo = async () => {
-      if (connectionState === 'connected' && window.api?.salesforce) {
-        const info = await window.api.salesforce.getOrgInfo();
-        setOrgInfo(info);
-      } else {
-        setOrgInfo(null);
-      }
-    };
-
-    fetchOrgInfo();
-  }, [connectionState]);
-
-  const login = useCallback(async (instanceUrl: string): Promise<boolean> => {
-    if (!window.api?.salesforce) {
-      console.error('[useSalesforce] Salesforce API が利用できません');
-      return false;
-    }
-
-    try {
-      setConnectionState('connecting');
-      const success = await window.api.salesforce.login(instanceUrl);
-
-      if (success) {
-        setConnectionState('connected');
-        return true;
-      } else {
-        setConnectionState('disconnected');
-        return false;
-      }
-    } catch (error) {
-      console.error('[useSalesforce] ログインエラー:', error);
-      setConnectionState('error');
-      return false;
-    }
-  }, []);
-
-  const logout = useCallback(async (): Promise<void> => {
-    if (!window.api?.salesforce) {
-      console.error('[useSalesforce] Salesforce API が利用できません');
-      return;
-    }
-
-    try {
-      await window.api.salesforce.logout();
-      setConnectionState('disconnected');
-      setOrgInfo(null);
-    } catch (error) {
-      console.error('[useSalesforce] ログアウトエラー:', error);
-    }
-  }, []);
-
-  const query = useCallback(
-    async <T extends Record<string, unknown>>(soql: string): Promise<{ records: T[] }> => {
-      if (!window.api?.salesforce) {
-        throw new Error('[useSalesforce] Salesforce API が利用できません');
-      }
-
-      return window.api.salesforce.query<T>(soql);
-    },
-    []
-  );
-
-  const LoginGate = useMemo(() => {
-    const Component = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
-      if (connectionState === 'connected') {
-        return <>{children}</>;
-      }
-
-      return null;
-    };
-    Component.displayName = 'LoginGate';
-    return Component;
-  }, [connectionState]);
-
-  return {
-    connectionState,
-    orgInfo,
-    query,
-    login,
-    logout,
-    LoginGate,
-  };
+  return context;
 };
