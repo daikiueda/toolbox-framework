@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 import { electronApp, optimizer } from '@electron-toolkit/utils';
+import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
 
 import {
@@ -35,6 +36,13 @@ const unregisterHandlers = () => {
   unregisterBrowserWindowHandlers();
   unregisterSalesforceHandlers();
 };
+
+// 開発時のみプロジェクトルートの.env.localを読み込む
+// 本番時（パッケージング済み）はOSの環境変数を使用
+if (!app.isPackaged) {
+  // 開発時: プロジェクトルートから相対パスで.env.localを読み込む
+  config({ path: join(__dirname, '../../../.env.local') });
+}
 
 // カスタムURLスキームの登録
 if (process.defaultApp) {
