@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron';
 
-import { CLIENT_ID, REDIRECT_URI, SalesforceConnection } from '@toolbox/salesforce/src/core';
+import { CLIENT_ID, REDIRECT_URI } from '@toolbox/salesforce/src/core';
+import { SalesforceConnection } from '@toolbox/salesforce/src/core/connection';
 import { buildAuthorizationUrl, exchangeCodeForTokens } from '@toolbox/salesforce/src/core/oauth';
 import { generatePKCEParams } from '@toolbox/salesforce/src/core/pkce';
 
@@ -149,6 +150,21 @@ const registerSalesforceHandlers = () => {
   ipcMain.handle(SALESFORCE_CHANNELS.getConnectionState, async () => {
     const tokens = tokenStore.getTokens();
     return tokens ? 'connected' : 'disconnected';
+  });
+
+  // SOQLクエリ実行ハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.query, async (_event, soql: string) => {
+    try {
+      const tokens = tokenStore.getTokens();
+      if (!tokens) {
+        throw new Error('Salesforceに接続されていません');
+      }
+
+      return await salesforceConnection.query(soql);
+    } catch (error) {
+      console.error('[salesforce] クエリ実行エラー:', error);
+      throw error;
+    }
   });
 };
 

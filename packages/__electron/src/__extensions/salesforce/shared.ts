@@ -11,6 +11,7 @@ export const SALESFORCE_CHANNELS = {
   logout: 'salesforce:logout',
   getOrgInfo: 'salesforce:get-org-info',
   getConnectionState: 'salesforce:get-connection-state',
+  query: 'salesforce:query',
 } as const;
 
 export type SalesforceChannel = (typeof SALESFORCE_CHANNELS)[keyof typeof SALESFORCE_CHANNELS];
@@ -22,4 +23,5 @@ export type SalesforceAPI = {
   logout: () => Promise<void>;
   getOrgInfo: () => Promise<OrgInfo | null>;
   getConnectionState: () => Promise<ConnectionState>;
+  query: <T extends Record<string, unknown>>(soql: string) => Promise<{ records: T[] }>;
 };
