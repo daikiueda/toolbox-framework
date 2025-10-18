@@ -1,31 +1,36 @@
-import { useState } from 'react';
+import { Flex, Heading } from '@toolbox/design-system';
 
-import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
+import { useSalesforce } from '../src/hooks';
 
-import greet from '../src/main';
-
+import { LoginForm } from './components/LoginForm';
+import { LoginHistoryTable } from './components/LoginHistoryTable';
+import { OrgInfo } from './components/OrgInfo';
 import PageWithTheme from './components/PageWithTheme';
 
-function App() {
-  const [whoToGreet, setWhoToGreet] = useState('world');
+const App = (): JSX.Element => {
+  const { LoginGate, orgInfo, logout, login, connectionState } = useSalesforce();
+
+  const handleLogin = async (instanceUrl: string): Promise<void> => {
+    await login(instanceUrl);
+  };
 
   return (
     <PageWithTheme>
       <Heading level={1}>Salesforce</Heading>
-      <Form>
-        <TextField
-          width="size-3000"
-          label="Who to greet"
-          value={whoToGreet}
-          onChange={setWhoToGreet}
-          isRequired
-        />
-        <View marginTop="size-400">
-          <Text>{greet(whoToGreet)}</Text>
-        </View>
-      </Form>
+      <Flex direction="column" gap="size-400" marginTop="size-400">
+        {connectionState === 'connected' ? (
+          <LoginGate>
+            <Flex direction="column" gap="size-400">
+              {orgInfo && <OrgInfo orgInfo={orgInfo} onLogout={logout} />}
+              <LoginHistoryTable />
+            </Flex>
+          </LoginGate>
+        ) : (
+          <LoginForm onLogin={handleLogin} />
+        )}
+      </Flex>
     </PageWithTheme>
   );
-}
+};
 
 export default App;

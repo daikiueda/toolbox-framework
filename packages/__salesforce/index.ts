@@ -1,2 +1,2 @@
 export { default } from './src/main';
-export { default as Template } from './gui/App';
+export { default as Salesforce } from './gui/App';

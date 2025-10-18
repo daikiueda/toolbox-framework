@@ -1,9 +1,9 @@
-import jsforce from 'jsforce';
+import jsforce, { type Connection, type QueryResult } from 'jsforce';
 
 import type { OrgInfo, SalesforceTokens } from '../models';
 
 export class SalesforceConnection {
-  private conn: jsforce.Connection | null = null;
+  private conn: Connection | null = null;
 
   connect = (tokens: SalesforceTokens): void => {
     this.conn = new jsforce.Connection({
@@ -17,13 +17,12 @@ export class SalesforceConnection {
       throw new Error('接続が確立されていません');
     }
 
-    const [identity, userInfo] = await Promise.all([
-      this.conn.identity(),
-      this.conn.query<{ Id: string; Email: string; Username: string }>(
-        'SELECT Id, Email, Username FROM User WHERE Id = :userId',
-        { userId: this.conn.userInfo?.id }
-      ),
-    ]);
+    const identity = await this.conn.identity();
+    const userId = identity.user_id;
+
+    const userInfo = await this.conn.query<{ Id: string; Email: string; Username: string }>(
+      `SELECT Id, Email, Username FROM User WHERE Id = '${userId}'`
+    );
 
     const user = userInfo.records[0];
 
@@ -44,7 +43,9 @@ export class SalesforceConnection {
     return this.conn.identity();
   };
 
-  query = async <T = unknown>(soql: string): Promise<jsforce.QueryResult<T>> => {
+  query = async <T extends Record<string, unknown> = Record<string, unknown>>(
+    soql: string
+  ): Promise<QueryResult<T>> => {
     if (!this.conn) {
       throw new Error('接続が確立されていません');
     }
@@ -56,7 +57,7 @@ export class SalesforceConnection {
     this.conn = null;
   };
 
-  getConnection = (): jsforce.Connection | null => {
+  getConnection = (): Connection | null => {
     return this.conn;
   };
 }
