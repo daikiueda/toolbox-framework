@@ -10,5 +10,7 @@ export const buildSalesforceAPI = (): SalesforceAPI => {
     logout: () => ipcRenderer.invoke(SALESFORCE_CHANNELS.logout),
     getOrgInfo: () => ipcRenderer.invoke(SALESFORCE_CHANNELS.getOrgInfo),
     getConnectionState: () => ipcRenderer.invoke(SALESFORCE_CHANNELS.getConnectionState),
+    query: <T extends Record<string, unknown>>(soql: string): Promise<{ records: T[] }> =>
+      ipcRenderer.invoke(SALESFORCE_CHANNELS.query, soql),
   };
 };

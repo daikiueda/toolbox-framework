@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { SalesforceConnection } from '../core';
 import type { ConnectionState, OrgInfo } from '../models';
 
 type UseSalesforceReturn = {
   connectionState: ConnectionState;
   orgInfo: OrgInfo | null;
-  connection: SalesforceConnection | null;
+  query: <T extends Record<string, unknown>>(soql: string) => Promise<{ records: T[] }>;
   login: (instanceUrl: string) => Promise<boolean>;
   logout: () => Promise<void>;
   LoginGate: React.FC<{ children: React.ReactNode }>;
@@ -15,7 +14,6 @@ type UseSalesforceReturn = {
 export const useSalesforce = (): UseSalesforceReturn => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
   const [orgInfo, setOrgInfo] = useState<OrgInfo | null>(null);
-  const [connection] = useState<SalesforceConnection>(() => new SalesforceConnection());
 
   // 初期状態の取得
   useEffect(() => {
@@ -77,10 +75,19 @@ export const useSalesforce = (): UseSalesforceReturn => {
       await window.api.salesforce.logout();
       setConnectionState('disconnected');
       setOrgInfo(null);
-      connection.disconnect();
     } catch (error) {
       console.error('[useSalesforce] ログアウトエラー:', error);
     }
+  };
+
+  const query = async <T extends Record<string, unknown>>(
+    soql: string
+  ): Promise<{ records: T[] }> => {
+    if (!window.api?.salesforce) {
+      throw new Error('[useSalesforce] Salesforce API が利用できません');
+    }
+
+    return window.api.salesforce.query<T>(soql);
   };
 
   const LoginGate = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
@@ -94,7 +101,7 @@ export const useSalesforce = (): UseSalesforceReturn => {
   return {
     connectionState,
     orgInfo,
-    connection: connectionState === 'connected' ? connection : null,
+    query,
     login,
     logout,
     LoginGate,

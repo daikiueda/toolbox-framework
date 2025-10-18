@@ -16,14 +16,14 @@ import { useSalesforce } from '../../src/hooks';
 import type { LoginHistoryRecord } from '../../src/models/LoginHistoryRecord';
 
 export const LoginHistoryTable = (): JSX.Element => {
-  const { connection, orgInfo } = useSalesforce();
+  const { query, orgInfo } = useSalesforce();
   const [loginHistory, setLoginHistory] = useState<LoginHistoryRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLoginHistory = async () => {
-      if (!connection || !orgInfo) {
+      if (!orgInfo) {
         setLoginHistory([]);
         return;
       }
@@ -33,7 +33,7 @@ export const LoginHistoryTable = (): JSX.Element => {
 
       try {
         const soql = `SELECT Id, LoginTime, Status, Browser, Platform, SourceIp FROM LoginHistory WHERE UserId = '${orgInfo.userId}' ORDER BY LoginTime DESC LIMIT 10`;
-        const result = await connection.query<LoginHistoryRecord>(soql);
+        const result = await query<LoginHistoryRecord>(soql);
         setLoginHistory(result.records);
       } catch (err) {
         console.error('[LoginHistoryTable] ログイン履歴取得エラー:', err);
@@ -44,7 +44,7 @@ export const LoginHistoryTable = (): JSX.Element => {
     };
 
     fetchLoginHistory();
-  }, [connection, orgInfo]);
+  }, [query, orgInfo]);
 
   const formatLoginTime = (loginTime: string): string => {
     const date = new Date(loginTime);
