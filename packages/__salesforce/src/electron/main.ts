@@ -1,14 +1,11 @@
 import { ipcMain, shell } from 'electron';
 
 import { SalesforceConnection } from '../core/SalesforceConnection';
-import { TokenStore } from '../core/TokenStore';
 import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/auth/oauth';
 import { PKCEParams } from '../core/auth/pkce';
 import { OAuthConfig, REDIRECT_URI } from '../models/OAuthConfig';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel } from './shared';
-
-const tokenStore = new TokenStore();
 
 let currentPKCEVerifier: string | null = null;
 let currentInstanceUrl: string | null = null;
@@ -37,9 +34,6 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
       currentPKCEVerifier,
       OAuthConfig.generate(currentInstanceUrl)
     );
-
-    // トークンを保存
-    tokenStore.setTokens(tokens);
 
     // 接続確立
     SalesforceConnection.getInstance().connect(tokens);
@@ -121,18 +115,15 @@ const registerSalesforceHandlers = () => {
 
   // ログアウトハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.logout, async () => {
-    tokenStore.clearTokens();
     SalesforceConnection.getInstance().disconnect();
   });
 
   // 組織情報取得ハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.getOrgInfo, async () => {
     try {
-      const tokens = tokenStore.getTokens();
-      if (!tokens) {
+      if (!SalesforceConnection.isConnected()) {
         return null;
       }
-
       return await SalesforceConnection.getInstance().getOrgInfo();
     } catch (error) {
       console.error('[salesforce] 組織情報取得エラー:', error);
@@ -141,16 +132,14 @@ const registerSalesforceHandlers = () => {
   });
 
   // 接続状態取得ハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.getConnectionState, async () => {
-    const tokens = tokenStore.getTokens();
-    return tokens ? 'connected' : 'disconnected';
-  });
+  ipcMain.handle(SALESFORCE_CHANNELS.getConnectionState, async () =>
+    SalesforceConnection.isConnected() ? 'connected' : 'disconnected'
+  );
 
   // SOQLクエリ実行ハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.query, async (_event, soql: string) => {
     try {
-      const tokens = tokenStore.getTokens();
-      if (!tokens) {
+      if (!SalesforceConnection.isConnected()) {
         throw new Error('Salesforceに接続されていません');
       }
 
@@ -168,8 +157,7 @@ const unregisterSalesforceHandlers = () => {
   currentInstanceUrl = null;
   loginResolve = null;
 
-  // トークンクリア
-  tokenStore.clearTokens();
+  // 接続クリア
   SalesforceConnection.getInstance().disconnect();
 
   // IPCハンドラー削除
@@ -180,4 +168,4 @@ const unregisterSalesforceHandlers = () => {
   });
 };
 
-export { registerSalesforceHandlers, unregisterSalesforceHandlers, tokenStore };
+export { registerSalesforceHandlers, unregisterSalesforceHandlers };
