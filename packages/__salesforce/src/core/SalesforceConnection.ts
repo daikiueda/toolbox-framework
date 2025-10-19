@@ -8,15 +8,12 @@ export class SalesforceConnection {
   private constructor() {
     console.log('インスタンス生成');
   }
-  static getInstance() {
-    if (!SalesforceConnection.instance) {
-      SalesforceConnection.instance = new SalesforceConnection();
-    }
+  static getInstance = () => {
+    SalesforceConnection.instance ??= new SalesforceConnection();
     return SalesforceConnection.instance;
-  }
-  static getConnection = (): Connection | null => {
-    return this.instance?.conn ?? null;
   };
+  static getConnection = () => this.instance?.conn ?? null;
+  static isConnected = () => Boolean(this.instance?.conn);
 
   private conn: Connection | null = null;
 
