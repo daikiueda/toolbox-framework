@@ -1,8 +1,8 @@
 import { ipcMain, shell } from 'electron';
 
-import { CLIENT_ID, REDIRECT_URI } from '../core/constants';
-import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/oauth';
-import { generatePKCEParams } from '../core/pkce';
+import { CLIENT_ID, REDIRECT_URI } from '../core';
+import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/auth/oauth';
+import { PKCEParams } from '../core/auth/pkce';
 import { getSalesforceConnection } from '../core/singleton';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel, type SalesforceTokens } from './shared';
@@ -95,8 +95,8 @@ const registerSalesforceHandlers = () => {
   ipcMain.handle(SALESFORCE_CHANNELS.login, async (_event, instanceUrl: string) => {
     try {
       // PKCE生成
-      const pkceParams = generatePKCEParams();
-      currentPKCEVerifier = pkceParams.code_verifier;
+      const pkce = PKCEParams.generate();
+      currentPKCEVerifier = pkce.code_verifier;
       currentInstanceUrl = instanceUrl;
 
       // 認証URL構築
@@ -106,7 +106,7 @@ const registerSalesforceHandlers = () => {
           clientId: CLIENT_ID,
           redirectUri: REDIRECT_URI,
         },
-        pkceParams
+        pkce
       );
 
       console.log('[salesforce] OS標準ブラウザで認証URLを開く:', authUrl);
