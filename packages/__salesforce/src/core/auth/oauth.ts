@@ -1,4 +1,6 @@
-import type { OAuthConfig, PKCEParams, SalesforceTokens } from '../models';
+import type { OAuthConfig, SalesforceTokens } from '../../models';
+
+import { PKCEParams } from './pkce';
 
 // instanceUrlの末尾スラッシュを削除
 const normalizeInstanceUrl = (url: string): string => {
