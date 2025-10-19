@@ -1,9 +1,9 @@
 import { ipcMain, shell } from 'electron';
 
-import { CLIENT_ID, REDIRECT_URI } from '../core';
 import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/auth/oauth';
 import { PKCEParams } from '../core/auth/pkce';
 import { getSalesforceConnection } from '../core/singleton';
+import { OAuthConfig, REDIRECT_URI } from '../models/OAuthConfig';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel, type SalesforceTokens } from './shared';
 
@@ -47,11 +47,11 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     console.log('[salesforce] 認証コード受信、トークン交換開始');
 
     // トークン交換
-    const tokens = await exchangeCodeForTokens(code, currentPKCEVerifier, {
-      instanceUrl: currentInstanceUrl,
-      clientId: CLIENT_ID,
-      redirectUri: REDIRECT_URI,
-    });
+    const tokens = await exchangeCodeForTokens(
+      code,
+      currentPKCEVerifier,
+      OAuthConfig.generate(currentInstanceUrl)
+    );
 
     // トークンを保存
     tokenStore.setTokens(tokens);
@@ -100,14 +100,7 @@ const registerSalesforceHandlers = () => {
       currentInstanceUrl = instanceUrl;
 
       // 認証URL構築
-      const authUrl = buildAuthorizationUrl(
-        {
-          instanceUrl,
-          clientId: CLIENT_ID,
-          redirectUri: REDIRECT_URI,
-        },
-        pkce
-      );
+      const authUrl = buildAuthorizationUrl(OAuthConfig.generate(currentInstanceUrl), pkce);
 
       console.log('[salesforce] OS標準ブラウザで認証URLを開く:', authUrl);
 

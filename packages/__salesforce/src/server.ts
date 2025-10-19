@@ -6,5 +6,4 @@ export {
   exchangeCodeForTokens,
   refreshAccessToken,
 } from './core/auth/oauth';
-export { CLIENT_ID, REDIRECT_URI, INSTANCE_URLS } from './core/constants';
 export type { SalesforceTokens, OAuthConfig, OrgInfo, ConnectionState } from './models';

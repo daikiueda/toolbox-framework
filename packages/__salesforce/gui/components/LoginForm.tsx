@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button, Flex, Form, Radio, RadioGroup, TextField } from '@toolbox/design-system';
 
-import { INSTANCE_URLS } from '../../src/core';
+import { GENERAL_INSTANCE_URLS } from '../../src/models/InstanceUrl';
 
 type InstanceUrlType = 'production' | 'sandbox' | 'custom';
 
@@ -39,9 +39,9 @@ export const LoginForm = ({ onLogin }: LoginFormProps): JSX.Element => {
     let instanceUrl: string;
 
     if (selectedType === 'production') {
-      instanceUrl = INSTANCE_URLS.PRODUCTION;
+      instanceUrl = GENERAL_INSTANCE_URLS.PRODUCTION;
     } else if (selectedType === 'sandbox') {
-      instanceUrl = INSTANCE_URLS.SANDBOX;
+      instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
     } else {
       if (!validateUrl(customUrl)) {
         return;
