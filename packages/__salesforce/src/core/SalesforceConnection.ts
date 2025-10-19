@@ -3,6 +3,21 @@ import jsforce, { type Connection, type QueryResult } from 'jsforce';
 import type { OrgInfo, SalesforceTokens } from '../models';
 
 export class SalesforceConnection {
+  // Singleton
+  private static instance: SalesforceConnection | null = null;
+  private constructor() {
+    console.log('インスタンス生成');
+  }
+  static getInstance() {
+    if (!SalesforceConnection.instance) {
+      SalesforceConnection.instance = new SalesforceConnection();
+    }
+    return SalesforceConnection.instance;
+  }
+  static getConnection = (): Connection | null => {
+    return this.instance?.conn ?? null;
+  };
+
   private conn: Connection | null = null;
 
   connect = (tokens: SalesforceTokens): void => {
@@ -10,6 +25,9 @@ export class SalesforceConnection {
       instanceUrl: tokens.instance_url,
       accessToken: tokens.access_token,
     });
+  };
+  disconnect = (): void => {
+    this.conn = null;
   };
 
   getOrgInfo = async (): Promise<OrgInfo> => {
@@ -51,13 +69,5 @@ export class SalesforceConnection {
     }
 
     return this.conn.query<T>(soql);
-  };
-
-  disconnect = (): void => {
-    this.conn = null;
-  };
-
-  getConnection = (): Connection | null => {
-    return this.conn;
   };
 }
