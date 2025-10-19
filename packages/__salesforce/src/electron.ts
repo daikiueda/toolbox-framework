@@ -5,4 +5,4 @@ export {
   notifyProtocolUrl,
 } from './electron/main';
 export { buildSalesforceAPI } from './electron/preload';
-export type { SalesforceAPI, SalesforceTokens, ConnectionState, OrgInfo } from './electron/shared';
+export type { SalesforceAPI, ConnectionState, OrgInfo } from './electron/shared';

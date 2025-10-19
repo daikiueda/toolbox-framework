@@ -4,4 +4,4 @@ export {
   notifyProtocolUrl,
 } from './main';
 export { buildSalesforceAPI } from './preload';
-export type { SalesforceAPI, SalesforceTokens, ConnectionState, OrgInfo } from './shared';
+export type { SalesforceAPI, ConnectionState, OrgInfo } from './shared';

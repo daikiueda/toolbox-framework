@@ -1,29 +1,14 @@
 import { ipcMain, shell } from 'electron';
 
+import { SalesforceConnection } from '../core/SalesforceConnection';
+import { TokenStore } from '../core/TokenStore';
 import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/auth/oauth';
 import { PKCEParams } from '../core/auth/pkce';
-import { getSalesforceConnection } from '../core/singleton';
 import { OAuthConfig, REDIRECT_URI } from '../models/OAuthConfig';
 
-import { SALESFORCE_CHANNELS, type SalesforceChannel, type SalesforceTokens } from './shared';
+import { SALESFORCE_CHANNELS, type SalesforceChannel } from './shared';
 
-class InMemoryTokenStore {
-  private tokens: SalesforceTokens | null = null;
-
-  setTokens = (tokens: SalesforceTokens): void => {
-    this.tokens = tokens;
-  };
-
-  getTokens = (): SalesforceTokens | null => {
-    return this.tokens;
-  };
-
-  clearTokens = (): void => {
-    this.tokens = null;
-  };
-}
-
-const tokenStore = new InMemoryTokenStore();
+const tokenStore = new TokenStore();
 
 let currentPKCEVerifier: string | null = null;
 let currentInstanceUrl: string | null = null;
@@ -57,7 +42,7 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     tokenStore.setTokens(tokens);
 
     // 接続確立
-    getSalesforceConnection().connect(tokens);
+    SalesforceConnection.getInstance().connect(tokens);
 
     // 状態をクリア
     currentPKCEVerifier = null;
@@ -137,7 +122,7 @@ const registerSalesforceHandlers = () => {
   // ログアウトハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.logout, async () => {
     tokenStore.clearTokens();
-    getSalesforceConnection().disconnect();
+    SalesforceConnection.getInstance().disconnect();
   });
 
   // 組織情報取得ハンドラー
@@ -148,7 +133,7 @@ const registerSalesforceHandlers = () => {
         return null;
       }
 
-      return await getSalesforceConnection().getOrgInfo();
+      return await SalesforceConnection.getInstance().getOrgInfo();
     } catch (error) {
       console.error('[salesforce] 組織情報取得エラー:', error);
       return null;
@@ -169,7 +154,7 @@ const registerSalesforceHandlers = () => {
         throw new Error('Salesforceに接続されていません');
       }
 
-      return await getSalesforceConnection().query(soql);
+      return await SalesforceConnection.getInstance().query(soql);
     } catch (error) {
       console.error('[salesforce] クエリ実行エラー:', error);
       throw error;
@@ -185,7 +170,7 @@ const unregisterSalesforceHandlers = () => {
 
   // トークンクリア
   tokenStore.clearTokens();
-  getSalesforceConnection().disconnect();
+  SalesforceConnection.getInstance().disconnect();
 
   // IPCハンドラー削除
   (Object.values(SALESFORCE_CHANNELS) as SalesforceChannel[]).forEach((channel) => {
