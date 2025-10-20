@@ -1,9 +1,9 @@
 import { ipcMain, shell } from 'electron';
 
-import { SalesforceConnection } from '../core/SalesforceConnection';
-import { buildAuthorizationUrl, exchangeCodeForTokens } from '../core/auth/oauth';
-import { PKCEParams } from '../core/auth/pkce';
-import { OAuthConfig, REDIRECT_URI } from '../models/OAuthConfig';
+import { SalesforceConnection } from '../../src/core/SalesforceConnection';
+import { buildAuthorizationUrl, exchangeCodeForTokens } from '../../src/core/auth/oauth';
+import { PKCEParams } from '../../src/core/auth/pkce';
+import { OAuthConfig, REDIRECT_URI } from '../../src/models/OAuthConfig';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel } from './shared';
 
@@ -65,7 +65,7 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
 };
 
 // プロトコルURLを処理する（Electron Main Processから呼ばれる）
-export const notifyProtocolUrl = (url: string): void => {
+export const notifySalesforceProtocolUrl = (url: string): void => {
   handleProtocolUrl(url);
 };
 

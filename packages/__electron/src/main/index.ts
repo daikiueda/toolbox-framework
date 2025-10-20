@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
 
 import {
-  notifyProtocolUrl,
+  notifySalesforceProtocolUrl,
   registerSalesforceHandlers,
   unregisterSalesforceHandlers,
 } from '@toolbox/salesforce/electron';
@@ -61,8 +61,8 @@ if (process.defaultApp) {
 app.on('open-url', (event, url) => {
   event.preventDefault();
   console.log('[main] open-url イベント受信:', url);
-  // Salesforceのプロトコルハンドラーに通知
-  notifyProtocolUrl(url);
+  // 各機能のプロトコルハンドラーに通知
+  notifySalesforceProtocolUrl(url);
 });
 
 // Windows/Linux: second-instanceイベントでカスタムプロトコルURLを受信
@@ -76,8 +76,8 @@ if (!gotTheLock) {
     const url = commandLine.find((arg) => arg.startsWith('toolbox-framework://'));
     if (url) {
       console.log('[main] second-instance イベント受信:', url);
-      // Salesforceのプロトコルハンドラーに通知
-      notifyProtocolUrl(url);
+      // 各機能のプロトコルハンドラーに通知
+      notifySalesforceProtocolUrl(url);
     }
 
     // ウィンドウがあればフォーカス
