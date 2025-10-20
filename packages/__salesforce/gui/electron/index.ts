@@ -1,7 +1,7 @@
 export {
   registerSalesforceHandlers,
   unregisterSalesforceHandlers,
-  notifyProtocolUrl,
+  notifySalesforceProtocolUrl,
 } from './main';
 export { buildSalesforceAPI } from './preload';
-export type { SalesforceAPI, ConnectionState, OrgInfo } from './shared';
+export type { SalesforceAPI } from './shared';

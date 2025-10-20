@@ -1,4 +1,4 @@
-import type { ConnectionState, OAuthConfig, OrgInfo, SalesforceTokens } from '../models';
+import type { ConnectionState, OrgInfo } from '../../src/models';
 
 export const SALESFORCE_CHANNELS = {
   login: 'salesforce:login',
@@ -9,8 +9,6 @@ export const SALESFORCE_CHANNELS = {
 } as const;
 
 export type SalesforceChannel = (typeof SALESFORCE_CHANNELS)[keyof typeof SALESFORCE_CHANNELS];
-
-export type { OAuthConfig, SalesforceTokens, OrgInfo, ConnectionState };
 
 export type SalesforceAPI = {
   login: (instanceUrl: string) => Promise<boolean>;
