@@ -1,11 +1,12 @@
 import { ipcMain, shell } from 'electron';
 
-import { SalesforceConnection } from '../../src/core/SalesforceConnection';
-import { buildAuthorizationUrl, exchangeCodeForTokens } from '../../src/core/auth/oauth';
-import { PKCEParams } from '../../src/core/auth/pkce';
-import { OAuthConfig, REDIRECT_URI } from '../../src/models/OAuthConfig';
+import { SalesforceConnection } from '../../lib';
+import { OAuthConfig, REDIRECT_URI } from '../../lib/core/auth/OAuthConfig';
+import { buildAuthorizationUrl, exchangeCodeForTokens } from '../../lib/core/auth/oauth';
+import { PKCEParams } from '../../lib/core/auth/pkce';
+import { getOrgInfo } from '../../src/OrgInfo';
 
-import { SALESFORCE_CHANNELS, type SalesforceChannel } from './shared';
+import { SALESFORCE_CHANNELS, type SalesforceChannel } from './constants';
 
 let currentPKCEVerifier: string | null = null;
 let currentInstanceUrl: string | null = null;
@@ -118,37 +119,13 @@ const registerSalesforceHandlers = () => {
     SalesforceConnection.getInstance().disconnect();
   });
 
-  // 組織情報取得ハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.getOrgInfo, async () => {
-    try {
-      if (!SalesforceConnection.isConnected()) {
-        return null;
-      }
-      return await SalesforceConnection.getInstance().getOrgInfo();
-    } catch (error) {
-      console.error('[salesforce] 組織情報取得エラー:', error);
-      return null;
-    }
-  });
-
   // 接続状態取得ハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.getConnectionState, async () =>
     SalesforceConnection.isConnected() ? 'connected' : 'disconnected'
   );
 
-  // SOQLクエリ実行ハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.query, async (_event, soql: string) => {
-    try {
-      if (!SalesforceConnection.isConnected()) {
-        throw new Error('Salesforceに接続されていません');
-      }
-
-      return await SalesforceConnection.getInstance().query(soql);
-    } catch (error) {
-      console.error('[salesforce] クエリ実行エラー:', error);
-      throw error;
-    }
-  });
+  // 組織情報取得ハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.getOrgInfo, getOrgInfo);
 };
 
 const unregisterSalesforceHandlers = () => {
