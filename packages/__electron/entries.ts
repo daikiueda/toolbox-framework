@@ -3,7 +3,7 @@ import React from 'react';
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
 
 import { KitchenSink } from '@toolbox/gui-kitchen-sink';
-import { Salesforce } from '@toolbox/salesforce';
+import { OrgAndLoginUser } from '@toolbox/org-and-login-user';
 import { Template } from '@toolbox/template';
 
 export type Entry = {
@@ -21,9 +21,9 @@ const entries: { [appKey: string]: Entry } = {
     label: 'Example',
     App: Template,
   },
-  salesforce: {
-    label: 'Salesforce',
-    App: Salesforce,
+  orgAndLoginUser: {
+    label: 'Organization and Login User',
+    App: OrgAndLoginUser,
   },
 };
 export default entries;

@@ -1,6 +1,7 @@
 import { electronAPI } from '@electron-toolkit/preload';
 import { contextBridge } from 'electron';
 
+import { buildOrgAndLoginUserAPI } from '@toolbox/org-and-login-user/electron';
 import { buildSalesforceAPI } from '@toolbox/salesforce/electron';
 
 import { buildAppearanceAPI } from '../__extensions/appearance/preload';
@@ -13,6 +14,7 @@ const api = {
   persistence: buildPersistenceAPI(),
   browserWindow: buildBrowserWindowAPI(),
   salesforce: buildSalesforceAPI(),
+  orgAndLoginUser: buildOrgAndLoginUserAPI(),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

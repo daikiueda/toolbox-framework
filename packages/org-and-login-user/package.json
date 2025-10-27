@@ -1,15 +1,15 @@
 {
-  "name": "@toolbox/salesforce",
+  "name": "@toolbox/org-and-login-user",
   "version": "0.0.0",
   "description": "",
   "main": "index.ts",
   "exports": {
     ".": "./index.ts",
-    "./lib": "./lib/index.ts",
     "./electron": "./gui/electron/index.ts"
   },
   "scripts": {
-    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\""
+    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\"",
+    "gui": "vite"
   },
   "dependencies": {
     "@toolbox/design-system": "^0.0.0",

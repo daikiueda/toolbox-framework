@@ -5,6 +5,10 @@ import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
 
 import {
+  registerOrgAndLoginUserHandlers,
+  unregisterOrgAndLoginUserHandlers,
+} from '@toolbox/org-and-login-user/electron';
+import {
   notifySalesforceProtocolUrl,
   registerSalesforceHandlers,
   unregisterSalesforceHandlers,
@@ -30,6 +34,7 @@ const registerHandlers = (window: BrowserWindow) => {
   registerPersistenceHandlers();
   registerBrowserWindowHandlers(window);
   registerSalesforceHandlers();
+  registerOrgAndLoginUserHandlers();
 };
 
 const unregisterHandlers = () => {
@@ -37,6 +42,7 @@ const unregisterHandlers = () => {
   unregisterPersistenceHandlers();
   unregisterBrowserWindowHandlers();
   unregisterSalesforceHandlers();
+  unregisterOrgAndLoginUserHandlers();
 };
 
 // 開発時のみプロジェクトルートの.env.localを読み込む

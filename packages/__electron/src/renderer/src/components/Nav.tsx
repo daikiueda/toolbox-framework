@@ -5,26 +5,22 @@ import styled from 'styled-components';
 
 import '@spectrum-css/sidenav';
 import Box from '@spectrum-icons/workflow/Box';
-import { Panel } from 'react-resizable-panels';
 
 import { Heading } from '@toolbox/design-system/Components/Content';
 import { Flex, Header } from '@toolbox/design-system/Components/Layout';
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 
-import { MenuFooterOrgInfo } from './MenuFooterOrgInfo';
-import Versions from './Versions';
-
-type Props = React.ComponentProps<typeof Panel> & {
+type Props = {
   menuItems: { [appKey: string]: MenuItemEntry };
   currentApp: MenuItemEntry;
   switchApp: (app: MenuItemEntry) => () => void;
 };
 
-const NavPanel = styled(Panel)`
+const NavPanel = styled.nav`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   background-color: var(--spectrum-blue-100);
 
   h1 {
@@ -87,12 +83,9 @@ const Spectrum = {
   ),
 };
 
-const Nav: React.ForwardRefRenderFunction<React.ComponentRef<typeof Panel>, Props> = (
-  { menuItems, currentApp, switchApp, ...navPanelProps },
-  ref
-) => {
+const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelProps }) => {
   return (
-    <NavPanel tagName="nav" {...navPanelProps} ref={ref}>
+    <NavPanel {...navPanelProps}>
       {/* スクロール可能な上部エリア */}
       <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
         <Header marginX="24px">
@@ -116,12 +109,9 @@ const Nav: React.ForwardRefRenderFunction<React.ComponentRef<typeof Panel>, Prop
       </Flex>
 
       {/* 固定表示の下部エリア */}
-      <Flex direction="column" UNSAFE_style={{ marginTop: 'auto' }}>
-        <MenuFooterOrgInfo />
-        <Versions />
-      </Flex>
+      {/*<Flex direction="column" UNSAFE_style={{ marginTop: 'auto' }}></Flex>*/}
     </NavPanel>
   );
 };
 
-export default React.memo(React.forwardRef(Nav));
+export default React.memo(Nav);
