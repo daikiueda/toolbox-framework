@@ -1,3 +1,3 @@
 export * from './context/SalesforceProvider';
 export * from './containers';
-export { useSalesforce } from './hooks';
+export { useSalesforce } from './hooks/useSalesforce';
