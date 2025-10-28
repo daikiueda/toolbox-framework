@@ -4,12 +4,14 @@ import { contextBridge } from 'electron';
 import { buildAppearanceAPI } from '../__extensions/appearance/preload';
 import { buildBrowserWindowAPI } from '../__extensions/browserWindow/preload';
 import { buildPersistenceAPI } from '../__extensions/persistence/preload';
+import { buildSalesforceAPI } from '../__extensions/salesforce/preload';
 
 // Custom APIs for renderer
 const api = {
   appearance: buildAppearanceAPI(),
   persistence: buildPersistenceAPI(),
   browserWindow: buildBrowserWindowAPI(),
+  salesforce: buildSalesforceAPI(),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
