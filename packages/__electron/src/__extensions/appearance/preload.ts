@@ -5,7 +5,7 @@ import {
   type AppearanceAPI,
   type AppearanceState,
   type ThemeSource,
-} from './shared';
+} from './constants';
 
 const buildAppearanceAPI = (): AppearanceAPI => {
   const { ipcRenderer } = electronAPI;

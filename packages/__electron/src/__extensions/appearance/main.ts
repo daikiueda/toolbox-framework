@@ -5,7 +5,7 @@ import {
   type AppearanceChannel,
   type AppearanceState,
   type ThemeSource,
-} from './shared';
+} from './constants';
 
 const getAppearanceState = (): AppearanceState => ({
   themeSource: nativeTheme.themeSource,

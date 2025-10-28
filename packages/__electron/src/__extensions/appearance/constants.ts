@@ -1,7 +1,9 @@
+const PREFIX = 'appearance:';
+
 export const APPEARANCE_CHANNELS = {
-  changed: 'appearance:changed',
-  getState: 'appearance:get-state',
-  setThemeSource: 'appearance:set-theme-source',
+  changed: `${PREFIX}changed`,
+  getState: `${PREFIX}get-state`,
+  setThemeSource: `${PREFIX}set-theme-source`,
 } as const;
 
 export type AppearanceChannel = (typeof APPEARANCE_CHANNELS)[keyof typeof APPEARANCE_CHANNELS];

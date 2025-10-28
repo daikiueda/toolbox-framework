@@ -1,7 +1,8 @@
 import { ElectronAPI } from '@electron-toolkit/preload';
 
-import type { AppearanceAPI } from '../__extensions/appearance/shared';
-import type { PersistenceAPI } from '../__extensions/persistence/shared';
+import type { AppearanceAPI } from '../__extensions/appearance/constants';
+import type { BrowserWindowAPI } from '../__extensions/browserWindow/constants';
+import type { PersistenceAPI } from '../__extensions/persistence/constants';
 
 declare global {
   interface Window {
@@ -9,6 +10,7 @@ declare global {
     api?: {
       appearance?: AppearanceAPI;
       persistence?: PersistenceAPI;
+      browserWindowAPI?: BrowserWindowAPI;
     };
   }
 }

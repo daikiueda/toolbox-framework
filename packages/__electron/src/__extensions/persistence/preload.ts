@@ -1,6 +1,6 @@
 import { electronAPI } from '@electron-toolkit/preload';
 
-import { PERSISTENCE_CHANNELS, type PersistenceAPI } from './shared';
+import { PERSISTENCE_CHANNELS, type PersistenceAPI } from './constants';
 
 const buildPersistenceAPI = (): PersistenceAPI => {
   const { ipcRenderer } = electronAPI;

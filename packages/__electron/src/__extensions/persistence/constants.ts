@@ -1,7 +1,9 @@
+const PREFIX = 'user-persistence:';
+
 export const PERSISTENCE_CHANNELS = {
-  read: 'user-persistence:read',
-  write: 'user-persistence:write',
-  delete: 'user-persistence:delete',
+  read: `${PREFIX}read`,
+  write: `${PREFIX}write`,
+  delete: `${PREFIX}delete`,
 } as const;
 
 export type PersistenceChannel = (typeof PERSISTENCE_CHANNELS)[keyof typeof PERSISTENCE_CHANNELS];

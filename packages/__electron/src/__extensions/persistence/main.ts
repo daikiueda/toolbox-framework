@@ -3,7 +3,7 @@ import { dirname, join } from 'path';
 
 import { app, ipcMain } from 'electron';
 
-import { PERSISTENCE_CHANNELS, type PersistenceChannel } from './shared';
+import { PERSISTENCE_CHANNELS, type PersistenceChannel } from './constants';
 
 type SettingsRecord = Record<string, unknown>;
 

@@ -1,49 +1,32 @@
-import { join } from 'path';
+import { electronApp, optimizer } from '@electron-toolkit/utils';
+import { BrowserWindow, app } from 'electron';
 
-import { electronApp, is, optimizer } from '@electron-toolkit/utils';
-import { BrowserWindow, app, shell } from 'electron';
-
-import icon from '../../resources/icon.png?asset';
 import {
   registerAppearanceHandlers,
   unregisterAppearanceHandlers,
 } from '../__extensions/appearance/main';
 import {
+  registerBrowserWindowHandlers,
+  unregisterBrowserWindowHandlers,
+} from '../__extensions/browserWindow/main';
+import {
   registerPersistenceHandlers,
   unregisterPersistenceHandlers,
 } from '../__extensions/persistence/main';
 
-function createWindow(): void {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
-    show: false,
-    autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
-    webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false,
-    },
-  });
+import createWindow from './createWindow';
 
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show();
-  });
+const registerHandlers = (window: BrowserWindow) => {
+  registerAppearanceHandlers();
+  registerPersistenceHandlers();
+  registerBrowserWindowHandlers(window);
+};
 
-  mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
-    return { action: 'deny' };
-  });
-
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
-  } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-  }
-}
+const unregisterHandlers = () => {
+  unregisterAppearanceHandlers();
+  unregisterPersistenceHandlers();
+  unregisterBrowserWindowHandlers();
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -59,10 +42,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  registerAppearanceHandlers();
-  registerPersistenceHandlers();
+  const mainWindow = createWindow();
 
-  createWindow();
+  registerHandlers(mainWindow);
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -81,8 +63,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('will-quit', () => {
-  unregisterAppearanceHandlers();
-  unregisterPersistenceHandlers();
+  unregisterHandlers();
 });
 
 // In this file you can include the rest of your app"s specific main process

@@ -2,12 +2,14 @@ import { electronAPI } from '@electron-toolkit/preload';
 import { contextBridge } from 'electron';
 
 import { buildAppearanceAPI } from '../__extensions/appearance/preload';
+import { buildBrowserWindowAPI } from '../__extensions/browserWindow/preload';
 import { buildPersistenceAPI } from '../__extensions/persistence/preload';
 
 // Custom APIs for renderer
 const api = {
   appearance: buildAppearanceAPI(),
   persistence: buildPersistenceAPI(),
+  browserWindow: buildBrowserWindowAPI(),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -21,8 +23,6 @@ if (process.contextIsolated) {
     console.error(error);
   }
 } else {
-  // @ts-ignore (define in dts)
   window.electron = electronAPI;
-  // @ts-ignore (define in dts)
   window.api = api;
 }
