@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { BrowserWindow, app } from 'electron';
 
@@ -13,6 +15,10 @@ import {
   registerPersistenceHandlers,
   unregisterPersistenceHandlers,
 } from '../__extensions/persistence/main';
+import {
+  registerSalesforceHandlers,
+  unregisterSalesforceHandlers,
+} from '../__extensions/salesforce/main';
 
 import createWindow from './createWindow';
 
@@ -20,13 +26,26 @@ const registerHandlers = (window: BrowserWindow) => {
   registerAppearanceHandlers();
   registerPersistenceHandlers();
   registerBrowserWindowHandlers(window);
+  registerSalesforceHandlers();
 };
 
 const unregisterHandlers = () => {
   unregisterAppearanceHandlers();
   unregisterPersistenceHandlers();
   unregisterBrowserWindowHandlers();
+  unregisterSalesforceHandlers();
 };
+
+// カスタムURLスキームの登録
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('toolbox-framework', process.execPath, [
+      join(process.cwd(), process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient('toolbox-framework');
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
