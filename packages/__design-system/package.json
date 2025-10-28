@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@react-spectrum/actiongroup": "^3.11.4",
+    "@react-spectrum/badge": "^3.1.30",
     "@react-spectrum/button": "^3.17.4",
     "@react-spectrum/buttongroup": "^3.6.26",
     "@react-spectrum/contextualhelp": "^3.6.28",
