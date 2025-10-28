@@ -1,30 +1,28 @@
 import { SalesforceConnection } from '@toolbox/salesforce/lib';
 
+export type OrgType = 'Production' | 'Sandbox';
+
 export type OrgInfo = {
   orgId: string;
   orgName: string;
-  username: string;
-  email: string;
-  userId: string;
+  orgType: OrgType;
+  instanceUrl: string;
 };
 
 export const getOrgInfo = async (): Promise<OrgInfo> => {
   const conn = SalesforceConnection.getConnection();
 
   const identity = await conn.identity();
-  const userId = identity.user_id;
 
-  const userInfo = await conn.query<{ Id: string; Email: string; Username: string }>(
-    `SELECT Id, Email, Username FROM User WHERE Id = '${userId}'`
+  const organizationResult = await conn.query<{ Id: string; Name: string; IsSandbox: boolean }>(
+    `SELECT Id, Name, IsSandbox FROM Organization WHERE Id = '${identity.organization_id}'`
   );
-
-  const user = userInfo.records[0];
+  const organization = organizationResult.records[0];
 
   return {
     orgId: identity.organization_id,
-    orgName: identity.organization_id, // TODO: 組織名の取得方法を確認
-    username: user?.Username || '',
-    email: user?.Email || '',
-    userId: identity.user_id,
+    orgName: organization?.Name ?? '',
+    orgType: organization?.IsSandbox ? 'Sandbox' : 'Production',
+    instanceUrl: conn.instanceUrl,
   };
 };

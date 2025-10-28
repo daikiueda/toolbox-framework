@@ -23,11 +23,7 @@ const App: React.FC = () => {
   return (
     <SalesforceProvider>
       <Root>
-        <Header>
-          <Title>My App</Title>
-          <SalesforceConnectionBarContainer />
-        </Header>
-
+        <SalesforceConnectionBarContainer />
         <Main>
           <PanelGroup direction="horizontal">
             <Panel defaultSize={24} maxSize={24}>
@@ -48,28 +44,11 @@ const App: React.FC = () => {
 export default App;
 
 /* ===== styled-components ===== */
-const HEADER_H = 48;
-
 const Root = styled.div`
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-rows: ${HEADER_H}px 1fr;
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 12px;
-  border-bottom: 1px solid #e5e7eb;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
-`;
-
-const Title = styled.div`
-  flex: none;
-  font-weight: 600;
+  grid-template-rows: fit-content(24px) 1fr;
 `;
 
 const Main = styled.div`
@@ -77,13 +56,13 @@ const Main = styled.div`
 `;
 
 const PaneBase = styled.div`
-  height: calc(100vh - ${HEADER_H}px);
+  height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
 `;
 
 const PaneLeft = styled(PaneBase)`
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid var(--spectrum-gray-200);
 `;
 
 const PaneRight = styled(PaneBase)``;

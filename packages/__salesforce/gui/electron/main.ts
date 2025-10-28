@@ -39,6 +39,8 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     // 接続確立
     SalesforceConnection.getInstance().connect(tokens);
 
+    // BrowserWindow.getFocusedWindow()?.setTitle();
+
     // 状態をクリア
     currentPKCEVerifier = null;
     currentInstanceUrl = null;
