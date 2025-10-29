@@ -9,6 +9,10 @@ const LoginUserDetailView: React.FC = () => {
     id: '',
     username: '',
     email: '',
+    name: '',
+    profileName: '',
+    roleName: null,
+    employeeNumber: null,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,13 +40,14 @@ const LoginUserDetailView: React.FC = () => {
     <View>
       <Heading level={2}>ログインユーザー</Heading>
 
-      <Flex direction="column" gap="size-100">
+      <Flex direction="column" gap="size-250">
         {error && <InlineError margin="size-300">{error}</InlineError>}
 
         {!error && (
           <>
+            <AsyncLabeledValue label="氏名" value={loginUserDetail.name} isLoading={isLoading} />
             <AsyncLabeledValue
-              label="ユーザーId"
+              label="ユーザー ID"
               value={loginUserDetail.id}
               isLoading={isLoading}
             />
@@ -54,6 +59,21 @@ const LoginUserDetailView: React.FC = () => {
             <AsyncLabeledValue
               label="メールアドレス"
               value={loginUserDetail.email}
+              isLoading={isLoading}
+            />
+            <AsyncLabeledValue
+              label="プロファイル"
+              value={loginUserDetail.profileName}
+              isLoading={isLoading}
+            />
+            <AsyncLabeledValue
+              label="ロール"
+              value={loginUserDetail.roleName || 'なし'}
+              isLoading={isLoading}
+            />
+            <AsyncLabeledValue
+              label="従業員番号"
+              value={loginUserDetail.employeeNumber || '未設定'}
               isLoading={isLoading}
             />
           </>
