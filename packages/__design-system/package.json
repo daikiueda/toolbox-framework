@@ -17,6 +17,7 @@
     "@react-spectrum/dropzone": "^3.0.18",
     "@react-spectrum/filetrigger": "^3.0.18",
     "@react-spectrum/form": "^3.7.19",
+    "@react-spectrum/inlinealert": "^3.2.20",
     "@react-spectrum/labeledvalue": "^3.2.7",
     "@react-spectrum/layout": "^3.6.19",
     "@react-spectrum/numberfield": "^3.10.2",
