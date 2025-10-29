@@ -7,6 +7,7 @@ export const buildOrgAndLoginUserAPI = (): OrgAndLoginUserAPI => {
 
   return {
     getOrgDetail: () => ipcRenderer.invoke(ORG_AND_LOGIN_USER_CHANNELS.getOrgDetail),
+    getLoginUserDetail: () => ipcRenderer.invoke(ORG_AND_LOGIN_USER_CHANNELS.getLoginUserDetail),
     listRecentLoginHistory: () =>
       ipcRenderer.invoke(ORG_AND_LOGIN_USER_CHANNELS.listRecentLoginHistory),
   };
