@@ -1,3 +1,5 @@
+export { useDOMRef } from '@react-spectrum/utils';
+
 export * from './Components/Buttons';
 export * from './Components/Collections';
 export * from './Components/Content';

@@ -30,11 +30,13 @@
     "@react-spectrum/textfield": "^3.14.2",
     "@react-spectrum/theme-default": "^3.5.22",
     "@react-spectrum/toast": "^3.1.4",
+    "@react-spectrum/utils": "^3.12.9",
     "@react-spectrum/view": "^3.6.23",
     "@react-spectrum/well": "^3.4.27",
     "@spectrum-css/tokens": "^16.0.2",
     "@spectrum-icons/workflow": "^4.2.25",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
