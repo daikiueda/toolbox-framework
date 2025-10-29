@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -13,7 +13,11 @@ import {
   TextField,
 } from '@toolbox/design-system';
 
-import { GENERAL_INSTANCE_URLS, InstanceUrlType } from '../../lib/models/InstanceUrl';
+import {
+  GENERAL_INSTANCE_URLS,
+  InstanceUrlType,
+  normalizeCustomInstanceUrl,
+} from '../../lib/models/InstanceUrl';
 
 type Props = {
   onLogin: (instanceUrl: string) => Promise<boolean>;
@@ -25,26 +29,45 @@ const App: React.FC<Props> = ({ onLogin }) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [urlError, setUrlError] = useState<string | undefined>(undefined);
 
-  const validateUrl = (url: string): boolean => {
-    if (!url.trim()) {
-      setUrlError('URLを入力してください');
-      return false;
-    }
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.protocol !== 'https:') {
-        setUrlError('HTTPSのURLを指定してください');
-        return false;
-      }
+  const normalizedCustomDomain = useMemo(
+    () => normalizeCustomInstanceUrl(customDomain),
+    [customDomain]
+  );
+
+  useEffect(() => {
+    if (selectedType !== 'custom') {
       setUrlError(undefined);
-      return true;
-    } catch {
-      setUrlError('有効なURLを入力してください');
-      return false;
+      return;
     }
+
+    if (!customDomain.trim()) {
+      setUrlError(undefined);
+      return;
+    }
+
+    if (normalizedCustomDomain) {
+      setUrlError(undefined);
+    }
+  }, [selectedType, customDomain, normalizedCustomDomain]);
+
+  const resolveCustomInstanceUrl = (): string | null => {
+    if (!customDomain.trim()) {
+      setUrlError('URLを入力してください');
+      return null;
+    }
+
+    if (!normalizedCustomDomain) {
+      setUrlError('force.comで終わるドメインを入力してください');
+      return null;
+    }
+
+    setUrlError(undefined);
+    return normalizedCustomDomain;
   };
 
-  const handleLogin = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     let instanceUrl: string;
 
     if (selectedType === 'production') {
@@ -52,10 +75,11 @@ const App: React.FC<Props> = ({ onLogin }) => {
     } else if (selectedType === 'sandbox') {
       instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
     } else {
-      if (!validateUrl(customDomain)) {
+      const normalized = resolveCustomInstanceUrl();
+      if (!normalized) {
         return;
       }
-      instanceUrl = customDomain.trim();
+      instanceUrl = normalized;
     }
 
     setIsLoggingIn(true);
@@ -69,7 +93,7 @@ const App: React.FC<Props> = ({ onLogin }) => {
   return (
     <PageWithTheme>
       <Heading level={1}>Login</Heading>
-      <Form onSubmit={handleLogin} width="size-6000">
+      <Form onSubmit={handleSubmit} width="size-6000">
         <RadioGroup
           label="インスタンスURL"
           value={selectedType}
@@ -88,6 +112,7 @@ const App: React.FC<Props> = ({ onLogin }) => {
             isRequired
             validationState={urlError ? 'invalid' : undefined}
             errorMessage={urlError}
+            description={normalizedCustomDomain ?? undefined}
           />
         ) : (
           <></>
