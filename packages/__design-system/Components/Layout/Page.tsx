@@ -8,16 +8,15 @@ import useAppEnv from '../../hooks/useAppEnv';
 
 import { OneLine } from './Space';
 
-type Props = {
+type Props = React.ComponentProps<typeof View> & {
   className?: string;
-  children: React.ReactNode;
 };
 
 const PageContainer = styled.div`
   width: 100%;
 `;
 
-const Page: React.FC<Props> = ({ className, children }) => {
+const Page: React.FC<Props> = ({ className, children, ...viewProps }) => {
   const appEnv = useAppEnv();
 
   const innerProps = React.useMemo(
@@ -32,6 +31,7 @@ const Page: React.FC<Props> = ({ className, children }) => {
         maxWidth="960px"
         paddingBottom={`calc(${OneLine} * 2)`}
         {...innerProps}
+        {...viewProps}
       >
         {children}
       </View>
