@@ -18,13 +18,28 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     return;
   }
 
+  const terminateWithError = (error: Error | unknown) => {
+    console.error('[salesforce] トークン交換エラー:', error);
+
+    // 状態をクリア
+    currentPKCEVerifier = null;
+    currentInstanceUrl = null;
+
+    // ログイン失敗を通知
+    if (loginResolve) {
+      loginResolve(false);
+      loginResolve = null;
+    }
+  };
+
   try {
     // URLから認証コードを取得
     const urlObj = new URL(url);
     const code = urlObj.searchParams.get('code');
 
     if (!code || !currentPKCEVerifier || !currentInstanceUrl) {
-      throw new Error('認証コードまたはPKCEパラメータが取得できませんでした');
+      terminateWithError(new Error('認証コードまたはPKCEパラメータが取得できませんでした'));
+      return;
     }
 
     console.log('[salesforce] 認証コード受信、トークン交換開始');
@@ -37,7 +52,7 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     );
 
     // 接続確立
-    SalesforceConnection.getInstance().connect(tokens);
+    await SalesforceConnection.getInstance().connect(tokens);
 
     // BrowserWindow.getFocusedWindow()?.setTitle();
 
@@ -53,23 +68,13 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
       loginResolve = null;
     }
   } catch (error) {
-    console.error('[salesforce] トークン交換エラー:', error);
-
-    // 状態をクリア
-    currentPKCEVerifier = null;
-    currentInstanceUrl = null;
-
-    // ログイン失敗を通知
-    if (loginResolve) {
-      loginResolve(false);
-      loginResolve = null;
-    }
+    terminateWithError(error);
   }
 };
 
 // プロトコルURLを処理する（Electron Main Processから呼ばれる）
 export const notifySalesforceProtocolUrl = (url: string): void => {
-  handleProtocolUrl(url);
+  void handleProtocolUrl(url);
 };
 
 const registerSalesforceHandlers = () => {
