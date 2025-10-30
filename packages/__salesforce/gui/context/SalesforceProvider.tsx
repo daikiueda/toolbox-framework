@@ -37,7 +37,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
 
   const login = useCallback(async (instanceUrl: string): Promise<boolean> => {
     if (!window.api?.salesforce) {
-      console.error('[SalesforceProvider] Salesforce API が利用できません');
+      console.error('[salesforce] Salesforce API が利用できません');
       return false;
     }
 
@@ -53,7 +53,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
         return false;
       }
     } catch (error) {
-      console.error('[SalesforceProvider] ログインエラー:', error);
+      console.error('[salesforce] ログインエラー:', error);
       setConnectionState('error');
       return false;
     }
@@ -61,7 +61,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
 
   const logout = useCallback(async (): Promise<void> => {
     if (!window.api?.salesforce) {
-      console.error('[SalesforceProvider] Salesforce API が利用できません');
+      console.error('[salesforce] Salesforce API が利用できません');
       return;
     }
 
@@ -70,7 +70,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
       setConnectionState('disconnected');
       setOrgInfo(null);
     } catch (error) {
-      console.error('[SalesforceProvider] ログアウトエラー:', error);
+      console.error('[salesforce] ログアウトエラー:', error);
     }
   }, []);
 

@@ -2,11 +2,13 @@ import jsforce, { type Connection } from 'jsforce';
 
 import type { SalesforceTokens } from './auth/SalesforceTokens';
 
+const SF_API_VERSION_FALLBACK = '60.0';
+
 export class SalesforceConnection {
   // Singleton
   private static instance: SalesforceConnection | null = null;
   private constructor() {
-    console.log('インスタンス生成');
+    console.log('[salesforce] インスタンス生成');
   }
   static getInstance = () => {
     SalesforceConnection.instance ??= new SalesforceConnection();
@@ -14,7 +16,7 @@ export class SalesforceConnection {
   };
   static getConnection = () => {
     if (!this.instance?.conn) {
-      throw new Error('接続が確立されていません');
+      throw new Error('[salesforce] 接続が確立されていません');
     }
     return this.instance.conn;
   };
@@ -22,11 +24,20 @@ export class SalesforceConnection {
 
   private conn: Connection | null = null;
 
-  connect = (tokens: SalesforceTokens): void => {
+  connect = async ({ instance_url, access_token }: SalesforceTokens): Promise<void> => {
+    const tokens = { instanceUrl: instance_url, accessToken: access_token };
+
+    const preCheck = new jsforce.Connection(tokens);
+    const versions = await preCheck.request<{ version: string }[]>(
+      `${instance_url}/services/data/`
+    );
+    const latestVersion = versions.at(-1)?.version;
+
     this.conn = new jsforce.Connection({
-      instanceUrl: tokens.instance_url,
-      accessToken: tokens.access_token,
+      ...tokens,
+      version: latestVersion ?? SF_API_VERSION_FALLBACK,
     });
+    console.log(`[salesforce] APIバージョン: ${this.conn.version}`);
   };
   disconnect = (): void => {
     this.conn = null;
