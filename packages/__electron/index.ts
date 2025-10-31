@@ -1,3 +1,5 @@
+export { type Entry } from './entries';
+
 /**
  * for Client App
  */
