@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
 
-import { OrgAndLoginUser } from '@toolbox/org-and-login-user';
+import { orgAndLoginUser } from '@toolbox/org-and-login-user/entry';
 
 export type Entry = {
   label: string;
@@ -19,9 +19,6 @@ const entries: { [appKey: string]: Entry } = {
   //   label: 'Example',
   //   App: Template,
   // },
-  orgAndLoginUser: {
-    label: '組織とログインユーザー',
-    App: OrgAndLoginUser,
-  },
+  orgAndLoginUser,
 };
 export default entries;
