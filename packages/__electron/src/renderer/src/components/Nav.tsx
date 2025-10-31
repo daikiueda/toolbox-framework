@@ -43,6 +43,7 @@ const Spectrum = {
     --mod-sidenav-item-background-default-selected: var(--spectrum-blue-200);
     --mod-sidenav-item-background-down: var(--spectrum-blue-300);
     --mod-sidenav-item-background-down-selected: var(--spectrum-blue-300);
+    --mod-sidenav-max-width: 'auto';
 
     && {
       margin-inline: 24px;
@@ -51,19 +52,33 @@ const Spectrum = {
 
   Item: styled.li.attrs<{ selected?: boolean }>(({ selected }) => ({
     className: classnames(['spectrum-SideNav-item', { 'is-selected': selected }]),
-  }))``,
+  }))`
+    margin-left: -12px;
+    margin-right: -12px;
+  `,
 
   _ItemLink: styled.a.attrs({
     className: 'spectrum-SideNav-itemLink',
     href: '#',
-  })``,
+  })`
+    svg {
+      margin: 7px 6px 0 0;
+    }
+  `,
 
   _LinkText: styled.span.attrs({
     className: 'spectrum-SideNav-link-text',
   })``,
 
-  Link: ({ children, ...itemLinkProps }: React.ComponentProps<typeof Spectrum._ItemLink>) => (
+  Link: ({
+    children,
+    Icon,
+    ...itemLinkProps
+  }: React.ComponentProps<typeof Spectrum._ItemLink> & {
+    Icon?: MenuItemEntry['Icon'];
+  }) => (
     <Spectrum._ItemLink {...itemLinkProps}>
+      {Icon && <Icon size="S" />}
       <Spectrum._LinkText>{children}</Spectrum._LinkText>
     </Spectrum._ItemLink>
   ),
@@ -87,7 +102,9 @@ const Nav: React.ForwardRefRenderFunction<React.ComponentRef<typeof Panel>, Prop
       <Spectrum.SideNav>
         {Object.entries(menuItems).map(([appKey, entry]) => (
           <Spectrum.Item key={appKey} selected={entry.App === currentApp.App}>
-            <Spectrum.Link onClick={switchApp(entry)}>{entry.label}</Spectrum.Link>
+            <Spectrum.Link onClick={switchApp(entry)} Icon={entry.Icon}>
+              {entry.label}
+            </Spectrum.Link>
           </Spectrum.Item>
         ))}
       </Spectrum.SideNav>
