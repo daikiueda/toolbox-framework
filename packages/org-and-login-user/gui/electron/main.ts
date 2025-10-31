@@ -1,8 +1,8 @@
 import { ipcMain } from 'electron';
 
-import { listRecentLoginHistory } from '../../src/LoginHistoryRecord';
-import { getLoginUserDetail } from '../../src/LoginUserDetail';
-import { getOrgDetail } from '../../src/OrgDetail';
+import { listRecentLoginHistory } from '../../src/repositories/LoginHistoryRepository';
+import { getLoginUserDetail } from '../../src/repositories/LoginUserRepository';
+import { getOrgDetail } from '../../src/repositories/OrgDetailRepository';
 
 import { ORG_AND_LOGIN_USER_CHANNELS, OrgAndLoginUserChannel } from './constants';
 

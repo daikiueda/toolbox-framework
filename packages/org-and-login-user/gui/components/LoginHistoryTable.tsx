@@ -5,17 +5,21 @@ import {
   Column,
   Flex,
   Heading,
+  InlineError,
   Row,
+  Skeleton,
   TableBody,
   TableHeader,
   TableView,
   Text,
 } from '@toolbox/design-system';
 
-import type { LoginHistoryRecord } from '../../src/LoginHistoryRecord';
+import { LoginHistoryRecord } from '../../src/models';
 
 const LoginHistoryTable: React.FC = () => {
-  const [loginHistory, setLoginHistory] = useState<LoginHistoryRecord[]>([]);
+  const [loginHistory, setLoginHistory] = useState<LoginHistoryRecord[]>(
+    new Array(10).fill(0).map(() => LoginHistoryRecord.default(window.crypto.randomUUID()))
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,70 +42,37 @@ const LoginHistoryTable: React.FC = () => {
     fetchLoginHistory();
   }, []);
 
-  const formatLoginTime = (loginTime: string): string => {
-    const date = new Date(loginTime);
-    return date.toLocaleString('ja-JP', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
-
-  if (isLoading) {
-    return (
-      <Flex direction="column" gap="size-200">
-        <Heading level={3}>ログイン履歴</Heading>
-        <Text>読み込み中...</Text>
-      </Flex>
-    );
-  }
-
-  if (error) {
-    return (
-      <Flex direction="column" gap="size-200">
-        <Heading level={3}>ログイン履歴</Heading>
-        <Text>
-          <span style={{ color: 'var(--spectrum-global-color-red-600)' }}>{error}</span>
-        </Text>
-      </Flex>
-    );
-  }
-
   return (
     <Flex direction="column" gap="size-200" width="100%">
       <Heading level={3}>ログイン履歴</Heading>
-      {loginHistory.length === 0 ? (
+
+      {error ? (
+        <InlineError>{error}</InlineError>
+      ) : loginHistory.length === 0 ? (
         <Text>ログイン履歴がありません</Text>
       ) : (
-        <TableView aria-label="ログイン履歴" width="100%" height="size-6000">
+        <TableView aria-label="ログイン履歴" maxHeight="size-4600">
           <TableHeader>
-            <Column key="loginTime" width={200}>
-              ログイン日時
-            </Column>
-            <Column key="status" width={100}>
-              ステータス
-            </Column>
-            <Column key="browser" width={150}>
-              ブラウザ
-            </Column>
-            <Column key="platform" width={150}>
-              プラットフォーム
-            </Column>
-            <Column key="sourceIp" width={150}>
-              IPアドレス
-            </Column>
+            <Column width={200}>ログイン時刻 ({getTimezoneName()})</Column>
+            <Column allowsResizing>状況</Column>
+            <Column allowsResizing>アプリケーション</Column>
+            <Column allowsResizing>アクセス元 IP</Column>
+            <Column allowsResizing>場所</Column>
           </TableHeader>
           <TableBody>
             {loginHistory.map((record) => (
-              <Row key={record.Id}>
-                <Cell>{formatLoginTime(record.LoginTime)}</Cell>
-                <Cell>{record.Status}</Cell>
-                <Cell>{record.Browser ?? '-'}</Cell>
-                <Cell>{record.Platform ?? '-'}</Cell>
-                <Cell>{record.SourceIp ?? '-'}</Cell>
+              <Row key={record.id}>
+                <Cell>{isLoading ? <Skeleton /> : formatLoginTime(record.loginTime)}</Cell>
+                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.status)}</Cell>
+                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.application)}</Cell>
+                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.sourceIp)}</Cell>
+                <Cell>
+                  {isLoading ? (
+                    <Skeleton />
+                  ) : (
+                    formatLocation(record.loginGeo?.country ?? null, record.loginGeo?.city ?? null)
+                  )}
+                </Cell>
               </Row>
             ))}
           </TableBody>
@@ -111,3 +82,42 @@ const LoginHistoryTable: React.FC = () => {
   );
 };
 export default LoginHistoryTable;
+
+const getTimezoneName = () => {
+  const options = { timeZoneName: 'short' as const };
+  const formatter = new Intl.DateTimeFormat('ja-JP', options);
+
+  const parts = formatter.formatToParts(new Date());
+  return parts.find((p) => p?.type === 'timeZoneName')?.value;
+};
+
+const formatLoginTime = (loginTime: string): string => {
+  const date = new Date(loginTime);
+  return date.toLocaleString('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+};
+
+const formatNullable = (value: string | null | undefined): string =>
+  value && value.trim().length > 0 ? value : '-';
+
+const formatLocation = (country: string | null, city: string | null): string => {
+  const location: string[] = [];
+
+  if (city && city.trim().length > 0) {
+    location.push(city);
+  }
+
+  if (country && country.trim().length > 0) {
+    location.push(country);
+  }
+
+  return location.length ? location.join(', ') : '-';
+};

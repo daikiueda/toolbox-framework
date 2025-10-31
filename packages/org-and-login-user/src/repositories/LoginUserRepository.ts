@@ -1,14 +1,6 @@
 import { SalesforceConnection } from '@toolbox/salesforce/lib';
 
-export type LoginUserDetail = {
-  id: string;
-  username: string;
-  email: string;
-  name: string;
-  profileName: string;
-  roleName: string | null;
-  employeeNumber: string | null;
-};
+import { LoginUserDetail } from '../models';
 
 export const getLoginUserDetail = async (): Promise<LoginUserDetail> => {
   const conn = SalesforceConnection.getConnection();

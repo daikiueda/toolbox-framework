@@ -1,5 +1,5 @@
 import type { ConnectionState } from '../../lib/models/ConnectionState';
-import type { OrgInfo } from '../../src/OrgInfo';
+import type { OrgInfo } from '../../src/models/OrgInfo';
 
 export const SALESFORCE_CHANNELS = {
   login: 'salesforce:login',

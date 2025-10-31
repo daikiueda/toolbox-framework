@@ -14,7 +14,7 @@ const App: React.FC = () => {
   return (
     <LoginGate>
       <PageWithTheme>
-        <Heading level={1}>Organization and Login User</Heading>
+        <Heading level={1}>組織とログインユーザー</Heading>
         <Flex direction="column" gap="size-400">
           <OrgDetailView />
           <LoginUserDetailView />

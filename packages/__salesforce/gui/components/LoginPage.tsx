@@ -92,7 +92,7 @@ const App: React.FC<Props> = ({ onLogin }) => {
 
   return (
     <PageWithTheme>
-      <Heading level={1}>Login</Heading>
+      <Heading level={1}>ログイン</Heading>
       <Form onSubmit={handleSubmit} width="size-6000">
         <RadioGroup
           label="インスタンスURL"

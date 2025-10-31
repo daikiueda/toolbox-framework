@@ -2,9 +2,7 @@ import React from 'react';
 
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
 
-import { KitchenSink } from '@toolbox/gui-kitchen-sink';
 import { OrgAndLoginUser } from '@toolbox/org-and-login-user';
-import { Template } from '@toolbox/template';
 
 export type Entry = {
   label: string;
@@ -13,16 +11,16 @@ export type Entry = {
 };
 
 const entries: { [appKey: string]: Entry } = {
-  kitchenSink: {
-    label: 'Kitchen Sink',
-    App: KitchenSink,
-  },
-  template: {
-    label: 'Example',
-    App: Template,
-  },
+  // kitchenSink: {
+  //   label: 'Kitchen Sink',
+  //   App: KitchenSink,
+  // },
+  // template: {
+  //   label: 'Example',
+  //   App: Template,
+  // },
   orgAndLoginUser: {
-    label: 'Organization and Login User',
+    label: '組織とログインユーザー',
     App: OrgAndLoginUser,
   },
 };

@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
+import {
+  AsyncLabeledValue,
+  Flex,
+  Grid,
+  Heading,
+  InlineError,
+  View,
+  repeat,
+} from '@toolbox/design-system';
 
-import { type OrgDetail } from '../../src/OrgDetail';
+import { OrgDetail } from '../../src/models';
 
 const formatNumber = (num: number | null): string => {
   if (num === null) return '-';
@@ -10,19 +18,7 @@ const formatNumber = (num: number | null): string => {
 };
 
 const OrgDetailView: React.FC = () => {
-  const [orgDetail, setOrgDetail] = useState<OrgDetail>({
-    orgId: '',
-    orgName: '',
-    orgType: 'Production',
-    organizationType: '',
-    instanceName: '',
-    dataStorageUsed: null,
-    dataStorageMax: null,
-    fileStorageUsed: null,
-    fileStorageMax: null,
-    apiRequestsUsed: null,
-    apiRequestsMax: null,
-  });
+  const [orgDetail, setOrgDetail] = useState<OrgDetail>(OrgDetail.default());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,34 +50,45 @@ const OrgDetailView: React.FC = () => {
 
         {!error && (
           <>
-            <AsyncLabeledValue label="組織名" value={orgDetail.orgName} isLoading={isLoading} />
-            <AsyncLabeledValue label="組織 ID" value={orgDetail.orgId} isLoading={isLoading} />
-            <AsyncLabeledValue label="組織タイプ" value={orgDetail.orgType} isLoading={isLoading} />
             <AsyncLabeledValue
-              label="エディション"
-              value={orgDetail.organizationType}
+              label="組織名"
+              labelPosition="side"
+              value={orgDetail.orgName}
               isLoading={isLoading}
             />
-            <AsyncLabeledValue
-              label="インスタンス"
-              value={orgDetail.instanceName}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="データ使用量"
-              value={`${formatNumber(orgDetail.dataStorageUsed)} MB / ${formatNumber(orgDetail.dataStorageMax)} MB`}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="ファイル使用量"
-              value={`${formatNumber(orgDetail.fileStorageUsed)} MB / ${formatNumber(orgDetail.fileStorageMax)} MB`}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="API 要求数"
-              value={`${formatNumber(orgDetail.apiRequestsUsed)} / ${formatNumber(orgDetail.apiRequestsMax)}`}
-              isLoading={isLoading}
-            />
+            <Grid columns={repeat('auto-fit', 'size-2400')} gap="size-250">
+              <AsyncLabeledValue label="組織 ID" value={orgDetail.orgId} isLoading={isLoading} />
+              <AsyncLabeledValue
+                label="組織タイプ"
+                value={orgDetail.orgType}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="エディション"
+                value={orgDetail.organizationType}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="インスタンス"
+                value={orgDetail.instanceName}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="データ使用量"
+                value={`${formatNumber(orgDetail.dataStorageUsed)} MB / ${formatNumber(orgDetail.dataStorageMax)} MB`}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="ファイル使用量"
+                value={`${formatNumber(orgDetail.fileStorageUsed)} MB / ${formatNumber(orgDetail.fileStorageMax)} MB`}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="API 要求数"
+                value={`${formatNumber(orgDetail.apiRequestsUsed)} / ${formatNumber(orgDetail.apiRequestsMax)}`}
+                isLoading={isLoading}
+              />
+            </Grid>
           </>
         )}
       </Flex>

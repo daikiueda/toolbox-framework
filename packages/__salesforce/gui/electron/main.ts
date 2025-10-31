@@ -4,7 +4,7 @@ import { SalesforceConnection } from '../../lib';
 import { OAuthConfig, REDIRECT_URI } from '../../lib/core/auth/OAuthConfig';
 import { buildAuthorizationUrl, exchangeCodeForTokens } from '../../lib/core/auth/oauth';
 import { PKCEParams } from '../../lib/core/auth/pkce';
-import { getOrgInfo } from '../../src/OrgInfo';
+import { getOrgInfo } from '../../src/repositories/OrgInfoRepository';
 
 import { SALESFORCE_CHANNELS, type SalesforceChannel } from './constants';
 
