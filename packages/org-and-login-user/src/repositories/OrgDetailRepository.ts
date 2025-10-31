@@ -1,18 +1,6 @@
 import { SalesforceConnection } from '@toolbox/salesforce/lib';
 
-export type OrgDetail = {
-  orgId: string;
-  orgName: string;
-  orgType: 'Production' | 'Sandbox';
-  organizationType: string;
-  instanceName: string;
-  dataStorageUsed: number | null;
-  dataStorageMax: number | null;
-  fileStorageUsed: number | null;
-  fileStorageMax: number | null;
-  apiRequestsUsed: number | null;
-  apiRequestsMax: number | null;
-};
+import { OrgDetail } from '../models';
 
 export const getOrgDetail = async (): Promise<OrgDetail> => {
   const conn = SalesforceConnection.getConnection();

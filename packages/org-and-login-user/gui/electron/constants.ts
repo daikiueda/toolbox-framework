@@ -1,6 +1,4 @@
-import { LoginHistoryRecord } from '../../src/LoginHistoryRecord';
-import { LoginUserDetail } from '../../src/LoginUserDetail';
-import { OrgDetail } from '../../src/OrgDetail';
+import { LoginHistoryRecord, LoginUserDetail, OrgDetail } from '../../src/models';
 
 const PREFIX = 'org-and-login-user:';
 

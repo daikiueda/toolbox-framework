@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
+import {
+  AsyncLabeledValue,
+  Flex,
+  Grid,
+  Heading,
+  InlineError,
+  View,
+  repeat,
+} from '@toolbox/design-system';
 
-import { type LoginUserDetail } from '../../src/LoginUserDetail';
+import { LoginUserDetail } from '../../src/models';
 
 const LoginUserDetailView: React.FC = () => {
-  const [loginUserDetail, setLoginUserDetail] = useState<LoginUserDetail>({
-    id: '',
-    username: '',
-    email: '',
-    name: '',
-    profileName: '',
-    roleName: null,
-    employeeNumber: null,
-  });
+  const [loginUserDetail, setLoginUserDetail] = useState<LoginUserDetail>(
+    LoginUserDetail.default()
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,37 +47,44 @@ const LoginUserDetailView: React.FC = () => {
 
         {!error && (
           <>
-            <AsyncLabeledValue label="氏名" value={loginUserDetail.name} isLoading={isLoading} />
             <AsyncLabeledValue
-              label="ユーザー ID"
-              value={loginUserDetail.id}
+              label="氏名"
+              labelPosition="side"
+              value={loginUserDetail.name}
               isLoading={isLoading}
             />
-            <AsyncLabeledValue
-              label="ユーザー名"
-              value={loginUserDetail.username}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="メールアドレス"
-              value={loginUserDetail.email}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="プロファイル"
-              value={loginUserDetail.profileName}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="ロール"
-              value={loginUserDetail.roleName || 'なし'}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="従業員番号"
-              value={loginUserDetail.employeeNumber || '未設定'}
-              isLoading={isLoading}
-            />
+            <Grid columns={repeat('auto-fit', 'size-3400')} gap="size-250">
+              <AsyncLabeledValue
+                label="ユーザー ID"
+                value={loginUserDetail.id}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="ユーザー名"
+                value={loginUserDetail.username}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="メールアドレス"
+                value={loginUserDetail.email}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="プロファイル"
+                value={loginUserDetail.profileName}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="ロール"
+                value={loginUserDetail.roleName || 'なし'}
+                isLoading={isLoading}
+              />
+              <AsyncLabeledValue
+                label="従業員番号"
+                value={loginUserDetail.employeeNumber || '未設定'}
+                isLoading={isLoading}
+              />
+            </Grid>
           </>
         )}
       </Flex>

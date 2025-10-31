@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Badge, Button, Flex } from '@toolbox/design-system';
 
-import type { OrgInfo } from '../../src/OrgInfo';
+import type { OrgInfo } from '../../src/models/OrgInfo';
 
 type Props = {
   orgInfo: OrgInfo | null | undefined;
@@ -26,8 +26,8 @@ const SalesforceConnectionBar: React.FC<Props> = ({ orgInfo, onLogout }: Props) 
         <OrgName>{orgInfo.orgName}</OrgName>
       </Flex>
 
-      <Button variant="secondary" onPress={onLogout}>
-        logout
+      <Button variant="primary" style="fill" onPress={onLogout}>
+        ログアウト
       </Button>
     </Connected>
   );
@@ -41,7 +41,7 @@ const Header = styled.header`
   gap: 12px;
   padding: 0 12px;
   border-bottom: 1px solid var(--spectrum-gray-200);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--spectrum-gray-25);
   backdrop-filter: blur(8px);
 `;
 
@@ -63,6 +63,12 @@ const Disconnected = styled(Header)`
 const Connected = styled(Header)`
   height: 48px;
   justify-content: space-between;
+
+  //background-image: linear-gradient(
+  //  135deg,
+  //  var(--spectrum-yellow-300) 10%,
+  //  var(--spectrum-blue-900) 100%
+  //);
 `;
 
 const OrgName = styled.span`

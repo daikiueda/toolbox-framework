@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ConnectionState } from '../../lib/models/ConnectionState';
-import type { OrgInfo } from '../../src/OrgInfo';
+import type { OrgInfo } from '../../src/models/OrgInfo';
 
 import { SalesforceContext, type SalesforceContextValue } from './SalesforceContext';
 
