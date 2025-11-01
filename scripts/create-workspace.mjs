@@ -215,7 +215,9 @@ const integrateWorkspaceWithElectron = (featureName) => {
 
     replacements.forEach(({ target, value }) => {
       if (!updated.includes(target)) {
-        console.warn(`⚠️  ${path.relative(process.cwd(), filePath)} にアンカーが見つかりません: ${target}`);
+        console.warn(
+          `⚠️  ${path.relative(process.cwd(), filePath)} にアンカーが見つかりません: ${target}`
+        );
         return;
       }
 
@@ -259,8 +261,6 @@ const main = () => {
 
   console.log('\n🎉 新機能ワークスペースの作成が完了しました！');
   console.log('\n💡 次のステップ:');
-  console.log(`   GUI開発: npm run --workspace packages/${featureName} gui`);
-  console.log(`   テスト:   npm run --workspace packages/${featureName} test`);
   console.log(`   統合確認: npm run dev`);
 };
 

@@ -96,10 +96,8 @@ npm run create:workspace -- <feature-name>
 ### 新機能開発時の流れ
 
 1. `npm run create:workspace -- <feature-name>` で新ワークスペース作成
-2. `npm run --workspace packages/<feature-name> gui` で個別 GUI 開発
-3. `npm run --workspace packages/<feature-name> test` で単体テスト
-4. `npm run dev` で全体統合テスト
-5. `npm run lint && npm run typecheck` でコード品質確認
+2. `npm run dev` で全体統合テスト
+3. `npm run lint && npm run typecheck` でコード品質確認
 
 ### コミット前チェック項目
 

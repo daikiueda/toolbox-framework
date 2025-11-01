@@ -33,9 +33,7 @@ npm run create:workspace -- <feature-name>
 npm run create:workspace -- my-feature
 
 # 作成後の開発コマンド
-npm run --workspace packages/my-feature gui    # GUI開発
-npm run --workspace packages/my-feature test   # テスト実行
-npm run dev                                     # 統合確認
+npm run dev  # 統合確認
 ```
 
 ## ビルド・テスト・開発コマンド
@@ -54,12 +52,6 @@ npm run dev                                     # 統合確認
 ### Kitchen Sink
 
 - `npm run --workspace packages/gui-kitchen-sink gui`: デザインシステムの Kitchen Sink を単体で起動し、ブラウザでコンポーネント挙動を確認します。
-
-### 業務ワークスペース (`packages/<feature-name>`) で使う例
-
-- `npm run --workspace packages/<feature-name> gui`: Vite を起動し、業務ワークスペース固有の GUI 開発サーバーを立ち上げます（`__template` 由来の `gui` スクリプト）。
-- `npm run --workspace packages/<feature-name> test`: Node.js テストランナーを `esbuild-register` 経由で実行し、`src/__tests__` 以下の `.test.ts` を検証します。
-- `npm run --workspace packages/<feature-name> build:cli`: `esbuild` で CLI エントリをバンドルし、`bin/__cli.js` を生成します。複製直後の `postinstall` ではこのスクリプトが自動実行されます。
 
 ## コーディングスタイルと命名規約
 
