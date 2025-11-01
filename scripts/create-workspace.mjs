@@ -6,6 +6,41 @@ import path from 'path';
 const TEMPLATE_DIR = './packages/__template';
 const PACKAGES_DIR = './packages';
 
+const toPascalCase = (featureName) =>
+  featureName
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+
+const toCamelCase = (featureName) => {
+  const pascal = toPascalCase(featureName);
+  return pascal.charAt(0).toLowerCase() + pascal.slice(1);
+};
+
+const toScreamingSnakeCase = (featureName) => featureName.replace(/-/g, '_').toUpperCase();
+
+const toTitleCase = (featureName) =>
+  featureName
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+const collectFiles = (dir) => {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  return entries.flatMap((entry) => {
+    const entryPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      return collectFiles(entryPath);
+    }
+    if (entry.isFile()) {
+      return [entryPath];
+    }
+    return [];
+  });
+};
+
 const getFeatureName = () => {
   const args = process.argv.slice(2);
   if (args.length === 0) {
@@ -46,63 +81,65 @@ const copyTemplate = (featureName) => {
   }
 };
 
-const updatePackageJson = (featureName) => {
-  const packageJsonPath = path.join(PACKAGES_DIR, featureName, 'package.json');
-  console.log('📝 package.json を調整中...');
+const replaceTemplateIdentifiers = (featureName) => {
+  console.log('🛠️ テンプレート識別子を置換中...');
+
+  const targetDir = path.join(PACKAGES_DIR, featureName);
+  const pascalName = toPascalCase(featureName);
+  const camelName = toCamelCase(featureName);
+  const screamingSnakeName = toScreamingSnakeCase(featureName);
+  const titleCaseName = toTitleCase(featureName);
+
+  const replacements = [
+    { search: /@toolbox\/template/g, replace: `@toolbox/${featureName}` },
+    {
+      search: /(['"])template\1/g,
+      replace: (_, quote) => `${quote}${featureName}${quote}`,
+    },
+    {
+      search: /template:/g,
+      replace: `${featureName}:`,
+    },
+    {
+      search: /(['"])Template\1/g,
+      replace: (_, quote) => `${quote}${titleCaseName}${quote}`,
+    },
+    { search: 'TEMPLATE', replace: screamingSnakeName },
+    { search: 'Template', replace: pascalName },
+    { search: 'template', replace: camelName },
+  ];
 
   try {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    const files = collectFiles(targetDir);
 
-    // name と bin を更新
-    packageJson.name = `@toolbox/${featureName}`;
-    packageJson.bin = {
-      [`toolbox-${featureName}`]: './bin/cli.js',
-    };
+    files.forEach((filePath) => {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const updated = replacements.reduce((acc, { search, replace }) => {
+        if (search instanceof RegExp) {
+          return acc.replace(search, replace);
+        }
+        return acc.split(search).join(replace);
+      }, content);
 
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
-    console.log('✅ package.json 調整完了');
+      if (updated !== content) {
+        fs.writeFileSync(filePath, updated);
+      }
+    });
+
+    console.log('✅ テンプレート識別子の置換完了');
   } catch (error) {
-    console.error('❌ package.json 調整失敗:', error.message);
+    console.error('❌ テンプレート識別子の置換失敗:', error.message);
     process.exit(1);
   }
 };
 
-const updateAppTsx = (featureName) => {
-  const appTsxPath = path.join(PACKAGES_DIR, featureName, 'gui', 'App.tsx');
-  console.log('📝 App.tsx を調整中...');
-
-  try {
-    let content = fs.readFileSync(appTsxPath, 'utf8');
-
-    // Heading のテキストを更新
-    const capitalizedName = featureName.charAt(0).toUpperCase() + featureName.slice(1);
-    content = content.replace(
-      '<Heading level={1}>Example</Heading>',
-      `<Heading level={1}>${capitalizedName}</Heading>`
-    );
-
-    fs.writeFileSync(appTsxPath, content);
-    console.log('✅ App.tsx 調整完了');
-  } catch (error) {
-    console.error('❌ App.tsx 調整失敗:', error.message);
-    process.exit(1);
-  }
-};
-
-const runInitialSetup = (featureName) => {
+const runInitialSetup = () => {
   console.log('🔧 初期セットアップを実行中...');
 
   try {
     // npm install を実行
     console.log('📦 npm install 実行中...');
     execSync('npm install --no-optional', { stdio: 'inherit', cwd: process.cwd() });
-
-    // build:cli を実行
-    console.log('🏗️  CLI ビルド実行中...');
-    execSync(`npm run --workspace packages/${featureName} build:cli`, {
-      stdio: 'inherit',
-      cwd: process.cwd(),
-    });
 
     console.log('✅ 初期セットアップ完了');
   } catch (error) {
@@ -119,9 +156,8 @@ const main = () => {
 
   checkExistingDirectory(featureName);
   copyTemplate(featureName);
-  updatePackageJson(featureName);
-  updateAppTsx(featureName);
-  runInitialSetup(featureName);
+  replaceTemplateIdentifiers(featureName);
+  runInitialSetup();
 
   console.log('\n🎉 新機能ワークスペースの作成が完了しました！');
   console.log('\n💡 次のステップ:');

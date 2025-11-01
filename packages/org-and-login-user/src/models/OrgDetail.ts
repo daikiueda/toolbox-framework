@@ -1,7 +1,7 @@
 export type OrgDetail = {
   orgId: string;
   orgName: string;
-  orgType: 'Production' | 'Sandbox';
+  orgType: 'Production' | 'Sandbox' | null;
   organizationType: string;
   instanceName: string;
   dataStorageUsed: number | null;
@@ -15,7 +15,7 @@ export const OrgDetail = {
   default: (): OrgDetail => ({
     orgId: '',
     orgName: '',
-    orgType: 'Production',
+    orgType: null,
     organizationType: '',
     instanceName: '',
     dataStorageUsed: null,

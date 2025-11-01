@@ -1,5 +1,7 @@
 import React from 'react';
 
+import AppIcon from '@spectrum-icons/workflow/Organisations';
+
 import { Flex, Heading } from '@toolbox/design-system';
 import { useSalesforce } from '@toolbox/salesforce';
 
@@ -14,7 +16,10 @@ const App: React.FC = () => {
   return (
     <LoginGate>
       <PageWithTheme>
-        <Heading level={1}>組織とログインユーザー</Heading>
+        <Heading level={1}>
+          <AppIcon size="L" />
+          組織とログインユーザー
+        </Heading>
         <Flex direction="column" gap="size-400">
           <OrgDetailView />
           <LoginUserDetailView />
@@ -26,3 +31,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+export { AppIcon };

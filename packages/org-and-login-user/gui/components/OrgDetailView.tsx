@@ -60,7 +60,7 @@ const OrgDetailView: React.FC = () => {
               <AsyncLabeledValue label="組織 ID" value={orgDetail.orgId} isLoading={isLoading} />
               <AsyncLabeledValue
                 label="組織タイプ"
-                value={orgDetail.orgType}
+                value={orgDetail.orgType ?? 'unknown'}
                 isLoading={isLoading}
               />
               <AsyncLabeledValue

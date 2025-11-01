@@ -1,13 +1,11 @@
-import Organisations from '@spectrum-icons/workflow/Organisations';
-
 import { type Entry } from '@toolbox/electron';
 
-import OrgAndLoginUser from './gui/App';
+import OrgAndLoginUser, { AppIcon } from './gui/App';
 
 const orgAndLoginUser: Entry = {
   label: '組織とログインユーザー',
   App: OrgAndLoginUser,
-  Icon: Organisations,
+  Icon: AppIcon,
 };
 
 export { OrgAndLoginUser, orgAndLoginUser };

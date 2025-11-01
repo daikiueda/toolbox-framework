@@ -1,31 +1,30 @@
-import { useState } from 'react';
+import React from 'react';
 
-import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
+import AppIcon from '@spectrum-icons/workflow/Organisations';
 
-import greet from '../src/main';
+import { Flex, Heading } from '@toolbox/design-system';
+import { useSalesforce } from '@toolbox/salesforce';
 
+import OrgDetailView from './components/OrgDetailView';
 import PageWithTheme from './components/PageWithTheme';
 
-function App() {
-  const [whoToGreet, setWhoToGreet] = useState('world');
+const App: React.FC = () => {
+  const { LoginGate } = useSalesforce();
 
   return (
-    <PageWithTheme>
-      <Heading level={1}>Example</Heading>
-      <Form>
-        <TextField
-          width="size-3000"
-          label="Who to greet"
-          value={whoToGreet}
-          onChange={setWhoToGreet}
-          isRequired
-        />
-        <View marginTop="size-400">
-          <Text>{greet(whoToGreet)}</Text>
-        </View>
-      </Form>
-    </PageWithTheme>
+    <LoginGate>
+      <PageWithTheme>
+        <Heading level={1}>
+          <AppIcon size="L" />
+          Template
+        </Heading>
+        <Flex direction="column" gap="size-400">
+          <OrgDetailView />
+        </Flex>
+      </PageWithTheme>
+    </LoginGate>
   );
-}
+};
 
 export default App;
+export { AppIcon };
