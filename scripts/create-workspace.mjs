@@ -97,8 +97,8 @@ const replaceTemplateIdentifiers = (featureName) => {
       replace: (_, quote) => `${quote}${featureName}${quote}`,
     },
     {
-      search: /template:/g,
-      replace: `${featureName}:`,
+      search: /(['"])template:/g,
+      replace: (_, quote) => `${quote}${featureName}:`,
     },
     {
       search: /(['"])Template\1/g,
@@ -133,6 +133,103 @@ const replaceTemplateIdentifiers = (featureName) => {
   }
 };
 
+const integrateWorkspaceWithElectron = (featureName) => {
+  console.log('🔗 Electron 連携を調整中...');
+
+  const pascalName = toPascalCase(featureName);
+  const camelName = toCamelCase(featureName);
+
+  const updates = [
+    {
+      file: path.join('packages', '__electron', 'entries.ts'),
+      check: `@toolbox/${featureName}/entry`,
+      replacements: [
+        {
+          target: "// import { template } from '@toolbox/template/entry';",
+          value: `import { ${camelName} } from '@toolbox/${featureName}/entry';\n// import { template } from '@toolbox/template/entry';`,
+        },
+        {
+          target: '  // template,',
+          value: `  ${camelName},\n  // template,`,
+        },
+      ],
+    },
+    {
+      file: path.join('packages', '__electron', 'src', 'main', 'index.ts'),
+      check: `register${pascalName}Handlers`,
+      replacements: [
+        {
+          target:
+            "// import { registerTemplateHandlers, unregisterTemplateHandlers } from '@toolbox/template/electron';",
+          value: `import { register${pascalName}Handlers, unregister${pascalName}Handlers } from '@toolbox/${featureName}/electron';\n// import { registerTemplateHandlers, unregisterTemplateHandlers } from '@toolbox/template/electron';`,
+        },
+        {
+          target: '  // registerTemplateHandlers();',
+          value: `  register${pascalName}Handlers();\n  // registerTemplateHandlers();`,
+        },
+        {
+          target: '  // unregisterTemplateHandlers();',
+          value: `  unregister${pascalName}Handlers();\n  // unregisterTemplateHandlers();`,
+        },
+      ],
+    },
+    {
+      file: path.join('packages', '__electron', 'src', 'preload', 'index.ts'),
+      check: `build${pascalName}API`,
+      replacements: [
+        {
+          target: "// import { buildTemplateAPI } from '@toolbox/template/electron';",
+          value: `import { build${pascalName}API } from '@toolbox/${featureName}/electron';\n// import { buildTemplateAPI } from '@toolbox/template/electron';`,
+        },
+        {
+          target: '  // template: buildTemplateAPI(),',
+          value: `  ${camelName}: build${pascalName}API(),\n  // template: buildTemplateAPI(),`,
+        },
+      ],
+    },
+    {
+      file: path.join('packages', '__electron', 'src', 'preload', 'global.d.ts'),
+      check: `${pascalName}API`,
+      replacements: [
+        {
+          target: "// import { TemplateAPI } from '@toolbox/template/electron';",
+          value: `import { ${pascalName}API } from '@toolbox/${featureName}/electron';\n// import { TemplateAPI } from '@toolbox/template/electron';`,
+        },
+        {
+          target: '      // template?: TemplateAPI;',
+          value: `      ${camelName}?: ${pascalName}API;\n      // template?: TemplateAPI;`,
+        },
+      ],
+    },
+  ];
+
+  updates.forEach(({ file, check, replacements }) => {
+    const filePath = path.join(process.cwd(), file);
+    let content = fs.readFileSync(filePath, 'utf8');
+
+    if (content.includes(check)) {
+      return;
+    }
+
+    let updated = content;
+
+    replacements.forEach(({ target, value }) => {
+      if (!updated.includes(target)) {
+        console.warn(`⚠️  ${path.relative(process.cwd(), filePath)} にアンカーが見つかりません: ${target}`);
+        return;
+      }
+
+      updated = updated.replace(target, value);
+    });
+
+    if (updated !== content) {
+      fs.writeFileSync(filePath, updated);
+    }
+  });
+
+  console.log('✅ Electron 連携の調整完了');
+};
+
 const runInitialSetup = () => {
   console.log('🔧 初期セットアップを実行中...');
 
@@ -157,6 +254,7 @@ const main = () => {
   checkExistingDirectory(featureName);
   copyTemplate(featureName);
   replaceTemplateIdentifiers(featureName);
+  integrateWorkspaceWithElectron(featureName);
   runInitialSetup();
 
   console.log('\n🎉 新機能ワークスペースの作成が完了しました！');

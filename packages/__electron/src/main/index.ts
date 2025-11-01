@@ -13,7 +13,8 @@ import {
   registerSalesforceHandlers,
   unregisterSalesforceHandlers,
 } from '@toolbox/salesforce/electron';
-import { registerTemplateHandlers, unregisterTemplateHandlers } from '@toolbox/template/electron';
+
+// import { registerTemplateHandlers, unregisterTemplateHandlers } from '@toolbox/template/electron';
 
 import {
   registerAppearanceHandlers,
@@ -36,7 +37,7 @@ const registerHandlers = (window: BrowserWindow) => {
   registerBrowserWindowHandlers(window);
   registerSalesforceHandlers();
   registerOrgAndLoginUserHandlers();
-  registerTemplateHandlers();
+  // registerTemplateHandlers();
 };
 
 const unregisterHandlers = () => {
@@ -45,7 +46,7 @@ const unregisterHandlers = () => {
   unregisterBrowserWindowHandlers();
   unregisterSalesforceHandlers();
   unregisterOrgAndLoginUserHandlers();
-  unregisterTemplateHandlers();
+  // unregisterTemplateHandlers();
 };
 
 // 開発時のみプロジェクトルートの.env.localを読み込む

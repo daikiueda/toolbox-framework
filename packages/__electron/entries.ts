@@ -3,7 +3,8 @@ import React from 'react';
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
 
 import { orgAndLoginUser } from '@toolbox/org-and-login-user/entry';
-import { template } from '@toolbox/template/entry';
+
+// import { template } from '@toolbox/template/entry';
 
 export type Entry = {
   label: string;
@@ -13,6 +14,6 @@ export type Entry = {
 
 const entries: { [appKey: string]: Entry } = {
   orgAndLoginUser,
-  template,
+  // template,
 };
 export default entries;
