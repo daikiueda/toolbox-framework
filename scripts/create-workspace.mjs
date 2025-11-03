@@ -95,7 +95,7 @@ const runInitialSetup = (featureName) => {
   try {
     // npm install を実行
     console.log('📦 npm install 実行中...');
-    execSync('npm install', { stdio: 'inherit', cwd: process.cwd() });
+    execSync('npm install --no-optional', { stdio: 'inherit', cwd: process.cwd() });
 
     // build:cli を実行
     console.log('🏗️  CLI ビルド実行中...');
