@@ -1,5 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload';
 
+import { MultipleBulkExportAPI } from '@toolbox/multiple-bulk-export/electron';
 import { OrgAndLoginUserAPI } from '@toolbox/org-and-login-user/electron';
 import { SalesforceAPI } from '@toolbox/salesforce/electron';
 
@@ -18,6 +19,7 @@ declare global {
       browserWindowAPI?: BrowserWindowAPI;
       salesforce?: SalesforceAPI;
       orgAndLoginUser?: OrgAndLoginUserAPI;
+      multipleBulkExport?: MultipleBulkExportAPI;
       // template?: TemplateAPI;
     };
   }

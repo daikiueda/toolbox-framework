@@ -5,6 +5,10 @@ import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
 
 import {
+  registerMultipleBulkExportHandlers,
+  unregisterMultipleBulkExportHandlers,
+} from '@toolbox/multiple-bulk-export/electron';
+import {
   registerOrgAndLoginUserHandlers,
   unregisterOrgAndLoginUserHandlers,
 } from '@toolbox/org-and-login-user/electron';
@@ -37,6 +41,7 @@ const registerHandlers = (window: BrowserWindow) => {
   registerBrowserWindowHandlers(window);
   registerSalesforceHandlers();
   registerOrgAndLoginUserHandlers();
+  registerMultipleBulkExportHandlers();
   // registerTemplateHandlers();
 };
 
@@ -46,6 +51,7 @@ const unregisterHandlers = () => {
   unregisterBrowserWindowHandlers();
   unregisterSalesforceHandlers();
   unregisterOrgAndLoginUserHandlers();
+  unregisterMultipleBulkExportHandlers();
   // unregisterTemplateHandlers();
 };
 
