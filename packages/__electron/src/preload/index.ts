@@ -1,6 +1,7 @@
 import { electronAPI } from '@electron-toolkit/preload';
 import { contextBridge } from 'electron';
 
+import { buildMultipleBulkExportAPI } from '@toolbox/multiple-bulk-export/electron';
 import { buildOrgAndLoginUserAPI } from '@toolbox/org-and-login-user/electron';
 import { buildSalesforceAPI } from '@toolbox/salesforce/electron';
 
@@ -17,6 +18,7 @@ const api = {
   browserWindow: buildBrowserWindowAPI(),
   salesforce: buildSalesforceAPI(),
   orgAndLoginUser: buildOrgAndLoginUserAPI(),
+  multipleBulkExport: buildMultipleBulkExportAPI(),
   // template: buildTemplateAPI(),
 };
 
