@@ -9,7 +9,6 @@ import type {
   NormalizedObject,
   ObjectSelectionState,
 } from '../models';
-import { getOrgDetail } from '../repositories/OrgDetailRepository';
 import { BulkExportService, createBulkExportService } from '../services/BulkExportService';
 import { validateObjectSelection } from '../services/ObjectSelectionService';
 import { formatTimestamp, sanitizeForPath } from '../utils/path';
@@ -34,6 +33,8 @@ type ResolvedOutputDirectory = {
   orgName: string;
   timestamp: string;
 };
+
+const DEFAULT_ORG_FOLDER = 'SalesforceOrg';
 
 const broadcastError = (emitter: ProgressEmitter, message: string) => {
   emitter({
@@ -143,9 +144,7 @@ class ExportController {
   isRunning = (): boolean => Boolean(this.currentService);
 
   resolveOutputDirectory = async (customBase?: string | null): Promise<ResolvedOutputDirectory> => {
-    const org = await getOrgDetail();
-    const nameSource = org.orgName?.trim() || org.orgId || 'UnknownOrg';
-    const sanitizedOrgName = sanitizeForPath(nameSource);
+    const sanitizedOrgName = sanitizeForPath(DEFAULT_ORG_FOLDER);
     const timestamp = formatTimestamp(new Date());
 
     const baseDirectory = customBase && customBase.trim().length > 0 ? customBase.trim() : null;

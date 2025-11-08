@@ -8,7 +8,6 @@ export const buildMultipleBulkExportAPI = (): MultipleBulkExportAPI => {
   const { ipcRenderer } = electronAPI;
 
   return {
-    getOrgDetail: () => ipcRenderer.invoke(MULTIPLE_BULK_EXPORT_CHANNELS.getOrgDetail),
     validateObjectSelection: (objects: string[]) =>
       ipcRenderer.invoke(MULTIPLE_BULK_EXPORT_CHANNELS.validateObjectSelection, objects),
     startExport: (params) => ipcRenderer.invoke(MULTIPLE_BULK_EXPORT_CHANNELS.startExport, params),

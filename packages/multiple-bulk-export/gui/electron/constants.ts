@@ -1,4 +1,3 @@
-import { OrgDetail } from '../../src/models';
 import type {
   ExportCompletionPayload,
   ExportProgressEvent,
@@ -10,7 +9,6 @@ import type { ResolvedOutputDirectory, StartExportResponse } from '../../src/use
 const PREFIX = 'multiple-bulk-export:';
 
 export const MULTIPLE_BULK_EXPORT_CHANNELS = {
-  getOrgDetail: `${PREFIX}get-org-detail`,
   validateObjectSelection: `${PREFIX}validate-object-selection`,
   startExport: `${PREFIX}start-export`,
   cancelExport: `${PREFIX}cancel-export`,
@@ -27,7 +25,6 @@ export type MultipleBulkExportChannel =
   (typeof MULTIPLE_BULK_EXPORT_CHANNELS)[keyof typeof MULTIPLE_BULK_EXPORT_CHANNELS];
 
 export type MultipleBulkExportAPI = {
-  getOrgDetail: () => Promise<OrgDetail>;
   validateObjectSelection: (objects: string[]) => Promise<ObjectSelectionState>;
   startExport: (params: {
     objects: string[];

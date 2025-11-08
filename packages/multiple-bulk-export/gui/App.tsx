@@ -33,7 +33,6 @@ import type {
 } from '../src/models';
 import { formatTimestamp } from '../src/utils/path';
 
-import OrgDetailView from './components/OrgDetailView';
 import PageWithTheme from './components/PageWithTheme';
 import { getWorkspaceApi } from './utils/getWorkspaceApi';
 
@@ -375,8 +374,6 @@ const App: React.FC = () => {
         </Heading>
 
         <Flex direction="column" gap="size-400">
-          <OrgDetailView />
-
           <View paddingY="size-200">
             <Heading level={2}>対象オブジェクト</Heading>
             <TextArea

@@ -1,4 +1,3 @@
-export { OrgDetail } from './OrgDetail';
 export type {
   ObjectInputLine,
   NormalizedObject,

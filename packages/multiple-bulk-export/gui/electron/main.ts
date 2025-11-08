@@ -1,7 +1,6 @@
 import { BrowserWindow, type OpenDialogOptions, dialog, ipcMain, shell } from 'electron';
 
 import type { ExportProgressEvent } from '../../src/models';
-import { getOrgDetail } from '../../src/repositories/OrgDetailRepository';
 import { exportController } from '../../src/usecases';
 
 import { MULTIPLE_BULK_EXPORT_CHANNELS, MultipleBulkExportChannel } from './constants';
@@ -13,8 +12,6 @@ const forwardProgress = (event: ExportProgressEvent) => {
 };
 
 const registerMultipleBulkExportHandlers = () => {
-  ipcMain.handle(MULTIPLE_BULK_EXPORT_CHANNELS.getOrgDetail, getOrgDetail);
-
   ipcMain.handle(
     MULTIPLE_BULK_EXPORT_CHANNELS.validateObjectSelection,
     async (_event, objects: unknown) => {
