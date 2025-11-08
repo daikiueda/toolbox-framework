@@ -1,4 +1,6 @@
-import jsforce, { type Connection } from 'jsforce';
+import jsforce, { type Connection, type IdentityInfo } from 'jsforce';
+
+import type { OrgInfo } from '../models/OrgInfo';
 
 import type { SalesforceTokens } from './auth/SalesforceTokens';
 
@@ -7,6 +9,15 @@ const SF_API_VERSION_FALLBACK = '60.0';
 export class SalesforceConnection {
   // Singleton
   private static instance: SalesforceConnection | null = null;
+
+  // Caches
+  private static identityPromise: Promise<IdentityInfo> | null = null;
+  private static orgInfoPromise: Promise<OrgInfo> | null = null;
+  private static resetCaches = () => {
+    SalesforceConnection.identityPromise = null;
+    SalesforceConnection.orgInfoPromise = null;
+  };
+
   private constructor() {
     console.log('[salesforce] インスタンス生成');
   }
@@ -38,8 +49,52 @@ export class SalesforceConnection {
       version: latestVersion ?? SF_API_VERSION_FALLBACK,
     });
     console.log(`[salesforce] APIバージョン: ${this.conn.version}`);
+
+    SalesforceConnection.resetCaches();
   };
   disconnect = (): void => {
     this.conn = null;
+    SalesforceConnection.resetCaches();
   };
+
+  private static async fetchIdentity(): Promise<IdentityInfo> {
+    const promise = this.identityPromise ?? SalesforceConnection.getConnection().identity();
+
+    this.identityPromise = promise
+      .then((identity) => identity)
+      .catch((error) => {
+        this.identityPromise = null;
+        throw error;
+      });
+
+    return this.identityPromise;
+  }
+
+  static async getOrgInfo(): Promise<OrgInfo> {
+    if (!this.orgInfoPromise) {
+      this.orgInfoPromise = (async () => {
+        const identity = await this.fetchIdentity();
+        const conn = SalesforceConnection.getConnection();
+        const organizationResult = await conn.query<{
+          Id: string;
+          Name: string;
+          IsSandbox: boolean;
+        }>(`SELECT Id, Name, IsSandbox FROM Organization WHERE Id = '${identity.organization_id}'`);
+
+        const organization = organizationResult.records[0];
+
+        return {
+          orgId: identity.organization_id,
+          orgName: organization?.Name ?? '',
+          orgType: organization?.IsSandbox ? 'Sandbox' : 'Production',
+          instanceUrl: conn.instanceUrl,
+        } satisfies OrgInfo;
+      })().catch((error) => {
+        this.orgInfoPromise = null;
+        throw error;
+      });
+    }
+
+    return this.orgInfoPromise;
+  }
 }

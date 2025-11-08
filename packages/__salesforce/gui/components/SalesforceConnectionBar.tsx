@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Badge, Button, Flex } from '@toolbox/design-system';
 
-import type { OrgInfo } from '../../src/models/OrgInfo';
+import type { OrgInfo } from '../../lib';
 
 type Props = {
   orgInfo: OrgInfo | null | undefined;
