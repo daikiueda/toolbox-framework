@@ -22,27 +22,15 @@ import type {
 } from '../models';
 import { describeSObject } from '../repositories/MetadataRepository';
 
-const DEFAULT_CONCURRENCY = Number.parseInt(
-  process.env.MULTIPLE_BULK_EXPORT_MAX_CONCURRENCY ?? '5',
-  10
-);
+const DEFAULT_CONCURRENCY = 5;
 
-const POLL_INTERVAL_MS = Number.parseInt(
-  process.env.MULTIPLE_BULK_EXPORT_POLL_INTERVAL_MS ?? '5000',
-  10
-);
+const POLL_INTERVAL_MS = 5000;
 
-const POLL_TIMEOUT_MS = Number.parseInt(
-  process.env.MULTIPLE_BULK_EXPORT_POLL_TIMEOUT_MS ?? `${30 * 60 * 1000}`,
-  10
-);
+const POLL_TIMEOUT_MS = 30 * 60 * 1000;
 
-const MAX_RETRY = Number.parseInt(process.env.MULTIPLE_BULK_EXPORT_MAX_RETRY ?? '3', 10);
+const MAX_RETRY = 3;
 
-const BACKOFF_BASE_MS = Number.parseInt(
-  process.env.MULTIPLE_BULK_EXPORT_RETRY_BASE_MS ?? '2000',
-  10
-);
+const BACKOFF_BASE_MS = 2000;
 
 type ProgressEmitter = (event: ExportProgressEvent) => void;
 
@@ -89,8 +77,8 @@ export class BulkExportService {
     this.normalizedObjects = options.normalizedObjects;
     this.outputDirectory = options.outputDirectory ?? '';
     this.emitter = options.emitter;
-    this.maxConcurrency = Math.max(1, Number.isNaN(DEFAULT_CONCURRENCY) ? 5 : DEFAULT_CONCURRENCY);
-    this.retryLimit = Math.max(1, Number.isNaN(MAX_RETRY) ? 3 : MAX_RETRY);
+    this.maxConcurrency = Math.max(1, DEFAULT_CONCURRENCY);
+    this.retryLimit = Math.max(1, MAX_RETRY);
 
     this.normalizedObjects.forEach((obj) => {
       this.objectStates.set(obj.apiName, {
