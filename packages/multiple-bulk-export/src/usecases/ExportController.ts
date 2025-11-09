@@ -2,6 +2,8 @@ import path from 'path';
 
 import { app } from 'electron';
 
+import { SalesforceConnection } from '@toolbox/salesforce/lib';
+
 import type {
   ExportCompletionPayload,
   ExportProgressEvent,
@@ -11,7 +13,7 @@ import type {
 } from '../models';
 import { BulkExportService, createBulkExportService } from '../services/BulkExportService';
 import { validateObjectSelection } from '../services/ObjectSelectionService';
-import { formatTimestamp, sanitizeForPath } from '../utils/path';
+import { formatOrgInfo, formatTimestamp } from '../utils/path';
 
 type ProgressEmitter = (event: ExportProgressEvent) => void;
 
@@ -33,8 +35,6 @@ type ResolvedOutputDirectory = {
   orgName: string;
   timestamp: string;
 };
-
-const DEFAULT_ORG_FOLDER = 'SalesforceOrg';
 
 const broadcastError = (emitter: ProgressEmitter, message: string) => {
   emitter({
@@ -144,18 +144,19 @@ class ExportController {
   isRunning = (): boolean => Boolean(this.currentService);
 
   resolveOutputDirectory = async (customBase?: string | null): Promise<ResolvedOutputDirectory> => {
-    const sanitizedOrgName = sanitizeForPath(DEFAULT_ORG_FOLDER);
+    const org = await SalesforceConnection.getOrgInfo();
+    const formattedOrgInfo = formatOrgInfo(org);
     const timestamp = formatTimestamp(new Date());
 
     const baseDirectory = customBase && customBase.trim().length > 0 ? customBase.trim() : null;
 
     const fullPath = baseDirectory
-      ? path.join(baseDirectory, sanitizedOrgName, timestamp)
-      : path.join(app.getPath('documents'), 'exports', sanitizedOrgName, timestamp);
+      ? path.join(baseDirectory, formattedOrgInfo, timestamp)
+      : path.join(app.getPath('documents'), 'exports', formattedOrgInfo, timestamp);
 
     return {
       fullPath,
-      orgName: sanitizedOrgName,
+      orgName: formattedOrgInfo,
       timestamp,
     };
   };
