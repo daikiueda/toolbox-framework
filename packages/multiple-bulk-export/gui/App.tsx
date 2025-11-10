@@ -22,6 +22,7 @@ import {
   TextArea,
   View,
   Well,
+  useSetting,
 } from '@toolbox/design-system';
 import { useSalesforce } from '@toolbox/salesforce';
 
@@ -33,10 +34,11 @@ import type {
 } from '../src/models';
 import { formatTimestamp } from '../src/utils/path';
 
+import { Setting } from './Setting';
 import PageWithTheme from './components/PageWithTheme';
+import SettingsDialog from './components/SettingsDialog';
 import { getWorkspaceApi } from './utils/getWorkspaceApi';
 
-const PERSISTENCE_SCOPE = 'multiple-bulk-export:last-objects';
 const LOG_HISTORY_LIMIT = 200;
 
 const numberFormatter = new Intl.NumberFormat('ja-JP');
@@ -70,9 +72,10 @@ const getStatusBadge = (
 const App: React.FC = () => {
   const { LoginGate } = useSalesforce();
   const workspaceApi = useMemo(getWorkspaceApi, []);
-  const persistenceApi = window.api?.persistence;
+  const [settings, updateSetting] = useSetting<Setting>(Setting.default(), {
+    persistence: Setting.persistence,
+  });
 
-  const [objectInput, setObjectInput] = useState('');
   const [validationState, setValidationState] = useState<ObjectSelectionState | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -89,31 +92,10 @@ const App: React.FC = () => {
   const [isLoadingDefaults, setIsLoadingDefaults] = useState(true);
 
   useEffect(() => {
-    let isActive = true;
-
-    const loadPersistence = async () => {
-      try {
-        if (!persistenceApi) {
-          return;
-        }
-        const stored = await persistenceApi.read(PERSISTENCE_SCOPE);
-        if (!isActive) {
-          return;
-        }
-        if (Array.isArray(stored) && stored.every((item) => typeof item === 'string')) {
-          setObjectInput((stored as string[]).join('\n'));
-        }
-      } catch (error) {
-        console.warn('[multiple-bulk-export] 設定読み込みに失敗しました', error);
-      }
-    };
-
-    void loadPersistence();
-
-    return () => {
-      isActive = false;
-    };
-  }, [persistenceApi]);
+    if (settings.outputDirectory) {
+      setCustomDirectory(settings.outputDirectory);
+    }
+  }, [settings.outputDirectory]);
 
   useEffect(() => {
     let isActive = true;
@@ -187,12 +169,11 @@ const App: React.FC = () => {
   useEffect(() => {
     let isDisposed = false;
     const debounce = window.setTimeout(() => {
-      const rawLines = objectInput.split(/\r?\n/);
       setIsValidating(true);
       setValidationError(null);
 
       workspaceApi
-        .validateObjectSelection(rawLines)
+        .validateObjectSelection(settings.objectNames)
         .then((result) => {
           if (!isDisposed) {
             setValidationState(result);
@@ -217,7 +198,7 @@ const App: React.FC = () => {
       isDisposed = true;
       window.clearTimeout(debounce);
     };
-  }, [objectInput, workspaceApi]);
+  }, [settings.objectNames, workspaceApi]);
 
   useEffect(() => {
     const unsubscribe = workspaceApi.subscribeProgress((event) => {
@@ -285,25 +266,12 @@ const App: React.FC = () => {
     return unsubscribe;
   }, [workspaceApi]);
 
-  const handleInputChange = useCallback((value: string) => {
-    setObjectInput(value);
-  }, []);
-
-  const handleSelectDirectory = useCallback(async () => {
-    try {
-      const result = await workspaceApi.chooseOutputDirectory(customDirectory ?? undefined);
-      if (result) {
-        setCustomDirectory(result);
-      }
-    } catch (error) {
-      console.error('[multiple-bulk-export] ディレクトリ選択に失敗しました', error);
-    }
-  }, [customDirectory, workspaceApi]);
-
-  const handleResetDirectory = useCallback(() => {
-    setCustomDirectory(null);
-    setDirectoryPreview(defaultDirectory);
-  }, [defaultDirectory]);
+  const handleInputChange = useCallback(
+    (value: string) => {
+      updateSetting({ objectNames: parseObjectInput(value) });
+    },
+    [updateSetting]
+  );
 
   const handleStart = useCallback(async () => {
     setIsStarting(true);
@@ -311,31 +279,21 @@ const App: React.FC = () => {
     setCompletion(null);
 
     try {
-      const rawLines = objectInput.split(/\r?\n/);
       const response = await workspaceApi.startExport({
-        objects: rawLines,
+        objects: settings.objectNames,
         outputDirectory: customDirectory,
       });
 
       setSnapshot(response.snapshot);
       setDirectoryPreview(response.outputDirectory);
       setStartError(null);
-
-      if (persistenceApi) {
-        const names = parseObjectInput(objectInput);
-        try {
-          await persistenceApi.write(PERSISTENCE_SCOPE, names);
-        } catch (error) {
-          console.warn('[multiple-bulk-export] 設定の保存に失敗しました', error);
-        }
-      }
     } catch (error) {
       console.error('[multiple-bulk-export] エクスポート開始に失敗しました', error);
       setStartError(error instanceof Error ? error.message : 'エクスポートの開始に失敗しました');
     } finally {
       setIsStarting(false);
     }
-  }, [customDirectory, objectInput, persistenceApi, workspaceApi]);
+  }, [customDirectory, settings.objectNames, workspaceApi]);
 
   const handleCancel = useCallback(async () => {
     try {
@@ -368,17 +326,20 @@ const App: React.FC = () => {
   return (
     <LoginGate>
       <PageWithTheme>
-        <Heading level={1}>
-          <AppIcon size="L" />
-          MultipleBulkExport
-        </Heading>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading level={1}>
+            <AppIcon size="L" />
+            MultipleBulkExport
+          </Heading>
+          <SettingsDialog setting={settings} updateSetting={updateSetting} />
+        </Flex>
 
         <Flex direction="column" gap="size-400">
           <View paddingY="size-200">
             <Heading level={2}>対象オブジェクト</Heading>
             <TextArea
               label="オブジェクト API 名 (改行区切り)"
-              value={objectInput}
+              value={settings.objectNames.join('\n')}
               onChange={handleInputChange}
               isDisabled={isRunning}
               description="例: Account, CustomObject__c"
@@ -412,24 +373,16 @@ const App: React.FC = () => {
               )}
             </Flex>
 
-            <Flex direction="column" gap="size-200" marginTop="size-300">
-              <Heading level={3}>保存先ディレクトリ</Heading>
+            <View marginTop="size-300">
               <Flex alignItems="center" gap="size-200" wrap>
+                <Heading level={2}>保存先ディレクトリ</Heading>
                 <Text>{directoryPreview ?? '取得中…'}</Text>
-                <ActionButton onPress={handleSelectDirectory} isDisabled={isRunning}>
-                  変更する
-                </ActionButton>
-                {customDirectory && (
-                  <ActionButton onPress={handleResetDirectory} isDisabled={isRunning}>
-                    既定に戻す
-                  </ActionButton>
-                )}
                 <ActionButton onPress={handleOpenDirectory} isDisabled={!directoryPreview}>
                   フォルダを開く
                 </ActionButton>
               </Flex>
               {isLoadingDefaults && <Text>デフォルト保存先を取得しています…</Text>}
-            </Flex>
+            </View>
 
             <Divider marginY="size-300" />
 
