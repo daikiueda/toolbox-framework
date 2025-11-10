@@ -377,9 +377,6 @@ const App: React.FC = () => {
               <Flex alignItems="center" gap="size-200" wrap>
                 <Heading level={2}>保存先ディレクトリ</Heading>
                 <Text>{directoryPreview ?? '取得中…'}</Text>
-                <ActionButton onPress={handleOpenDirectory} isDisabled={!directoryPreview}>
-                  フォルダを開く
-                </ActionButton>
               </Flex>
               {isLoadingDefaults && <Text>デフォルト保存先を取得しています…</Text>}
             </View>
@@ -502,19 +499,28 @@ const App: React.FC = () => {
             <View>
               <Heading level={2}>完了情報</Heading>
               <Content>
-                <Text>{`出力先: ${completion.outputDirectory ?? '-'}`}</Text>
-                <Text>
-                  {`完了時刻: ${
-                    completion.finishedAt ? formatTimestamp(new Date(completion.finishedAt)) : '-'
-                  }`}
-                </Text>
-                {completion.errors.length > 0 && (
-                  <InlineError marginTop="size-150">
-                    {completion.errors
-                      .map((error) => `${error.objectName}: ${error.message}`)
-                      .join('\n')}
-                  </InlineError>
-                )}
+                <Flex direction="column" gap="size-150">
+                  <Text>
+                    {`完了時刻: ${
+                      completion.finishedAt ? formatTimestamp(new Date(completion.finishedAt)) : '-'
+                    }`}
+                  </Text>
+                  <Text>{`出力先: ${completion.outputDirectory ?? '-'}`}</Text>
+                  <ActionButton
+                    onPress={handleOpenDirectory}
+                    isDisabled={!completion.outputDirectory}
+                    alignSelf="start"
+                  >
+                    フォルダを開く
+                  </ActionButton>
+                  {completion.errors.length > 0 && (
+                    <InlineError marginTop="size-150">
+                      {completion.errors
+                        .map((error) => `${error.objectName}: ${error.message}`)
+                        .join('\n')}
+                    </InlineError>
+                  )}
+                </Flex>
               </Content>
             </View>
           )}
