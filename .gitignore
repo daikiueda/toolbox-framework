@@ -4,7 +4,7 @@ out
 .DS_Store
 *.log*
 
-packages/*/bin/__cli.js
+packages/*/bin/__cli.*js
 
 # 環境変数（ローカル設定）
 .env
