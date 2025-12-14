@@ -7,8 +7,8 @@
     "toolbox-template": "./bin/cli.js"
   },
   "scripts": {
-    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\"",
-    "build:cli": "esbuild ./src/cli.ts --platform=node --bundle --outfile=bin/__cli.js",
+    "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts",
+    "build:cli": "esbuild ./src/cli.ts --platform=node --format=esm --bundle --outfile=bin/__cli.mjs",
     "postinstall": "npm run build:cli",
     "gui": "vite"
   },

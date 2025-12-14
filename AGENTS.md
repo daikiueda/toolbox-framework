@@ -58,7 +58,7 @@ npm run dev                                     # 統合確認
 ### 業務ワークスペース (`packages/<feature-name>`) で使う例
 
 - `npm run --workspace packages/<feature-name> gui`: Vite を起動し、業務ワークスペース固有の GUI 開発サーバーを立ち上げます（`__template` 由来の `gui` スクリプト）。
-- `npm run --workspace packages/<feature-name> test`: Node.js テストランナーを `esbuild-register` 経由で実行し、`src/__tests__` 以下の `.test.ts` を検証します。
+- `npm run --workspace packages/<feature-name> test`: Node.js テストランナーを `tsx` 経由で実行し、`**/__tests__/**/` 以下の `*.test.ts` を検証します。
 - `npm run --workspace packages/<feature-name> build:cli`: `esbuild` で CLI エントリをバンドルし、`bin/__cli.js` を生成します。複製直後の `postinstall` ではこのスクリプトが自動実行されます。
 
 ## コーディングスタイルと命名規約
@@ -74,7 +74,7 @@ npm run dev                                     # 統合確認
 
 - テンプレート (`packages/__template`) では Node.js 組み込みの `node:test` を使用していますが、業務ワークスペースはユースケースに応じて Vitest や Storybook のスナップショットなど適切なフレームワークを採用して構いません。
 - それぞれのワークスペースでテストを追加したら、`package.json` の `test` スクリプトに集約し、ルートの `npm run test:workspaces` で横断的に実行できる状態を維持してください。
-- テンプレート準拠の場合、テストファイルは `src/__tests__` 配下で `.test.ts` サフィックスを付け、`esbuild-register` を通じて TypeScript を実行します。
+- テンプレート準拠の場合、テストファイルは `**/__tests__` 配下で `.test.ts` サフィックスを付け、`tsx` を通じて TypeScript を実行します。
 - 重要なユーティリティや副作用を持つ hooks では、入力／出力の明示的な検証ケースを最低 1 つ用意し、スナップショットよりもアサーションを優先します。
 - 失敗ケースを含むテストを揃え、CI では `--test-reporter=tap` などログが追いやすい形式で出力することを推奨します。
 

@@ -1,3 +1,9 @@
 #!/usr/bin/env node
-const cli = require('./__cli').default;
-cli();
+import('./__cli.mjs')
+  .then((mod) => {
+    mod.default();
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
