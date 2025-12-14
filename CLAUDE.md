@@ -75,7 +75,7 @@ npm run create:workspace -- <feature-name>
 
 ### テスト環境
 
-- Node.js 組み込み test runner + esbuild-register
+- Node.js 組み込み test runner + tsx
 - テストファイル: `src/__tests__/*.test.ts`
 - ワークスペース横断実行: `npm run test:workspaces`
 

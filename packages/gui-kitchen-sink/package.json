@@ -7,7 +7,6 @@
     "toolbox-gui-kitchen-sink": "./bin/cli.js"
   },
   "scripts": {
-    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\"",
     "gui": "vite"
   },
   "dependencies": {

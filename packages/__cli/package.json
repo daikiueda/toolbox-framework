@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "test": "glob -c \"node --test -r esbuild-register\" \"**/*.test.ts\""
+    "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts"
   },
   "dependencies": {
     "yargs": "^18.0.0"
