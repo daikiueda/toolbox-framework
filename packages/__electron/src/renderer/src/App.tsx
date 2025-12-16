@@ -20,22 +20,28 @@ const App: React.FC = () => {
 
   const CurrentApp = useMemo(() => currentApp.App, [currentApp]);
 
+  const singleScreenApp = Object.keys(entries).length === 1;
+
   return (
     <SalesforceProvider>
       <Root>
-        <SalesforceConnectionBarContainer />
+        <SalesforceConnectionBarContainer showOnlyWhileConnected />
         <Main>
-          <PanelGroup direction="horizontal">
-            <Panel defaultSize={24} maxSize={24}>
-              <PaneLeft>
-                <Nav menuItems={entries} currentApp={currentApp} switchApp={switchApp} />
-              </PaneLeft>
-            </Panel>
-            <Handle />
-            <Panel defaultSize={70} minSize={20}>
-              <PaneRight>{CurrentApp && <CurrentApp />}</PaneRight>
-            </Panel>
-          </PanelGroup>
+          {singleScreenApp ? (
+            <CurrentApp />
+          ) : (
+            <PanelGroup direction="horizontal">
+              <Panel defaultSize={24} maxSize={24}>
+                <PaneLeft>
+                  <Nav menuItems={entries} currentApp={currentApp} switchApp={switchApp} />
+                </PaneLeft>
+              </Panel>
+              <Handle />
+              <Panel defaultSize={70} minSize={20}>
+                <PaneRight>{CurrentApp && <CurrentApp />}</PaneRight>
+              </Panel>
+            </PanelGroup>
+          )}
         </Main>
       </Root>
     </SalesforceProvider>
@@ -53,6 +59,10 @@ const Root = styled.div`
 
 const Main = styled.div`
   min-height: 0;
+
+  &:only-child {
+    min-height: 100vh;
+  }
 `;
 
 const PaneBase = styled.div`

@@ -9,11 +9,16 @@ import type { OrgInfo } from '../../lib';
 type Props = {
   orgInfo: OrgInfo | null | undefined;
   onLogout: (() => Promise<void>) | undefined;
+  showOnlyWhileConnected?: boolean;
 };
 
-const SalesforceConnectionBar: React.FC<Props> = ({ orgInfo, onLogout }: Props) => {
+const SalesforceConnectionBar: React.FC<Props> = ({
+  orgInfo,
+  onLogout,
+  showOnlyWhileConnected,
+}: Props) => {
   if (!orgInfo) {
-    return <Disconnected>disconnected</Disconnected>;
+    return showOnlyWhileConnected ? null : <Disconnected>disconnected</Disconnected>;
   }
 
   return (
