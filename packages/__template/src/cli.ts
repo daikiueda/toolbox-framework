@@ -1,6 +1,6 @@
 import cli, { Examples, Executor, Options } from '@toolbox/cli';
 
-import main from './main';
+import template from './main';
 
 type Flags = {
   who: string;
@@ -25,7 +25,7 @@ const executor: Executor<Flags> = ({ argv, stdin, yargs }) => {
     return;
   }
 
-  console.log(main(who));
+  console.log(template(who));
 };
 
 export default cli(

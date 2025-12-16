@@ -1,10 +1,10 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import main from '../main';
+import template from '../main';
 
-describe('main', () => {
-  it('returns "Hello World!"', () => {
-    assert.equal(main('world'), 'hello world!');
+describe('template', () => {
+  it('returns "hello world!"', () => {
+    assert.equal(template('world'), 'hello world!');
   });
 });

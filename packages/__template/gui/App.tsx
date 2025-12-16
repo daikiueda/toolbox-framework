@@ -2,16 +2,16 @@ import { useState } from 'react';
 
 import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
 
-import greet from '../src/main';
+import template from '../src/main';
 
 import PageWithTheme from './components/PageWithTheme';
 
-function App() {
+function Template() {
   const [whoToGreet, setWhoToGreet] = useState('world');
 
   return (
     <PageWithTheme>
-      <Heading level={1}>Example</Heading>
+      <Heading level={1}>Template</Heading>
       <Form>
         <TextField
           width="size-3000"
@@ -21,11 +21,11 @@ function App() {
           isRequired
         />
         <View marginTop="size-400">
-          <Text>{greet(whoToGreet)}</Text>
+          <Text>{template(whoToGreet)}</Text>
         </View>
       </Form>
     </PageWithTheme>
   );
 }
 
-export default App;
+export default Template;
