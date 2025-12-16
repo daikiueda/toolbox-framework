@@ -1,0 +1,22 @@
+{
+  "name": "@toolbox/org-and-login-user",
+  "version": "0.0.0",
+  "description": "",
+  "exports": {
+    "./entry": "./entry.ts",
+    "./electron": "./gui/electron/index.ts"
+  },
+  "scripts": {
+    "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts",
+    "gui": "vite"
+  },
+  "dependencies": {
+    "@spectrum-icons/workflow": "^4.2.25",
+    "@toolbox/design-system": "^0.0.0",
+    "jsforce": "^3.10.8"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
