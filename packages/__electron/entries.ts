@@ -3,7 +3,9 @@ import React from 'react';
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
 
 import { KitchenSink } from '@toolbox/gui-kitchen-sink';
-import { Template } from '@toolbox/template';
+import { orgAndLoginUser } from '@toolbox/org-and-login-user/entry';
+
+// import { template } from '@toolbox/template/entry';
 
 export type Entry = {
   label: string;
@@ -16,9 +18,7 @@ const entries: { [appKey: string]: Entry } = {
     label: 'Kitchen Sink',
     App: KitchenSink,
   },
-  template: {
-    label: 'Example',
-    App: Template,
-  },
+  orgAndLoginUser,
+  // template,
 };
 export default entries;

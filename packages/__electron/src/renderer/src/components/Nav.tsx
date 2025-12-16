@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import '@spectrum-css/sidenav';
 import Box from '@spectrum-icons/workflow/Box';
-import { Panel } from 'react-resizable-panels';
 
 import { Heading } from '@toolbox/design-system/Components/Content';
 import { Flex, Header } from '@toolbox/design-system/Components/Layout';
@@ -14,14 +13,16 @@ import { Entry as MenuItemEntry } from '../../../../entries';
 
 import Versions from './Versions';
 
-type Props = React.ComponentProps<typeof Panel> & {
+type Props = {
   menuItems: { [appKey: string]: MenuItemEntry };
   currentApp: MenuItemEntry;
   switchApp: (app: MenuItemEntry) => () => void;
 };
 
-const NavPanel = styled(Panel)`
-  min-height: 100vh;
+const NavPanel = styled.nav`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: var(--spectrum-blue-100);
 
   h1 {
@@ -84,33 +85,37 @@ const Spectrum = {
   ),
 };
 
-const Nav: React.ForwardRefRenderFunction<React.ComponentRef<typeof Panel>, Props> = (
-  { menuItems, currentApp, switchApp, ...navPanelProps },
-  ref
-) => {
+const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelProps }) => {
   return (
-    <NavPanel tagName="nav" {...navPanelProps} ref={ref}>
-      <Header marginX="24px">
-        <Flex direction="row" alignItems="center">
-          <Box color="informative" size="L" />
-          <Heading level={1} marginStart="size-100" marginY="24px">
-            Toolbox
-          </Heading>
-        </Flex>
-      </Header>
+    <NavPanel {...navPanelProps}>
+      {/* スクロール可能な上部エリア */}
+      <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
+        <Header marginX="24px">
+          <Flex direction="row" alignItems="center">
+            <Box color="informative" size="L" />
+            <Heading level={1} marginStart="size-100" marginY="24px">
+              Toolbox
+            </Heading>
+          </Flex>
+        </Header>
 
-      <Spectrum.SideNav>
-        {Object.entries(menuItems).map(([appKey, entry]) => (
-          <Spectrum.Item key={appKey} selected={entry.App === currentApp.App}>
-            <Spectrum.Link onClick={switchApp(entry)} Icon={entry.Icon}>
-              {entry.label}
-            </Spectrum.Link>
-          </Spectrum.Item>
-        ))}
-      </Spectrum.SideNav>
-      <Versions />
+        <Spectrum.SideNav>
+          {Object.entries(menuItems).map(([appKey, entry]) => (
+            <Spectrum.Item key={appKey} selected={entry.App === currentApp.App}>
+              <Spectrum.Link onClick={switchApp(entry)} Icon={entry.Icon}>
+                {entry.label}
+              </Spectrum.Link>
+            </Spectrum.Item>
+          ))}
+        </Spectrum.SideNav>
+      </Flex>
+
+      {/* 固定表示の下部エリア */}
+      <Flex direction="column" marginTop="auto">
+        <Versions />
+      </Flex>
     </NavPanel>
   );
 };
 
-export default React.memo(React.forwardRef(Nav));
+export default React.memo(Nav);
