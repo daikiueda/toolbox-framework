@@ -1,0 +1,22 @@
+{
+  "name": "@toolbox/salesforce",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./lib": "./lib/index.ts",
+    "./electron": "./gui/electron/index.ts"
+  },
+  "scripts": {
+    "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts"
+  },
+  "dependencies": {
+    "@toolbox/design-system": "^0.0.0",
+    "jsforce": "^3.10.8"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
