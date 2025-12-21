@@ -2,9 +2,11 @@
   "name": "@toolbox/template",
   "version": "0.0.0",
   "description": "",
-  "main": "index.ts",
   "bin": {
     "toolbox-template": "./bin/cli.js"
+  },
+  "exports": {
+    "./entry": "./entry.ts"
   },
   "scripts": {
     "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts",
