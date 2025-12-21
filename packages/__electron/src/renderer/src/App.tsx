@@ -62,6 +62,7 @@ const Main = styled.div`
 
   &:only-child {
     min-height: 100vh;
+    overflow-y: auto;
   }
 `;
 
