@@ -2,9 +2,11 @@
   "name": "@toolbox/gui-kitchen-sink",
   "version": "0.0.0",
   "description": "",
-  "main": "index.ts",
   "bin": {
     "toolbox-gui-kitchen-sink": "./bin/cli.js"
+  },
+  "exports": {
+    "./entry": "./entry.ts"
   },
   "scripts": {
     "gui": "vite"

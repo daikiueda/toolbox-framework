@@ -1,1 +1,3 @@
-export default (who: string) => `hello ${who.trim()}!`;
+const template = (who: string) => `hello ${who.trim()}!`;
+
+export default template;

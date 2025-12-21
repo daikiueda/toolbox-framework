@@ -1,5 +1,20 @@
+import { join } from 'path';
+
 import { electronApp, optimizer } from '@electron-toolkit/utils';
+import { config } from 'dotenv';
 import { BrowserWindow, app } from 'electron';
+
+import {
+  registerOrgAndLoginUserHandlers,
+  unregisterOrgAndLoginUserHandlers,
+} from '@toolbox/org-and-login-user/electron';
+import {
+  notifySalesforceProtocolUrl,
+  registerSalesforceHandlers,
+  unregisterSalesforceHandlers,
+} from '@toolbox/salesforce/electron';
+
+// import { registerTemplateHandlers, unregisterTemplateHandlers } from '@toolbox/template/electron';
 
 import {
   registerAppearanceHandlers,
@@ -20,13 +35,70 @@ const registerHandlers = (window: BrowserWindow) => {
   registerAppearanceHandlers();
   registerPersistenceHandlers();
   registerBrowserWindowHandlers(window);
+  registerSalesforceHandlers();
+  registerOrgAndLoginUserHandlers();
+  // registerTemplateHandlers();
 };
 
 const unregisterHandlers = () => {
   unregisterAppearanceHandlers();
   unregisterPersistenceHandlers();
   unregisterBrowserWindowHandlers();
+  unregisterSalesforceHandlers();
+  unregisterOrgAndLoginUserHandlers();
+  // unregisterTemplateHandlers();
 };
+
+// 開発時のみプロジェクトルートの.env.localを読み込む
+// 本番時（パッケージング済み）はOSの環境変数を使用
+if (!app.isPackaged) {
+  // 開発時: プロジェクトルートから相対パスで.env.localを読み込む
+  config({ path: join(__dirname, '../../../.env.local') });
+}
+
+// カスタムURLスキームの登録
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('toolbox-framework', process.execPath, [
+      join(process.cwd(), process.argv[1]),
+    ]);
+  }
+} else {
+  app.setAsDefaultProtocolClient('toolbox-framework');
+}
+
+// macOS: open-urlイベントでカスタムプロトコルURLを受信
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  console.log('[main] open-url イベント受信:', url);
+  // 各機能のプロトコルハンドラーに通知
+  notifySalesforceProtocolUrl(url);
+});
+
+// Windows/Linux: second-instanceイベントでカスタムプロトコルURLを受信
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (_event, commandLine) => {
+    // コマンドライン引数からカスタムプロトコルURLを探す
+    const url = commandLine.find((arg) => arg.startsWith('toolbox-framework://'));
+    if (url) {
+      console.log('[main] second-instance イベント受信:', url);
+      // 各機能のプロトコルハンドラーに通知
+      notifySalesforceProtocolUrl(url);
+    }
+
+    // ウィンドウがあればフォーカス
+    const windows = BrowserWindow.getAllWindows();
+    if (windows.length > 0) {
+      const mainWindow = windows[0];
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

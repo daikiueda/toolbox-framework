@@ -10,7 +10,7 @@ import TeamRoster from './components/TeamRoster';
 import ViewPreferences from './components/ViewPreferences';
 import SettingsDialog from './components/dialogs/SettingsDialog';
 import PageWithTheme from './components/theme/PageWithTheme';
-import * as Icon from './components/theme/icons';
+import { CCLibrary as AppIcon } from './components/theme/icons';
 
 const App: React.FC = () => {
   const [setting, updateSetting] = useSetting(Setting.default(), {
@@ -35,7 +35,7 @@ const App: React.FC = () => {
     <PageWithTheme>
       <Flex alignItems="center" justifyContent="space-between" gap="size-200">
         <Flex alignItems="center" gap="size-125">
-          <Icon.CCLibrary size="L" />
+          <AppIcon size="L" />
           <Heading level={1}>Design System Kitchen Sink</Heading>
         </Flex>
         <SettingsDialog onReset={handleResetSettings} />
@@ -70,3 +70,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+export { AppIcon };
