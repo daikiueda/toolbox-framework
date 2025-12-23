@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from 'react-resizable-panels';
 
 import { SalesforceConnectionBarContainer, SalesforceProvider } from '@toolbox/salesforce';
 
@@ -30,14 +30,14 @@ const App: React.FC = () => {
           {singleScreenApp ? (
             <CurrentApp />
           ) : (
-            <PanelGroup direction="horizontal">
-              <Panel defaultSize={24} maxSize={24}>
+            <PanelGroup orientation="horizontal">
+              <Panel defaultSize={25} minSize="200px" maxSize="300px">
                 <PaneLeft>
                   <Nav menuItems={entries} currentApp={currentApp} switchApp={switchApp} />
                 </PaneLeft>
               </Panel>
               <Handle />
-              <Panel defaultSize={70} minSize={20}>
+              <Panel defaultSize={75}>
                 <PaneRight>{CurrentApp && <CurrentApp />}</PaneRight>
               </Panel>
             </PanelGroup>
@@ -58,31 +58,27 @@ const Root = styled.div`
 `;
 
 const Main = styled.div`
-  min-height: 0;
-
   &:only-child {
-    min-height: 100vh;
+    height: 100vh;
     overflow-y: auto;
   }
 `;
 
 const PaneBase = styled.div`
-  height: 100%;
+  height: 100vh;
   overflow: auto;
   overscroll-behavior: contain;
 `;
 
-const PaneLeft = styled(PaneBase)`
-  border-right: 1px solid var(--spectrum-gray-200);
-`;
+const PaneLeft = styled(PaneBase)``;
 
 const PaneRight = styled(PaneBase)``;
 
 const Handle = styled(PanelResizeHandle)`
   width: 4px;
   position: relative;
-  cursor: col-resize;
   background: transparent;
+  outline-color: var(--spectrum-alias-border-color-focus);
 
   &:before {
     content: '';
