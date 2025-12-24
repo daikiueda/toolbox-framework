@@ -43,7 +43,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
     fetchOrgInfo();
   }, [connectionState]);
 
-  const login = useCallback(async (instanceUrl: string): Promise<boolean> => {
+  const loginWithOAuth = useCallback(async (instanceUrl: string): Promise<boolean> => {
     if (!window.api?.salesforce) {
       console.error('[salesforce] Salesforce API が利用できません');
       return false;
@@ -51,7 +51,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
 
     try {
       setConnectionState('connecting');
-      const success = await window.api.salesforce.login(instanceUrl);
+      const success = await window.api.salesforce.loginWithOAuth(instanceUrl);
 
       if (success) {
         setConnectionState('connected');
@@ -63,14 +63,14 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
         return false;
       }
     } catch (error) {
-      console.error('[salesforce] ログインエラー:', error);
+      console.error('[salesforce] OAuth ログインエラー:', error);
       setConnectionState('error');
       setIsConnectedWithSfdx(false);
       return false;
     }
   }, []);
 
-  const loginWithSfdx = useCallback(async (instanceUrl?: string): Promise<boolean> => {
+  const loginWithSfdx = useCallback(async (instanceUrl: string): Promise<boolean> => {
     if (!window.api?.salesforce) {
       console.error('[salesforce] Salesforce API が利用できません');
       return false;
@@ -130,12 +130,20 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
       connectionState,
       isConnectedWithSfdx,
       orgInfo,
-      login,
+      loginWithOAuth,
       loginWithSfdx,
       logout,
       LoginGate,
     }),
-    [connectionState, isConnectedWithSfdx, orgInfo, login, loginWithSfdx, logout, LoginGate]
+    [
+      connectionState,
+      isConnectedWithSfdx,
+      orgInfo,
+      loginWithOAuth,
+      loginWithSfdx,
+      logout,
+      LoginGate,
+    ]
   );
 
   return <SalesforceContext.Provider value={value}>{children}</SalesforceContext.Provider>;

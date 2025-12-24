@@ -4,14 +4,12 @@ import type { SfdxSession } from './types';
 
 /**
  * sf org login web を実行してブラウザでログイン
+ * @param instanceUrl - ログイン先の Salesforce インスタンス URL
  * @returns ログインしたユーザー名
  */
-export const sfdxLoginAndDetectUsername = async (instanceUrl?: string): Promise<string> => {
+export const sfdxLoginAndDetectUsername = async (instanceUrl: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const args = ['org', 'login', 'web'];
-    if (instanceUrl) {
-      args.push('--instance-url', instanceUrl);
-    }
+    const args = ['org', 'login', 'web', '--instance-url', instanceUrl];
 
     console.log('[SfdxService] sf コマンドを実行:', 'sf', args.join(' '));
 

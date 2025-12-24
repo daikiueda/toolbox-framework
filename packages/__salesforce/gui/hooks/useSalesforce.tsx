@@ -8,7 +8,7 @@ type UseSalesforceOptions = {
 };
 
 export const useSalesforce = ({ requireSfdxSession = false }: UseSalesforceOptions = {}) => {
-  const { login, loginWithSfdx, connectionState, isConnectedWithSfdx, orgInfo } =
+  const { loginWithOAuth, loginWithSfdx, connectionState, isConnectedWithSfdx, orgInfo } =
     useSalesforceInternal();
 
   const LoginGate = useCallback(
@@ -23,13 +23,13 @@ export const useSalesforce = ({ requireSfdxSession = false }: UseSalesforceOptio
         children
       ) : (
         <LoginPage
-          onLogin={login}
+          onLoginWithOAuth={loginWithOAuth}
           useSfdxSession={requireSfdxSession}
           onLoginWithSfdx={loginWithSfdx}
         />
       );
     },
-    [connectionState, isConnectedWithSfdx, login, loginWithSfdx, requireSfdxSession]
+    [connectionState, isConnectedWithSfdx, loginWithOAuth, loginWithSfdx, requireSfdxSession]
   );
 
   return { LoginGate, orgInfo };

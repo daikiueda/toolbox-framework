@@ -78,8 +78,8 @@ export const notifySalesforceProtocolUrl = (url: string): void => {
 };
 
 const registerSalesforceHandlers = () => {
-  // ログインハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.login, async (_event, instanceUrl: string) => {
+  // OAuth ログインハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.loginWithOAuth, async (_event, instanceUrl: string) => {
     try {
       // PKCE生成
       const pkce = PKCEParams.generate();
@@ -122,7 +122,7 @@ const registerSalesforceHandlers = () => {
   });
 
   // sfdx ログインハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.loginWithSfdx, async (_event, instanceUrl?: string) => {
+  ipcMain.handle(SALESFORCE_CHANNELS.loginWithSfdx, async (_event, instanceUrl: string) => {
     try {
       const { sfdxLoginAndDetectUsername, getSfdxSession } =
         await import('../../lib/core/sfdx/SfdxService');

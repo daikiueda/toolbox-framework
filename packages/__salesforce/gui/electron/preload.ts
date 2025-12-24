@@ -6,8 +6,9 @@ export const buildSalesforceAPI = (): SalesforceAPI => {
   const { ipcRenderer } = electronAPI;
 
   return {
-    login: (instanceUrl: string) => ipcRenderer.invoke(SALESFORCE_CHANNELS.login, instanceUrl),
-    loginWithSfdx: (instanceUrl?: string) =>
+    loginWithOAuth: (instanceUrl: string) =>
+      ipcRenderer.invoke(SALESFORCE_CHANNELS.loginWithOAuth, instanceUrl),
+    loginWithSfdx: (instanceUrl: string) =>
       ipcRenderer.invoke(SALESFORCE_CHANNELS.loginWithSfdx, instanceUrl),
     logout: () => ipcRenderer.invoke(SALESFORCE_CHANNELS.logout),
     getOrgInfo: () => ipcRenderer.invoke(SALESFORCE_CHANNELS.getOrgInfo),
