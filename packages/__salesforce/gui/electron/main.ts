@@ -78,8 +78,8 @@ export const notifySalesforceProtocolUrl = (url: string): void => {
 };
 
 const registerSalesforceHandlers = () => {
-  // ログインハンドラー
-  ipcMain.handle(SALESFORCE_CHANNELS.login, async (_event, instanceUrl: string) => {
+  // OAuth ログインハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.loginWithOAuth, async (_event, instanceUrl: string) => {
     try {
       // PKCE生成
       const pkce = PKCEParams.generate();
@@ -121,6 +121,31 @@ const registerSalesforceHandlers = () => {
     }
   });
 
+  // sfdx ログインハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.loginWithSfdx, async (_event, instanceUrl: string) => {
+    try {
+      const { sfdxLoginAndDetectUsername, getSfdxSession } =
+        await import('../../lib/core/sfdx/SfdxService');
+
+      const username = await sfdxLoginAndDetectUsername(instanceUrl);
+      const { instanceUrl: orgInstanceUrl, accessToken } = await getSfdxSession(username);
+
+      const connection = SalesforceConnection.getInstance();
+      await connection.connect({
+        instance_url: orgInstanceUrl,
+        access_token: accessToken,
+      });
+
+      // 接続方法のフラグを立てる
+      connection.setConnectedWithSfdx(true);
+
+      return true;
+    } catch (error) {
+      console.error('[salesforce] sfdx ログインエラー:', error);
+      return false;
+    }
+  });
+
   // ログアウトハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.logout, async () => {
     SalesforceConnection.getInstance().disconnect();
@@ -129,6 +154,11 @@ const registerSalesforceHandlers = () => {
   // 接続状態取得ハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.getConnectionState, async () =>
     SalesforceConnection.isConnected() ? 'connected' : 'disconnected'
+  );
+
+  // sfdx 接続判定ハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.isConnectedWithSfdx, async () =>
+    SalesforceConnection.isConnectedWithSfdx()
   );
 
   // 組織情報取得ハンドラー

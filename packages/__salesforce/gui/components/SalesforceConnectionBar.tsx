@@ -40,7 +40,8 @@ const SalesforceConnectionBar: React.FC<Props> = ({
 export default SalesforceConnectionBar;
 
 const Header = styled.header`
-  height: 24px;
+  flex: 24px 0 0;
+
   display: flex;
   align-items: center;
   gap: 12px;
@@ -51,7 +52,6 @@ const Header = styled.header`
 `;
 
 const Disconnected = styled(Header)`
-  height: 24px;
   justify-content: center;
 
   font-weight: bold;
@@ -66,7 +66,7 @@ const Disconnected = styled(Header)`
 `;
 
 const Connected = styled(Header)`
-  height: 48px;
+  flex-basis: 48px;
   justify-content: space-between;
 
   //background-image: linear-gradient(

@@ -12,8 +12,8 @@
     "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts"
   },
   "dependencies": {
-    "@toolbox/design-system": "^0.0.0",
-    "jsforce": "^3.10.10"
+    "@jsforce/jsforce-node": "^3.10.10",
+    "@toolbox/design-system": "^0.0.0"
   },
   "peerDependencies": {
     "react": "^18.3.1",

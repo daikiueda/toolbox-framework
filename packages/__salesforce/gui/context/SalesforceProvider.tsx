@@ -7,6 +7,7 @@ import { SalesforceContext, type SalesforceContextValue } from './SalesforceCont
 
 export const SalesforceProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
+  const [isConnectedWithSfdx, setIsConnectedWithSfdx] = useState<boolean>(false);
   const [orgInfo, setOrgInfo] = useState<OrgInfo | null>(null);
 
   // 初期状態の取得
@@ -15,6 +16,13 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
       if (window.api?.salesforce) {
         const state = await window.api.salesforce.getConnectionState();
         setConnectionState(state);
+
+        if (state === 'connected') {
+          const isSfdx = await window.api.salesforce.isConnectedWithSfdx();
+          setIsConnectedWithSfdx(isSfdx);
+        } else {
+          setIsConnectedWithSfdx(false);
+        }
       }
     };
 
@@ -35,7 +43,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
     fetchOrgInfo();
   }, [connectionState]);
 
-  const login = useCallback(async (instanceUrl: string): Promise<boolean> => {
+  const loginWithOAuth = useCallback(async (instanceUrl: string): Promise<boolean> => {
     if (!window.api?.salesforce) {
       console.error('[salesforce] Salesforce API が利用できません');
       return false;
@@ -43,18 +51,48 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
 
     try {
       setConnectionState('connecting');
-      const success = await window.api.salesforce.login(instanceUrl);
+      const success = await window.api.salesforce.loginWithOAuth(instanceUrl);
 
       if (success) {
         setConnectionState('connected');
+        setIsConnectedWithSfdx(false);
         return true;
       } else {
         setConnectionState('disconnected');
+        setIsConnectedWithSfdx(false);
         return false;
       }
     } catch (error) {
-      console.error('[salesforce] ログインエラー:', error);
+      console.error('[salesforce] OAuth ログインエラー:', error);
       setConnectionState('error');
+      setIsConnectedWithSfdx(false);
+      return false;
+    }
+  }, []);
+
+  const loginWithSfdx = useCallback(async (instanceUrl: string): Promise<boolean> => {
+    if (!window.api?.salesforce) {
+      console.error('[salesforce] Salesforce API が利用できません');
+      return false;
+    }
+
+    try {
+      setConnectionState('connecting');
+      const success = await window.api.salesforce.loginWithSfdx(instanceUrl);
+
+      if (success) {
+        setConnectionState('connected');
+        setIsConnectedWithSfdx(true);
+        return true;
+      } else {
+        setConnectionState('disconnected');
+        setIsConnectedWithSfdx(false);
+        return false;
+      }
+    } catch (error) {
+      console.error('[salesforce] sfdx ログインエラー:', error);
+      setConnectionState('error');
+      setIsConnectedWithSfdx(false);
       return false;
     }
   }, []);
@@ -68,6 +106,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
     try {
       await window.api.salesforce.logout();
       setConnectionState('disconnected');
+      setIsConnectedWithSfdx(false);
       setOrgInfo(null);
     } catch (error) {
       console.error('[salesforce] ログアウトエラー:', error);
@@ -89,12 +128,22 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
   const value: SalesforceContextValue = useMemo(
     () => ({
       connectionState,
+      isConnectedWithSfdx,
       orgInfo,
-      login,
+      loginWithOAuth,
+      loginWithSfdx,
       logout,
       LoginGate,
     }),
-    [connectionState, orgInfo, login, logout, LoginGate]
+    [
+      connectionState,
+      isConnectedWithSfdx,
+      orgInfo,
+      loginWithOAuth,
+      loginWithSfdx,
+      logout,
+      LoginGate,
+    ]
   );
 
   return <SalesforceContext.Provider value={value}>{children}</SalesforceContext.Provider>;

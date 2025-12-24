@@ -3,13 +3,33 @@ import React, { useCallback } from 'react';
 import LoginPage from '../components/LoginPage';
 import { useSalesforceInternal } from '../context/useSalesforceInternal';
 
-export const useSalesforce = () => {
-  const { login, connectionState, orgInfo } = useSalesforceInternal();
+type UseSalesforceOptions = {
+  requireSfdxSession?: boolean;
+};
+
+export const useSalesforce = ({ requireSfdxSession = false }: UseSalesforceOptions = {}) => {
+  const { loginWithOAuth, loginWithSfdx, connectionState, isConnectedWithSfdx, orgInfo } =
+    useSalesforceInternal();
 
   const LoginGate = useCallback(
-    ({ children }: { children: React.ReactNode }) =>
-      connectionState === 'connected' ? children : <LoginPage onLogin={login} />,
-    [connectionState]
+    ({ children }: { children: React.ReactNode }) => {
+      // 接続状態をチェック
+      const isConnected = connectionState === 'connected';
+
+      // sfdx 必須の場合、sfdx で接続されているかもチェック
+      const isSfdxConnectionValid = requireSfdxSession ? isConnectedWithSfdx : true;
+
+      return isConnected && isSfdxConnectionValid ? (
+        children
+      ) : (
+        <LoginPage
+          onLoginWithOAuth={loginWithOAuth}
+          useSfdxSession={requireSfdxSession}
+          onLoginWithSfdx={loginWithSfdx}
+        />
+      );
+    },
+    [connectionState, isConnectedWithSfdx, loginWithOAuth, loginWithSfdx, requireSfdxSession]
   );
 
   return { LoginGate, orgInfo };
