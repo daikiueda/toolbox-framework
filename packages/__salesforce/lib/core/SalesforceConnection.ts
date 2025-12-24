@@ -1,4 +1,4 @@
-import jsforce, { type Connection, type IdentityInfo } from 'jsforce';
+import jsforce, { type Connection, type IdentityInfo } from '@jsforce/jsforce-node';
 
 import type { OrgInfo } from '../models/OrgInfo';
 
