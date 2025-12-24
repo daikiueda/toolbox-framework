@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import { electronApp, optimizer } from '@electron-toolkit/utils';
@@ -31,6 +32,15 @@ import {
 
 import createWindow from './createWindow';
 
+// プロジェクトルートの package.json から name を取得
+const getRootPackageName = (): string => {
+  const packageJsonPath = join(app.getAppPath(), 'package.json');
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+  return packageJson.name;
+};
+
+const protocolName = getRootPackageName();
+
 const registerHandlers = (window: BrowserWindow) => {
   registerAppearanceHandlers();
   registerPersistenceHandlers();
@@ -59,12 +69,12 @@ if (!app.isPackaged) {
 // カスタムURLスキームの登録
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
-    app.setAsDefaultProtocolClient('toolbox-framework', process.execPath, [
+    app.setAsDefaultProtocolClient(protocolName, process.execPath, [
       join(process.cwd(), process.argv[1]),
     ]);
   }
 } else {
-  app.setAsDefaultProtocolClient('toolbox-framework');
+  app.setAsDefaultProtocolClient(protocolName);
 }
 
 // macOS: open-urlイベントでカスタムプロトコルURLを受信
@@ -83,7 +93,7 @@ if (!gotTheLock) {
 } else {
   app.on('second-instance', (_event, commandLine) => {
     // コマンドライン引数からカスタムプロトコルURLを探す
-    const url = commandLine.find((arg) => arg.startsWith('toolbox-framework://'));
+    const url = commandLine.find((arg) => arg.startsWith(`${protocolName}://`));
     if (url) {
       console.log('[main] second-instance イベント受信:', url);
       // 各機能のプロトコルハンドラーに通知
