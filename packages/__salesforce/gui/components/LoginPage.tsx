@@ -21,9 +21,11 @@ import {
 
 type Props = {
   onLogin: (instanceUrl: string) => Promise<boolean>;
+  useSfdxSession?: boolean;
+  onLoginWithSfdx?: (instanceUrl?: string) => Promise<boolean>;
 };
 
-const App: React.FC<Props> = ({ onLogin }) => {
+const App: React.FC<Props> = ({ onLogin, useSfdxSession, onLoginWithSfdx }) => {
   const [selectedType, setSelectedType] = useState<InstanceUrlType>('production');
   const [customDomain, setCustomDomain] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -67,24 +69,28 @@ const App: React.FC<Props> = ({ onLogin }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    let instanceUrl: string;
-
-    if (selectedType === 'production') {
-      instanceUrl = GENERAL_INSTANCE_URLS.PRODUCTION;
-    } else if (selectedType === 'sandbox') {
-      instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
-    } else {
-      const normalized = resolveCustomInstanceUrl();
-      if (!normalized) {
-        return;
-      }
-      instanceUrl = normalized;
-    }
-
     setIsLoggingIn(true);
+
     try {
-      await onLogin(instanceUrl);
+      // instanceUrl を解決
+      let instanceUrl: string | undefined;
+      if (selectedType === 'production') {
+        instanceUrl = GENERAL_INSTANCE_URLS.PRODUCTION;
+      } else if (selectedType === 'sandbox') {
+        instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
+      } else if (selectedType === 'custom') {
+        const normalized = resolveCustomInstanceUrl();
+        if (!normalized) return;
+        instanceUrl = normalized;
+      }
+
+      // モードに応じてログイン実行
+      if (useSfdxSession && onLoginWithSfdx) {
+        await onLoginWithSfdx(instanceUrl);
+      } else {
+        if (!instanceUrl) return;
+        await onLogin(instanceUrl);
+      }
     } finally {
       setIsLoggingIn(false);
     }
@@ -120,7 +126,13 @@ const App: React.FC<Props> = ({ onLogin }) => {
 
         <Flex justifyContent="center" marginTop="size-400">
           <Button type="submit" variant="accent" isDisabled={isLoggingIn}>
-            {isLoggingIn ? 'ログイン中...' : 'ログイン'}
+            {useSfdxSession
+              ? isLoggingIn
+                ? 'sfdx でログイン中...'
+                : 'sfdx でログイン'
+              : isLoggingIn
+                ? 'ログイン中...'
+                : 'ログイン'}
           </Button>
         </Flex>
       </Form>

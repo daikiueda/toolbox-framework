@@ -32,8 +32,16 @@ export class SalesforceConnection {
     return this.instance.conn;
   };
   static isConnected = () => Boolean(this.instance?.conn);
+  static isConnectedWithSfdx = (): boolean => {
+    return this.instance?.connectedWithSfdx ?? false;
+  };
 
   private conn: Connection | null = null;
+  private connectedWithSfdx: boolean = false;
+
+  setConnectedWithSfdx = (value: boolean): void => {
+    this.connectedWithSfdx = value;
+  };
 
   connect = async ({ instance_url, access_token }: SalesforceTokens): Promise<void> => {
     const tokens = { instanceUrl: instance_url, accessToken: access_token };
@@ -52,8 +60,10 @@ export class SalesforceConnection {
 
     SalesforceConnection.resetCaches();
   };
+
   disconnect = (): void => {
     this.conn = null;
+    this.connectedWithSfdx = false;
     SalesforceConnection.resetCaches();
   };
 
