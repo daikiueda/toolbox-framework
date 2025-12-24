@@ -30,7 +30,7 @@ const App: React.FC = () => {
           {singleScreenApp ? (
             <CurrentApp />
           ) : (
-            <PanelGroup orientation="horizontal">
+            <MainPanelGroup orientation="horizontal">
               <Panel defaultSize={25} minSize="200px" maxSize="300px">
                 <PaneLeft>
                   <Nav menuItems={entries} currentApp={currentApp} switchApp={switchApp} />
@@ -40,7 +40,7 @@ const App: React.FC = () => {
               <Panel defaultSize={75}>
                 <PaneRight>{CurrentApp && <CurrentApp />}</PaneRight>
               </Panel>
-            </PanelGroup>
+            </MainPanelGroup>
           )}
         </Main>
       </Root>
@@ -53,19 +53,21 @@ export default App;
 const Root = styled.div`
   height: 100vh;
   width: 100vw;
-  display: grid;
-  grid-template-rows: fit-content(24px) 1fr;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Main = styled.div`
-  &:only-child {
-    height: 100vh;
-    overflow-y: auto;
-  }
+  flex: 1;
+  overflow-y: hidden;
+`;
+
+const MainPanelGroup = styled(PanelGroup)`
+  height: 100%;
 `;
 
 const PaneBase = styled.div`
-  height: 100vh;
+  height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
 `;
