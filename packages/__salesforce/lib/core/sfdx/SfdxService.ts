@@ -25,7 +25,6 @@ export const sfdxLoginAndDetectUsername = async (instanceUrl: string): Promise<s
     proc.stdout.on('data', (data) => {
       const output = data.toString();
       stdout += output;
-      console.log(output);
 
       // 認証成功メッセージを検出したら即座にresolve
       if (!resolved) {
@@ -37,11 +36,6 @@ export const sfdxLoginAndDetectUsername = async (instanceUrl: string): Promise<s
           resolve(username);
         }
       }
-    });
-
-    proc.stderr.on('data', (data) => {
-      const output = data.toString();
-      console.log(output);
     });
 
     proc.on('close', (code) => {
@@ -93,8 +87,6 @@ export const getSfdxSession = async (username?: string): Promise<SfdxSession> =>
 
     proc.on('close', (code) => {
       console.log('[SfdxService] sf コマンド終了コード:', code);
-      console.log('[SfdxService] stdout:', stdout);
-      console.log('[SfdxService] stderr:', stderr);
 
       if (code === 0) {
         try {
