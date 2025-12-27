@@ -116,17 +116,15 @@ export class SalesforceConnection {
    * @param serviceURI サービスURI (例: '/services/data/v60.0/sobjects/Account')
    * @returns リクエストボディを受け取ってAPIを実行する関数
    */
-  createRestApiExecuter = <TResponse = unknown>(
+  static createRestApiExecuter = <TResponse = unknown>(
     httpMethod: HttpMethod,
     serviceURI: string
   ): ((requestBody?: object) => Promise<TResponse>) => {
     return async (requestBody?: object): Promise<TResponse> => {
-      if (!this.conn) {
-        throw new Error('[salesforce] 接続が確立されていません');
-      }
+      const conn = this.getConnection();
 
-      const url = `${this.conn.instanceUrl}${serviceURI}`;
-      return this.conn.request<TResponse>(url, {
+      const url = `${conn.instanceUrl}${serviceURI}`;
+      return conn.request<TResponse>(url, {
         method: httpMethod,
         body: requestBody ? JSON.stringify(requestBody) : undefined,
         headers: requestBody ? { 'Content-Type': 'application/json' } : undefined,
