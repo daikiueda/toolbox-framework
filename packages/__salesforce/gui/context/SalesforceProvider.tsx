@@ -97,6 +97,47 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
     }
   }, []);
 
+  const loginWithAuthOrg = useCallback(async (usernameOrAlias: string): Promise<boolean> => {
+    if (!window.api?.salesforce) {
+      console.error('[salesforce] Salesforce API が利用できません');
+      return false;
+    }
+
+    try {
+      setConnectionState('connecting');
+      const success = await window.api.salesforce.loginWithAuthOrg(usernameOrAlias);
+
+      if (success) {
+        setConnectionState('connected');
+        setIsConnectedWithSfdx(true);
+        return true;
+      } else {
+        setConnectionState('disconnected');
+        setIsConnectedWithSfdx(false);
+        return false;
+      }
+    } catch (error) {
+      console.error('[salesforce] 認証済み組織ログインエラー:', error);
+      setConnectionState('error');
+      setIsConnectedWithSfdx(false);
+      return false;
+    }
+  }, []);
+
+  const getAuthenticatedOrgs = useCallback(async () => {
+    if (!window.api?.salesforce) {
+      console.error('[salesforce] Salesforce API が利用できません');
+      return [];
+    }
+
+    try {
+      return await window.api.salesforce.getAuthenticatedOrgs();
+    } catch (error) {
+      console.error('[salesforce] 認証済み組織一覧取得エラー:', error);
+      return [];
+    }
+  }, []);
+
   const logout = useCallback(async (): Promise<void> => {
     if (!window.api?.salesforce) {
       console.error('[salesforce] Salesforce API が利用できません');
@@ -132,6 +173,8 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
       orgInfo,
       loginWithOAuth,
       loginWithSfdx,
+      loginWithAuthOrg,
+      getAuthenticatedOrgs,
       logout,
       LoginGate,
     }),
@@ -141,6 +184,8 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
       orgInfo,
       loginWithOAuth,
       loginWithSfdx,
+      loginWithAuthOrg,
+      getAuthenticatedOrgs,
       logout,
       LoginGate,
     ]

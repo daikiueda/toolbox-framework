@@ -8,8 +8,15 @@ type UseSalesforceOptions = {
 };
 
 export const useSalesforce = ({ requireSfdxSession = false }: UseSalesforceOptions = {}) => {
-  const { loginWithOAuth, loginWithSfdx, connectionState, isConnectedWithSfdx, orgInfo } =
-    useSalesforceInternal();
+  const {
+    loginWithOAuth,
+    loginWithSfdx,
+    loginWithAuthOrg,
+    getAuthenticatedOrgs,
+    connectionState,
+    isConnectedWithSfdx,
+    orgInfo,
+  } = useSalesforceInternal();
 
   const LoginGate = useCallback(
     ({ children }: { children: React.ReactNode }) => {
@@ -26,10 +33,21 @@ export const useSalesforce = ({ requireSfdxSession = false }: UseSalesforceOptio
           onLoginWithOAuth={loginWithOAuth}
           useSfdxSession={requireSfdxSession}
           onLoginWithSfdx={loginWithSfdx}
+          onLoginWithAuthOrg={loginWithAuthOrg}
+          getAuthenticatedOrgs={getAuthenticatedOrgs}
+          connectionState={connectionState}
         />
       );
     },
-    [connectionState, isConnectedWithSfdx, loginWithOAuth, loginWithSfdx, requireSfdxSession]
+    [
+      connectionState,
+      isConnectedWithSfdx,
+      loginWithOAuth,
+      loginWithSfdx,
+      loginWithAuthOrg,
+      getAuthenticatedOrgs,
+      requireSfdxSession,
+    ]
   );
 
   return { LoginGate, orgInfo };
