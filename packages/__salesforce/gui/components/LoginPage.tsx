@@ -149,7 +149,7 @@ const App: React.FC<Props> = ({
   return (
     <PageWithTheme>
       <Heading level={1}>ログイン</Heading>
-      <Form onSubmit={handleSubmit} width="size-6000">
+      <Form onSubmit={handleSubmit}>
         <RadioGroup
           label="インスタンスURL"
           value={selectedType}
@@ -169,12 +169,13 @@ const App: React.FC<Props> = ({
             validationState={urlError ? 'invalid' : undefined}
             errorMessage={urlError}
             description={normalizedCustomDomain ?? undefined}
+            width="size-6000"
           />
         ) : (
           <></>
         )}
 
-        <Flex justifyContent="center" marginTop="size-400">
+        <Flex justifyContent="start" marginTop="size-400">
           <Button type="submit" variant="accent" isDisabled={isSubmitDisabled}>
             {useSfdxSession
               ? isLoggingIn
@@ -189,10 +190,10 @@ const App: React.FC<Props> = ({
 
       {authenticatedOrgs.length > 0 && (
         <>
-          <Divider size="M" marginTop="size-400" marginBottom="size-400" />
+          <Divider size="S" marginTop="size-600" marginBottom="size-400" />
 
-          <Flex direction="column" gap="size-200" width="size-6000">
-            <Heading level={3}>認証済み組織でログイン</Heading>
+          <Flex direction="column" gap="size-200">
+            <Heading level={2}>認証済み組織でログイン</Heading>
 
             <Picker
               label="組織を選択"
@@ -207,7 +208,7 @@ const App: React.FC<Props> = ({
               ))}
             </Picker>
 
-            <Flex justifyContent="center" marginTop="size-200">
+            <Flex justifyContent="start" marginTop="size-200">
               <Button
                 variant="accent"
                 onPress={handleAuthOrgLogin}
