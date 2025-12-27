@@ -6,6 +6,8 @@ import type { SalesforceTokens } from './auth/SalesforceTokens';
 
 const SF_API_VERSION_FALLBACK = '60.0';
 
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
 export class SalesforceConnection {
   // Singleton
   private static instance: SalesforceConnection | null = null;
@@ -107,4 +109,28 @@ export class SalesforceConnection {
 
     return this.orgInfoPromise;
   }
+
+  /**
+   * REST API呼び出し用の関数を生成する
+   * @param httpMethod HTTPメソッド (GET, POST, PUT, PATCH, DELETE)
+   * @param serviceURI サービスURI (例: '/services/data/v60.0/sobjects/Account')
+   * @returns リクエストボディを受け取ってAPIを実行する関数
+   */
+  createRestApiExecuter = <TResponse = unknown>(
+    httpMethod: HttpMethod,
+    serviceURI: string
+  ): ((requestBody?: object) => Promise<TResponse>) => {
+    return async (requestBody?: object): Promise<TResponse> => {
+      if (!this.conn) {
+        throw new Error('[salesforce] 接続が確立されていません');
+      }
+
+      const url = `${this.conn.instanceUrl}${serviceURI}`;
+      return this.conn.request<TResponse>(url, {
+        method: httpMethod,
+        body: requestBody ? JSON.stringify(requestBody) : undefined,
+        headers: requestBody ? { 'Content-Type': 'application/json' } : undefined,
+      });
+    };
+  };
 }
