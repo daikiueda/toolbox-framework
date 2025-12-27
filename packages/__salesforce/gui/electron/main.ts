@@ -151,12 +151,12 @@ const registerSalesforceHandlers = () => {
     try {
       const { getAuthInfo } = await import('../../lib/core/sfdx/SfdxAuthService');
 
-      const authFields = await getAuthInfo(usernameOrAlias);
+      const credentials = await getAuthInfo(usernameOrAlias);
 
       const connection = SalesforceConnection.getInstance();
       await connection.connect({
-        instance_url: authFields.instanceUrl!,
-        access_token: authFields.accessToken!,
+        instance_url: credentials.instanceUrl,
+        access_token: credentials.accessToken,
       });
 
       // 接続方法のフラグを立てる

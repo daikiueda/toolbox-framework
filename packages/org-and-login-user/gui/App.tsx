@@ -11,7 +11,7 @@ import OrgDetailView from './components/OrgDetailView';
 import PageWithTheme from './components/PageWithTheme';
 
 const App: React.FC = () => {
-  const { LoginGate } = useSalesforce();
+  const { LoginGate } = useSalesforce({ requireSfdxSession: true });
 
   return (
     <LoginGate>

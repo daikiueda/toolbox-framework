@@ -1,4 +1,4 @@
-import { type AuthFields, AuthInfo } from '@salesforce/core';
+import { AuthInfo, Org } from '@salesforce/core';
 
 export type AuthOrg = {
   username: string;
@@ -6,6 +6,11 @@ export type AuthOrg = {
   instanceUrl: string;
   isDefaultDevHub: boolean;
   isDefaultOrg: boolean;
+};
+
+export type AuthCredentials = {
+  instanceUrl: string;
+  accessToken: string;
 };
 
 /**
@@ -33,8 +38,14 @@ export const getAuthenticatedOrgs = async (): Promise<AuthOrg[]> => {
 
 /**
  * 指定したユーザー名の認証情報を取得
+ * トークンが期限切れの場合は自動的にリフレッシュされる
  */
-export const getAuthInfo = async (usernameOrAlias: string): Promise<AuthFields> => {
-  const authInfo = await AuthInfo.create({ username: usernameOrAlias });
-  return authInfo.getFields();
+export const getAuthInfo = async (usernameOrAlias: string): Promise<AuthCredentials> => {
+  const org = await Org.create({ aliasOrUsername: usernameOrAlias });
+  const connection = org.getConnection();
+
+  return {
+    instanceUrl: connection.instanceUrl,
+    accessToken: connection.accessToken!,
+  };
 };
