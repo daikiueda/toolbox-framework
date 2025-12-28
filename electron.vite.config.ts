@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => ({
         input: {
           index: resolve(__dirname, 'packages/__electron/src/main/index.ts'),
         },
+        external: ['@salesforce/core'],
       },
     },
     plugins: [externalizeDepsPlugin()],

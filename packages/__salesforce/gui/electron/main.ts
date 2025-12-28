@@ -146,6 +146,40 @@ const registerSalesforceHandlers = () => {
     }
   });
 
+  // 認証済み組織でログインハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.loginWithAuthOrg, async (_event, usernameOrAlias: string) => {
+    try {
+      const { getAuthInfo } = await import('../../lib/core/sfdx/SfdxAuthService');
+
+      const credentials = await getAuthInfo(usernameOrAlias);
+
+      const connection = SalesforceConnection.getInstance();
+      await connection.connect({
+        instance_url: credentials.instanceUrl,
+        access_token: credentials.accessToken,
+      });
+
+      // 接続方法のフラグを立てる
+      connection.setConnectedWithSfdx(true);
+
+      return true;
+    } catch (error) {
+      console.error('[salesforce] 認証済み組織ログインエラー:', error);
+      return false;
+    }
+  });
+
+  // 認証済み組織一覧取得ハンドラー
+  ipcMain.handle(SALESFORCE_CHANNELS.getAuthenticatedOrgs, async () => {
+    try {
+      const { getAuthenticatedOrgs } = await import('../../lib/core/sfdx/SfdxAuthService');
+      return await getAuthenticatedOrgs();
+    } catch (error) {
+      console.error('[salesforce] 認証済み組織一覧取得エラー:', error);
+      return [];
+    }
+  });
+
   // ログアウトハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.logout, async () => {
     SalesforceConnection.getInstance().disconnect();

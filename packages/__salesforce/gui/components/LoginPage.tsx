@@ -4,15 +4,20 @@ import styled from 'styled-components';
 
 import {
   Button,
+  Divider,
   Flex,
   Form,
   Heading,
   Page,
+  Picker,
+  PickerItem,
   Radio,
   RadioGroup,
   TextField,
 } from '@toolbox/design-system';
 
+import type { AuthOrg } from '../../lib/core/sfdx/SfdxAuthService';
+import type { ConnectionState } from '../../lib/models/ConnectionState';
 import {
   GENERAL_INSTANCE_URLS,
   InstanceUrlType,
@@ -23,13 +28,41 @@ type Props = {
   useSfdxSession: boolean;
   onLoginWithOAuth: (instanceUrl: string) => Promise<boolean>;
   onLoginWithSfdx: (instanceUrl: string) => Promise<boolean>;
+  onLoginWithAuthOrg: (usernameOrAlias: string) => Promise<boolean>;
+  getAuthenticatedOrgs: () => Promise<AuthOrg[]>;
+  connectionState: ConnectionState;
 };
 
-const App: React.FC<Props> = ({ onLoginWithOAuth, useSfdxSession, onLoginWithSfdx }) => {
+const App: React.FC<Props> = ({
+  onLoginWithOAuth,
+  useSfdxSession,
+  onLoginWithSfdx,
+  onLoginWithAuthOrg,
+  getAuthenticatedOrgs,
+  connectionState,
+}) => {
   const [selectedType, setSelectedType] = useState<InstanceUrlType>('production');
   const [customDomain, setCustomDomain] = useState('');
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [urlError, setUrlError] = useState<string | undefined>(undefined);
+  const [authenticatedOrgs, setAuthenticatedOrgs] = useState<AuthOrg[]>([]);
+  const [selectedOrgUsername, setSelectedOrgUsername] = useState<string>('');
+
+  // ログイン処理中かどうかを connectionState から判定
+  const isLoggingIn = connectionState === 'connecting';
+
+  // 認証済み組織一覧を取得
+  useEffect(() => {
+    const fetchOrgs = async () => {
+      const orgs = await getAuthenticatedOrgs();
+      setAuthenticatedOrgs(orgs);
+      // デフォルト組織があれば自動選択
+      const defaultOrg = orgs.find((org) => org.isDefaultOrg);
+      if (defaultOrg) {
+        setSelectedOrgUsername(defaultOrg.username);
+      }
+    };
+    fetchOrgs();
+  }, [getAuthenticatedOrgs]);
 
   const normalizedCustomDomain = useMemo(
     () => normalizeCustomInstanceUrl(customDomain),
@@ -84,39 +117,39 @@ const App: React.FC<Props> = ({ onLoginWithOAuth, useSfdxSession, onLoginWithSfd
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoggingIn(true);
 
-    try {
-      // instanceUrl を解決
-      let instanceUrl: string | undefined;
-      if (selectedType === 'production') {
-        instanceUrl = GENERAL_INSTANCE_URLS.PRODUCTION;
-      } else if (selectedType === 'sandbox') {
-        instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
-      } else if (selectedType === 'custom') {
-        const normalized = resolveCustomInstanceUrl();
-        if (!normalized) return;
-        instanceUrl = normalized;
-      }
-
-      // instanceUrl が解決されていることを確認
-      if (!instanceUrl) return;
-
-      // モードに応じてログイン実行
-      if (useSfdxSession) {
-        await onLoginWithSfdx(instanceUrl);
-      } else {
-        await onLoginWithOAuth(instanceUrl);
-      }
-    } finally {
-      setIsLoggingIn(false);
+    // instanceUrl を解決
+    let instanceUrl: string | undefined;
+    if (selectedType === 'production') {
+      instanceUrl = GENERAL_INSTANCE_URLS.PRODUCTION;
+    } else if (selectedType === 'sandbox') {
+      instanceUrl = GENERAL_INSTANCE_URLS.SANDBOX;
+    } else if (selectedType === 'custom') {
+      const normalized = resolveCustomInstanceUrl();
+      if (!normalized) return;
+      instanceUrl = normalized;
     }
+
+    // instanceUrl が解決されていることを確認
+    if (!instanceUrl) return;
+
+    // モードに応じてログイン実行（connectionState の更新は Provider で行われる）
+    if (useSfdxSession) {
+      await onLoginWithSfdx(instanceUrl);
+    } else {
+      await onLoginWithOAuth(instanceUrl);
+    }
+  };
+
+  const handleAuthOrgLogin = async () => {
+    if (!selectedOrgUsername) return;
+    await onLoginWithAuthOrg(selectedOrgUsername);
   };
 
   return (
     <PageWithTheme>
       <Heading level={1}>ログイン</Heading>
-      <Form onSubmit={handleSubmit} width="size-6000">
+      <Form onSubmit={handleSubmit}>
         <RadioGroup
           label="インスタンスURL"
           value={selectedType}
@@ -136,12 +169,13 @@ const App: React.FC<Props> = ({ onLoginWithOAuth, useSfdxSession, onLoginWithSfd
             validationState={urlError ? 'invalid' : undefined}
             errorMessage={urlError}
             description={normalizedCustomDomain ?? undefined}
+            width="size-6000"
           />
         ) : (
           <></>
         )}
 
-        <Flex justifyContent="center" marginTop="size-400">
+        <Flex justifyContent="start" marginTop="size-400">
           <Button type="submit" variant="accent" isDisabled={isSubmitDisabled}>
             {useSfdxSession
               ? isLoggingIn
@@ -153,6 +187,39 @@ const App: React.FC<Props> = ({ onLoginWithOAuth, useSfdxSession, onLoginWithSfd
           </Button>
         </Flex>
       </Form>
+
+      {authenticatedOrgs.length > 0 && (
+        <>
+          <Divider size="S" marginTop="size-600" marginBottom="size-400" />
+
+          <Flex direction="column" gap="size-200">
+            <Heading level={2}>認証済み組織でログイン</Heading>
+
+            <Picker
+              label="組織を選択"
+              selectedKey={selectedOrgUsername}
+              onSelectionChange={(key) => setSelectedOrgUsername(key as string)}
+              width="size-6000"
+            >
+              {authenticatedOrgs.map((org) => (
+                <PickerItem key={org.username} textValue={org.alias || org.username}>
+                  {org.alias ? `${org.alias} (${org.username})` : org.username}
+                </PickerItem>
+              ))}
+            </Picker>
+
+            <Flex justifyContent="start" marginTop="size-200">
+              <Button
+                variant="accent"
+                onPress={handleAuthOrgLogin}
+                isDisabled={!selectedOrgUsername || isLoggingIn}
+              >
+                {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
+              </Button>
+            </Flex>
+          </Flex>
+        </>
+      )}
     </PageWithTheme>
   );
 };
