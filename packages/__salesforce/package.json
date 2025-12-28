@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@jsforce/jsforce-node": "^3.10.10",
-    "@salesforce/core": "^8.24.0",
     "@toolbox/design-system": "^0.0.0"
   },
   "peerDependencies": {

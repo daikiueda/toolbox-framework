@@ -14,7 +14,6 @@ export default defineConfig(({ mode }) => ({
         input: {
           index: resolve(__dirname, 'src/main/index.ts'),
         },
-        external: ['@salesforce/core'],
       },
     },
     // ビルド時に環境変数を埋め込む
