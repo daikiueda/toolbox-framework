@@ -53,9 +53,9 @@ export const exchangeCodeForTokens = async (
   const data = await response.json();
 
   return {
-    access_token: data.access_token,
-    refresh_token: data.refresh_token,
-    instance_url: data.instance_url,
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
+    instanceUrl: data.instance_url,
   };
 };
 
@@ -86,8 +86,8 @@ export const refreshAccessToken = async (
   const data = await response.json();
 
   return {
-    access_token: data.access_token,
-    refresh_token: data.refresh_token || refreshToken,
-    instance_url: data.instance_url,
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token || refreshToken,
+    instanceUrl: data.instance_url,
   };
 };

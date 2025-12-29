@@ -128,13 +128,10 @@ const registerSalesforceHandlers = () => {
         await import('../../lib/core/sfdx/SfdxService');
 
       const username = await sfdxLoginAndDetectUsername(instanceUrl);
-      const { instanceUrl: orgInstanceUrl, accessToken } = await getSfdxSession(username);
+      const session = await getSfdxSession(username);
 
       const connection = SalesforceConnection.getInstance();
-      await connection.connect({
-        instance_url: orgInstanceUrl,
-        access_token: accessToken,
-      });
+      await connection.connect(session);
 
       // 接続方法のフラグを立てる
       connection.setConnectedWithSfdx(true);
@@ -154,10 +151,7 @@ const registerSalesforceHandlers = () => {
       const credentials = await getAuthInfo(usernameOrAlias);
 
       const connection = SalesforceConnection.getInstance();
-      await connection.connect({
-        instance_url: credentials.instanceUrl,
-        access_token: credentials.accessToken,
-      });
+      await connection.connect(credentials);
 
       // 接続方法のフラグを立てる
       connection.setConnectedWithSfdx(true);

@@ -33,10 +33,7 @@ const executor: Executor<Flags> = async ({ argv, stdin, yargs }) => {
 
   try {
     const session = await getSfdxSession(org);
-    await SalesforceConnection.getInstance().connect({
-      instance_url: session.instanceUrl,
-      access_token: session.accessToken,
-    });
+    await SalesforceConnection.getInstance().connect(session);
 
     const detail = await getOrgDetail();
     console.log(JSON.stringify(detail, null, 2));

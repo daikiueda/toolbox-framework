@@ -45,12 +45,10 @@ export class SalesforceConnection {
     this.connectedWithSfdx = value;
   };
 
-  connect = async ({ instance_url, access_token }: SalesforceTokens): Promise<void> => {
-    const tokens = { instanceUrl: instance_url, accessToken: access_token };
-
+  connect = async (tokens: SalesforceTokens): Promise<void> => {
     const preCheck = new jsforce.Connection(tokens);
     const versions = await preCheck.request<{ version: string }[]>(
-      `${instance_url}/services/data/`
+      `${tokens.instanceUrl}/services/data/`
     );
     const latestVersion = versions.at(-1)?.version;
 
