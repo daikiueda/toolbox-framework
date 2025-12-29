@@ -8,15 +8,18 @@ import {
   Flex,
   Form,
   Heading,
+  InlineError,
   Page,
   Picker,
   PickerItem,
   Radio,
   RadioGroup,
+  Skeleton,
+  Text,
   TextField,
 } from '@toolbox/design-system';
 
-import type { AuthOrg } from '../../lib/core/sfdx/SfdxAuthService';
+import type { AuthOrg, AuthOrgError, AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
 import {
   GENERAL_INSTANCE_URLS,
@@ -29,7 +32,7 @@ type Props = {
   onLoginWithOAuth: (instanceUrl: string) => Promise<boolean>;
   onLoginWithSfdx: (instanceUrl: string) => Promise<boolean>;
   onLoginWithAuthOrg: (usernameOrAlias: string) => Promise<boolean>;
-  getAuthenticatedOrgs: () => Promise<AuthOrg[]>;
+  getAuthenticatedOrgs: () => Promise<AuthOrgResult>;
   connectionState: ConnectionState;
 };
 
@@ -46,6 +49,8 @@ const App: React.FC<Props> = ({
   const [urlError, setUrlError] = useState<string | undefined>(undefined);
   const [authenticatedOrgs, setAuthenticatedOrgs] = useState<AuthOrg[]>([]);
   const [selectedOrgUsername, setSelectedOrgUsername] = useState<string>('');
+  const [isLoadingAuthenticatedOrgs, setIsLoadingAuthenticatedOrgs] = useState(false);
+  const [authOrgError, setAuthOrgError] = useState<AuthOrgError | null>(null);
 
   // ログイン処理中かどうかを connectionState から判定
   const isLoggingIn = connectionState === 'connecting';
@@ -53,12 +58,42 @@ const App: React.FC<Props> = ({
   // 認証済み組織一覧を取得
   useEffect(() => {
     const fetchOrgs = async () => {
-      const orgs = await getAuthenticatedOrgs();
-      setAuthenticatedOrgs(orgs);
-      // デフォルト組織があれば自動選択
-      const defaultOrg = orgs.find((org) => org.isDefaultOrg);
-      if (defaultOrg) {
-        setSelectedOrgUsername(defaultOrg.username);
+      setIsLoadingAuthenticatedOrgs(true);
+      setAuthOrgError(null);
+      try {
+        const result = await getAuthenticatedOrgs();
+        const orgs = result.orgs;
+        setAuthenticatedOrgs(orgs);
+
+        if (result.error) {
+          setAuthOrgError(result.error);
+          setSelectedOrgUsername('');
+          return;
+        }
+
+        if (orgs.length === 0) {
+          setAuthOrgError({
+            code: 'no_orgs',
+            message: '認証済みの組織がありません。',
+          });
+          setSelectedOrgUsername('');
+          return;
+        }
+
+        const defaultOrg = orgs.find((org) => org.isDefaultOrg);
+        if (defaultOrg) {
+          setSelectedOrgUsername(defaultOrg.username);
+        }
+      } catch (error) {
+        console.error('[LoginPage] 認証済み組織一覧取得エラー:', error);
+        setAuthOrgError({
+          code: 'unknown',
+          message: '認証済み組織の取得に失敗しました。',
+        });
+        setAuthenticatedOrgs([]);
+        setSelectedOrgUsername('');
+      } finally {
+        setIsLoadingAuthenticatedOrgs(false);
       }
     };
     fetchOrgs();
@@ -146,6 +181,27 @@ const App: React.FC<Props> = ({
     await onLoginWithAuthOrg(selectedOrgUsername);
   };
 
+  if (useSfdxSession && !isLoadingAuthenticatedOrgs && authOrgError?.code === 'cli_not_found') {
+    return (
+      <PageWithTheme>
+        <Heading level={1}>Salesforce CLI が必要です</Heading>
+        <Flex direction="column" gap="size-200" maxWidth="size-6000">
+          <Text>この機能は Salesforce CLI がインストールされている環境で動作します。</Text>
+          <Text>まだインストールしていない場合は、以下のページからセットアップしてください。</Text>
+          <Text>
+            <a
+              href="https://developer.salesforce.com/tools/sfdxcli"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Salesforce CLI のインストール手順
+            </a>
+          </Text>
+        </Flex>
+      </PageWithTheme>
+    );
+  }
+
   return (
     <PageWithTheme>
       <Heading level={1}>ログイン</Heading>
@@ -188,35 +244,45 @@ const App: React.FC<Props> = ({
         </Flex>
       </Form>
 
-      {authenticatedOrgs.length > 0 && (
+      {(isLoadingAuthenticatedOrgs || authOrgError || authenticatedOrgs.length > 0) && (
         <>
           <Divider size="S" marginTop="size-600" marginBottom="size-400" />
 
           <Flex direction="column" gap="size-200">
             <Heading level={2}>認証済み組織でログイン</Heading>
 
-            <Picker
-              label="組織を選択"
-              selectedKey={selectedOrgUsername}
-              onSelectionChange={(key) => setSelectedOrgUsername(key as string)}
-              width="size-6000"
-            >
-              {authenticatedOrgs.map((org) => (
-                <PickerItem key={org.username} textValue={org.alias || org.username}>
-                  {org.alias ? `${org.alias} (${org.username})` : org.username}
-                </PickerItem>
-              ))}
-            </Picker>
+            {isLoadingAuthenticatedOrgs ? (
+              <Skeleton height={32} width={360} />
+            ) : authOrgError ? (
+              <InlineError>{authOrgError.message}</InlineError>
+            ) : authenticatedOrgs.length > 0 ? (
+              <>
+                <Picker
+                  label="組織を選択"
+                  selectedKey={selectedOrgUsername}
+                  onSelectionChange={(key) => setSelectedOrgUsername(key as string)}
+                  width="size-6000"
+                >
+                  {authenticatedOrgs.map((org) => (
+                    <PickerItem key={org.username} textValue={org.alias || org.username}>
+                      {org.alias ? `${org.alias} (${org.username})` : org.username}
+                    </PickerItem>
+                  ))}
+                </Picker>
 
-            <Flex justifyContent="start" marginTop="size-200">
-              <Button
-                variant="accent"
-                onPress={handleAuthOrgLogin}
-                isDisabled={!selectedOrgUsername || isLoggingIn}
-              >
-                {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
-              </Button>
-            </Flex>
+                <Flex justifyContent="start" marginTop="size-200">
+                  <Button
+                    variant="accent"
+                    onPress={handleAuthOrgLogin}
+                    isDisabled={!selectedOrgUsername || isLoggingIn}
+                  >
+                    {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
+                  </Button>
+                </Flex>
+              </>
+            ) : (
+              <Text>認証済みの組織がありません。</Text>
+            )}
           </Flex>
         </>
       )}

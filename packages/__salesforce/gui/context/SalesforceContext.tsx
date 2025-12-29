@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 import type { OrgInfo } from '../../lib';
-import type { AuthOrg } from '../../lib/core/sfdx/SfdxAuthService';
+import type { AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
 
 export type SalesforceContextValue = {
@@ -11,7 +11,7 @@ export type SalesforceContextValue = {
   loginWithOAuth: (instanceUrl: string) => Promise<boolean>;
   loginWithSfdx: (instanceUrl: string) => Promise<boolean>;
   loginWithAuthOrg: (usernameOrAlias: string) => Promise<boolean>;
-  getAuthenticatedOrgs: () => Promise<AuthOrg[]>;
+  getAuthenticatedOrgs: () => Promise<AuthOrgResult>;
   logout: () => Promise<void>;
   LoginGate: React.ComponentType<{ children: React.ReactNode }>;
 };

@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 
-import { getSfdxSession } from './SfdxService';
+import { buildSfEnv, getSfdxSession } from './SfdxService';
 
 export type AuthOrg = {
   username: string;
@@ -8,6 +8,18 @@ export type AuthOrg = {
   instanceUrl: string;
   isDefaultDevHub: boolean;
   isDefaultOrg: boolean;
+};
+
+export type AuthOrgErrorCode = 'cli_not_found' | 'no_orgs' | 'unknown';
+
+export type AuthOrgError = {
+  code: AuthOrgErrorCode;
+  message: string;
+};
+
+export type AuthOrgResult = {
+  orgs: AuthOrg[];
+  error?: AuthOrgError;
 };
 
 export type AuthCredentials = {
@@ -30,13 +42,12 @@ type SfOrgListResult = {
   };
 };
 
+type SfCommandError = Error & { code?: string };
+
 const runSfJsonCommand = async (args: string[]): Promise<unknown> =>
   new Promise((resolve, reject) => {
     const proc = spawn('sf', [...args, '--json'], {
-      env: {
-        ...process.env,
-        SF_SKIP_NEW_VERSION_CHECK: 'true',
-      },
+      env: buildSfEnv(),
     });
 
     let stdout = '';
@@ -67,7 +78,11 @@ const runSfJsonCommand = async (args: string[]): Promise<unknown> =>
     });
 
     proc.on('error', (error) => {
-      reject(new Error(`[SfdxAuthService] sf コマンド実行エラー: ${error.message}`));
+      const commandError = new Error(
+        `[SfdxAuthService] sf コマンド実行エラー: ${error.message}`
+      ) as SfCommandError;
+      commandError.code = (error as SfCommandError).code;
+      reject(commandError);
     });
   });
 
@@ -96,6 +111,43 @@ export const getAuthenticatedOrgs = async (): Promise<AuthOrg[]> => {
   } catch (error) {
     console.error('[SfdxAuthService] 認証済み組織一覧取得エラー:', error);
     return [];
+  }
+};
+
+export const getAuthenticatedOrgsWithStatus = async (): Promise<AuthOrgResult> => {
+  try {
+    const orgs = await listAuthenticatedOrgsWithSf();
+    if (orgs.length === 0) {
+      return {
+        orgs,
+        error: {
+          code: 'no_orgs',
+          message: '認証済みの組織がありません。',
+        },
+      };
+    }
+
+    return { orgs };
+  } catch (error) {
+    const commandError = error as SfCommandError;
+    if (commandError.code === 'ENOENT') {
+      return {
+        orgs: [],
+        error: {
+          code: 'cli_not_found',
+          message: 'sf CLI が見つかりません。事前にインストールしてください。',
+        },
+      };
+    }
+
+    console.error('[SfdxAuthService] 認証済み組織一覧取得エラー:', error);
+    return {
+      orgs: [],
+      error: {
+        code: 'unknown',
+        message: '認証済み組織の取得に失敗しました。',
+      },
+    };
   }
 };
 

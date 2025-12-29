@@ -1,6 +1,38 @@
 import { spawn } from 'child_process';
+import { delimiter } from 'path';
 
 import type { SfdxSession } from './types';
+
+const buildPath = (currentPath?: string): string => {
+  const baseCandidates = [
+    currentPath,
+    '/usr/local/bin',
+    '/opt/homebrew/bin',
+    '/opt/homebrew/sbin',
+    '/usr/bin',
+    '/bin',
+    '/usr/sbin',
+    '/sbin',
+  ];
+
+  const windowsCandidates = [
+    currentPath,
+    'C:\\Program Files\\Salesforce CLI\\bin',
+    'C:\\Program Files\\sfdx\\bin',
+    'C:\\Program Files\\nodejs',
+  ];
+
+  const candidates = process.platform === 'win32' ? windowsCandidates : baseCandidates;
+
+  const unique = new Set(candidates.filter((value): value is string => Boolean(value)));
+  return Array.from(unique).join(delimiter);
+};
+
+export const buildSfEnv = () => ({
+  ...process.env,
+  PATH: buildPath(process.env.PATH ?? process.env.Path),
+  SF_SKIP_NEW_VERSION_CHECK: 'true',
+});
 
 /**
  * sf org login web を実行してブラウザでログイン
@@ -14,10 +46,7 @@ export const sfdxLoginAndDetectUsername = async (instanceUrl: string): Promise<s
     console.log('[SfdxService] sf コマンドを実行:', 'sf', args.join(' '));
 
     const proc = spawn('sf', args, {
-      env: {
-        ...process.env,
-        SF_SKIP_NEW_VERSION_CHECK: 'true',
-      },
+      env: buildSfEnv(),
     });
     let stdout = '';
     let resolved = false;
@@ -69,10 +98,7 @@ export const getSfdxSession = async (username?: string): Promise<SfdxSession> =>
     console.log('[SfdxService] sf コマンドを実行:', 'sf', args.join(' '));
 
     const proc = spawn('sf', args, {
-      env: {
-        ...process.env,
-        SF_SKIP_NEW_VERSION_CHECK: 'true',
-      },
+      env: buildSfEnv(),
     });
     let stdout = '';
     let stderr = '';

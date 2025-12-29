@@ -172,11 +172,18 @@ const registerSalesforceHandlers = () => {
   // 認証済み組織一覧取得ハンドラー
   ipcMain.handle(SALESFORCE_CHANNELS.getAuthenticatedOrgs, async () => {
     try {
-      const { getAuthenticatedOrgs } = await import('../../lib/core/sfdx/SfdxAuthService');
-      return await getAuthenticatedOrgs();
+      const { getAuthenticatedOrgsWithStatus } =
+        await import('../../lib/core/sfdx/SfdxAuthService');
+      return await getAuthenticatedOrgsWithStatus();
     } catch (error) {
       console.error('[salesforce] 認証済み組織一覧取得エラー:', error);
-      return [];
+      return {
+        orgs: [],
+        error: {
+          code: 'unknown',
+          message: '認証済み組織の取得に失敗しました。',
+        },
+      };
     }
   });
 

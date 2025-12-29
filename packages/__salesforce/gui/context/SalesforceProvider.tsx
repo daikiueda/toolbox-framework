@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { OrgInfo } from '../../lib';
+import type { AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
 
 import { SalesforceContext, type SalesforceContextValue } from './SalesforceContext';
@@ -124,17 +125,29 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
     }
   }, []);
 
-  const getAuthenticatedOrgs = useCallback(async () => {
+  const getAuthenticatedOrgs = useCallback(async (): Promise<AuthOrgResult> => {
     if (!window.api?.salesforce) {
       console.error('[salesforce] Salesforce API が利用できません');
-      return [];
+      return {
+        orgs: [],
+        error: {
+          code: 'unknown',
+          message: 'Salesforce API が利用できません。',
+        },
+      };
     }
 
     try {
       return await window.api.salesforce.getAuthenticatedOrgs();
     } catch (error) {
       console.error('[salesforce] 認証済み組織一覧取得エラー:', error);
-      return [];
+      return {
+        orgs: [],
+        error: {
+          code: 'unknown',
+          message: '認証済み組織の取得に失敗しました。',
+        },
+      };
     }
   }, []);
 

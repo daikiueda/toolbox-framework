@@ -1,5 +1,5 @@
 import type { OrgInfo } from '../../lib';
-import type { AuthOrg } from '../../lib/core/sfdx/SfdxAuthService';
+import type { AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
 
 export const SALESFORCE_CHANNELS = {
@@ -19,7 +19,7 @@ export type SalesforceAPI = {
   loginWithOAuth: (instanceUrl: string) => Promise<boolean>;
   loginWithSfdx: (instanceUrl: string) => Promise<boolean>;
   loginWithAuthOrg: (usernameOrAlias: string) => Promise<boolean>;
-  getAuthenticatedOrgs: () => Promise<AuthOrg[]>;
+  getAuthenticatedOrgs: () => Promise<AuthOrgResult>;
   logout: () => Promise<void>;
   getOrgInfo: () => Promise<OrgInfo | null>;
   getConnectionState: () => Promise<ConnectionState>;
