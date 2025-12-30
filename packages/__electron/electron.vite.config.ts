@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import { config } from 'dotenv';
 import { defineConfig } from 'electron-vite';
+import macros from 'unplugin-parcel-macros';
 
 // 開発時に.envを読み込む
 config({ path: resolve(__dirname, '.env') });
@@ -46,7 +47,7 @@ export default defineConfig(({ mode }) => ({
         '@renderer': resolve(__dirname, 'src/renderer/src'),
       },
     },
-    plugins: [react()],
+    plugins: [macros.vite(), react()],
 
     // NOTE: UIライブラリ内部におけるNODE_ENVでの挙動制御をViteのビルドモードに同調させる
     // @see https://github.com/adobe/react-spectrum/discussions/8189#discussioncomment-13059244
