@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import '@spectrum-css/sidenav';
 import Box from '@spectrum-icons/workflow/Box';
 
-import { Heading } from '@toolbox/design-system/Components/Content';
-import { Flex, Header } from '@toolbox/design-system/Components/Layout';
+import { Flex, Header, Heading } from '@toolbox/design-system';
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 

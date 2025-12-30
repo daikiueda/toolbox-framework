@@ -2,6 +2,11 @@
   "name": "@toolbox/design-system",
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./AppRoot": "./AppRoot/index.tsx",
+    "./utils": "./utils/index.ts"
+  },
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

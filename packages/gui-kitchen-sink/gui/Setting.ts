@@ -1,5 +1,5 @@
 import { SortDescriptor } from '@toolbox/design-system';
-import { isRecord } from '@toolbox/design-system/utils/TypeUtils';
+import { isRecord } from '@toolbox/design-system/utils';
 
 import { Framework } from '../src/models/Framework';
 import type { Layout } from '../src/models/Layout';
