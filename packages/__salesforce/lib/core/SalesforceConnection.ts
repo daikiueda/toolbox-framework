@@ -33,6 +33,9 @@ export class SalesforceConnection {
     }
     return this.instance.conn;
   };
+  static init = async (tokens: SalesforceTokens): Promise<void> => {
+    await this.getInstance().connect(tokens);
+  };
   static isConnected = () => Boolean(this.instance?.conn);
   static isConnectedWithSfdx = (): boolean => {
     return this.instance?.connectedWithSfdx ?? false;

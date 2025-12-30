@@ -52,7 +52,7 @@ const handleProtocolUrl = async (url: string): Promise<void> => {
     );
 
     // 接続確立
-    await SalesforceConnection.getInstance().connect(tokens);
+    await SalesforceConnection.init(tokens);
 
     // BrowserWindow.getFocusedWindow()?.setTitle();
 
@@ -130,11 +130,10 @@ const registerSalesforceHandlers = () => {
       const username = await sfdxLoginAndDetectUsername(instanceUrl);
       const session = await getSfdxSession(username);
 
-      const connection = SalesforceConnection.getInstance();
-      await connection.connect(session);
+      await SalesforceConnection.init(session);
 
       // 接続方法のフラグを立てる
-      connection.setConnectedWithSfdx(true);
+      SalesforceConnection.getInstance().setConnectedWithSfdx(true);
 
       return true;
     } catch (error) {
@@ -150,11 +149,10 @@ const registerSalesforceHandlers = () => {
 
       const credentials = await getAuthInfo(usernameOrAlias);
 
-      const connection = SalesforceConnection.getInstance();
-      await connection.connect(credentials);
+      await SalesforceConnection.init(credentials);
 
       // 接続方法のフラグを立てる
-      connection.setConnectedWithSfdx(true);
+      SalesforceConnection.getInstance().setConnectedWithSfdx(true);
 
       return true;
     } catch (error) {
