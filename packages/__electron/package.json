@@ -14,5 +14,9 @@
     "dotenv": "^17.2.3",
     "react-resizable-panels": "^4.1.0",
     "sharp": "^0.34.5"
+  },
+  "peerDependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   }
 }
