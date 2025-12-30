@@ -301,6 +301,9 @@ const main = () => {
   console.log('\n💡 次のステップ:');
   if (integrateElectron) {
     console.log(`   統合確認: npm run dev`);
+  } else if (useSalesforce) {
+    console.log(`   テスト:   npm run --workspace packages/${featureName} test`);
+    console.log(`   統合確認: npm run dev`);
   } else {
     console.log(`   GUI開発: npm run --workspace packages/${featureName} gui`);
     console.log(`   テスト:   npm run --workspace packages/${featureName} test`);

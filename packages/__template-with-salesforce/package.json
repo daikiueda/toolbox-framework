@@ -12,8 +12,7 @@
   "scripts": {
     "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts",
     "build:cli": "esbuild ./src/cli.ts --platform=node --format=esm --bundle --outfile=bin/__cli.mjs --external:jsforce --external:@jsforce/jsforce-node",
-    "postinstall": "npm run build:cli",
-    "gui": "vite"
+    "postinstall": "npm run build:cli"
   },
   "dependencies": {
     "@spectrum-icons/workflow": "^4.2.26",
