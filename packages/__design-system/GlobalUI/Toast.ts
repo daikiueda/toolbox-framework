@@ -1,6 +1,6 @@
-import { ToastQueue } from '@react-spectrum/toast';
+import { ToastQueue } from '@react-spectrum/s2';
 
-export { ToastContainer } from '@react-spectrum/toast';
+export { ToastContainer } from '@react-spectrum/s2';
 
 export default {
   ...ToastQueue,
