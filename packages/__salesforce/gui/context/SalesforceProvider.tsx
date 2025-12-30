@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { OrgInfo } from '../../lib';
 import type { AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
@@ -6,7 +6,7 @@ import type { ConnectionState } from '../../lib/models/ConnectionState';
 
 import { SalesforceContext, type SalesforceContextValue } from './SalesforceContext';
 
-export const SalesforceProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const SalesforceProvider = ({ children }: { children: React.ReactNode }): ReactNode => {
   const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
   const [isConnectedWithSfdx, setIsConnectedWithSfdx] = useState<boolean>(false);
   const [orgInfo, setOrgInfo] = useState<OrgInfo | null>(null);
@@ -168,7 +168,7 @@ export const SalesforceProvider = ({ children }: { children: React.ReactNode }):
   }, []);
 
   const LoginGate = useMemo(() => {
-    const Component = ({ children }: { children: React.ReactNode }): JSX.Element | null => {
+    const Component = ({ children }: { children: React.ReactNode }): ReactNode | null => {
       if (connectionState === 'connected') {
         return <>{children}</>;
       }
