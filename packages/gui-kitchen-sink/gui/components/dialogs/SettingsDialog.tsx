@@ -12,6 +12,7 @@ import {
   Heading,
   Text,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import * as Icon from '../theme/icons';
 
@@ -31,7 +32,12 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
         <Content>
           <Text>Reset all persisted values back to their defaults. This cannot be undone.</Text>
         </Content>
-        <ButtonGroup marginTop="size-250" align="end" isDisabled={false} orientation="horizontal">
+        <ButtonGroup
+          styles={style({ marginTop: 20 })}
+          align="end"
+          isDisabled={false}
+          orientation="horizontal"
+        >
           <Button variant="secondary" onPress={closeDialog}>
             Close
           </Button>

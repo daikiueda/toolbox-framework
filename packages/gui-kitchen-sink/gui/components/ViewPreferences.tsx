@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Key } from '@react-types/shared';
 
-import { ActionGroup, ActionGroupItem, Flex, Text, Well } from '@toolbox/design-system';
+import { Flex, Text, ToggleButton, ToggleButtonGroup, Well } from '@toolbox/design-system';
 
 import type { Layout } from '../../src/models/Layout';
 import { Layout as LayoutModel } from '../../src/models/Layout';
@@ -31,24 +31,24 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
       description="Switch between different project views."
     >
       <Flex direction="column" gap="size-200">
-        <ActionGroup
+        <ToggleButtonGroup
           selectionMode="single"
           selectedKeys={selectedLayoutKeys}
-          onAction={(key) => {
+          onSelectionChange={(key) => {
             const guardedKey = LayoutModel.guard(key) ? key : 'dashboard';
             updateSetting('activeLayout')(guardedKey);
           }}
           aria-label="Choose layout"
         >
           {LAYOUT_OPTIONS.map((layout) => (
-            <ActionGroupItem key={layout.id}>
+            <ToggleButton key={layout.id}>
               <Flex alignItems="center" gap="size-100">
                 {layout.icon()}
                 <Text>{layout.label}</Text>
               </Flex>
-            </ActionGroupItem>
+            </ToggleButton>
           ))}
-        </ActionGroup>
+        </ToggleButtonGroup>
         <Well>
           <Text>{`Selected: ${LAYOUT_OPTIONS.find((layout) => layout.id === activeLayout)?.label ?? 'None'}`}</Text>
         </Well>

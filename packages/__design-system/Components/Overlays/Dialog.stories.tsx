@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import React from 'react';
 
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
+
 import { Button, ButtonGroup } from '../Buttons';
 import { Divider, Heading, Text } from '../Content';
 import { Content, Footer, Header } from '../Layout';
@@ -64,7 +66,7 @@ export const Confirmation: Story = {
               This action cannot be undone. Please confirm to permanently remove the project data.
             </Text>
           </Content>
-          <ButtonGroup marginTop="size-250" align="end">
+          <ButtonGroup styles={style({ marginTop: 20 })} align="end">
             <Button variant="secondary" onPress={close}>
               Cancel
             </Button>

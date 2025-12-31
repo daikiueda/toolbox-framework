@@ -5,7 +5,7 @@ import React from 'react';
 import { Button, ButtonGroup } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/ButtonGroup.html
+ * https://react-spectrum.adobe.com/ButtonGroup
  */
 const meta: Meta<typeof ButtonGroup> = {
   title: 'Components/Buttons/ButtonGroup',
