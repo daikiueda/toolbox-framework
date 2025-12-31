@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Divider, Flex, Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Setting } from './Setting';
 import DocumentUpload from './components/DocumentUpload';
@@ -10,7 +11,7 @@ import TeamRoster from './components/TeamRoster';
 import ViewPreferences from './components/ViewPreferences';
 import SettingsDialog from './components/dialogs/SettingsDialog';
 import PageWithTheme from './components/theme/PageWithTheme';
-import { CCLibrary as AppIcon } from './components/theme/icons';
+import { BetaApp as AppIcon } from './components/theme/icons';
 
 const App: React.FC = () => {
   const [setting, updateSetting] = useSetting(Setting.default(), {
@@ -35,7 +36,7 @@ const App: React.FC = () => {
     <PageWithTheme>
       <Flex alignItems="center" justifyContent="space-between" gap="size-200">
         <Flex alignItems="center" gap="size-125">
-          <AppIcon size="L" />
+          <AppIcon styles={iconStyle({ size: 'XL' })} />
           <Heading level={1}>Design System Kitchen Sink</Heading>
         </Flex>
         <SettingsDialog onReset={handleResetSettings} />

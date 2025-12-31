@@ -11,7 +11,6 @@
     "gui": "vite"
   },
   "dependencies": {
-    "@spectrum-icons/workflow": "^4.2.26",
     "@toolbox/design-system": "^0.0.0",
     "jsforce": "^3.10.10"
   },

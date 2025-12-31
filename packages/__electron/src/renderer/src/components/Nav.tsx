@@ -3,10 +3,11 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 
+import ProjectIcon from '@react-spectrum/s2/icons/Project';
 import '@spectrum-css/sidenav';
-import Box from '@spectrum-icons/workflow/Box';
 
 import { Flex, Header, Heading } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 
@@ -91,7 +92,7 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
       <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
         <Header marginX="24px">
           <Flex direction="row" alignItems="center">
-            <Box color="informative" size="L" />
+            <ProjectIcon styles={iconStyle({ size: 'XL', color: 'informative' })} />
             <Heading level={1} marginStart="size-100" marginY="24px">
               Toolbox
             </Heading>

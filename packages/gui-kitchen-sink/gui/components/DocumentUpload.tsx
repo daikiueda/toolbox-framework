@@ -14,9 +14,11 @@ import {
   Well,
   useFileSelection,
 } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
+import * as Illustration from './theme/illustrations';
 
 const truncate = (input: string, maxLength: number): string => {
   if (input.length <= maxLength) {
@@ -49,14 +51,14 @@ const DocumentUpload: React.FC = () => {
 
   return (
     <Section
-      icon={<Icon.UploadToCloud size="M" />}
+      icon={<Icon.UploadToCloud styles={iconStyle({ size: 'XL' })} />}
       title="Document Upload"
       description="Upload project documents and attachments."
     >
       <DropZone onDrop={handleDrop}>
         <View padding="size-200">
           <Flex direction="column" alignItems="center" gap="size-100">
-            <Icon.FileJson size="XXL" />
+            <Illustration.Document />
             <Heading level={3}>Drop files here</Heading>
             <Text>…or pick files with the button below.</Text>
             <Content>
@@ -76,7 +78,7 @@ const DocumentUpload: React.FC = () => {
             {filePreviews.map((file) => (
               <Well key={file.path}>
                 <Flex alignItems="center" gap="size-100">
-                  <Icon.FileCode size="S" />
+                  <Icon.File styles={iconStyle({ size: 'S' })} />
                   <Heading level={4}>{file.path}</Heading>
                 </Flex>
                 <View

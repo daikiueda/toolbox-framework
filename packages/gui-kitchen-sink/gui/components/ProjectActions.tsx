@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { ActionButton, Button, FileTrigger, Flex, Text, Toast } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
@@ -33,25 +34,25 @@ const ProjectActions: React.FC<ProjectActionsProps> = ({ activeLayout }) => {
 
   return (
     <Section
-      icon={<Icon.SaveFloppy size="M" />}
+      icon={<Icon.SaveFloppy styles={iconStyle({ size: 'XL' })} />}
       title="Project Actions"
       description="Save, publish, and manage your project."
     >
       <Flex gap="size-150" wrap alignItems="center">
         <Button variant="accent" onPress={handleSave}>
-          <Icon.SaveFloppy slot="icon" />
+          <Icon.SaveFloppy />
           <Text>Save</Text>
         </Button>
         <Button variant="secondary" onPress={handleSaveDraft}>
-          <Icon.Add slot="icon" />
+          <Icon.Add />
           <Text>Save draft</Text>
         </Button>
         <Button variant="negative" onPress={handleDelete}>
-          <Icon.Delete slot="icon" />
+          <Icon.Delete />
           <Text>Delete</Text>
         </Button>
         <ActionButton onPress={handleShowLayout}>
-          <Icon.ModernGridView slot="icon" />
+          <Icon.ViewGridFluid />
           <Text>Show layout</Text>
         </ActionButton>
         <FileTrigger allowsMultiple onSelect={handleBrowseFiles}>

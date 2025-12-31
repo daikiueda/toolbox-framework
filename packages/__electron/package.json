@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@spectrum-css/sidenav": "^7.2.0",
-    "@spectrum-icons/workflow": "^4.2.26",
     "@toolbox/org-and-login-user": "^0.0.0",
     "@toolbox/salesforce": "^0.0.0",
     "@toolbox/template": "^0.0.0",

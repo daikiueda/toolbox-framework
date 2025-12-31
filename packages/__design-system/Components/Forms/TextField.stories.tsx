@@ -1,10 +1,6 @@
 import { ArgTypes, Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import React from 'react';
-
-import Edit from '@spectrum-icons/workflow/Edit';
-
 import { TextField } from './index';
 import { allCommonArgTypes } from './storybook-helper/common-props';
 
@@ -37,12 +33,13 @@ export const Basic: Story = {
   },
 };
 
-export const WithIcon: Story = {
-  args: {
-    label: 'With icon',
-    icon: <Edit />,
-  },
-};
+// NOTE: it has not been implemented yet(s2)
+// export const WithIcon: Story = {
+//   args: {
+//     label: 'With icon',
+//     icon: <Edit />,
+//   },
+// };
 
 export const WithMaxLength: Story = {
   args: {

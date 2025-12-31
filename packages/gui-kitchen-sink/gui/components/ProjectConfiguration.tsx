@@ -15,6 +15,7 @@ import {
   TextField,
   View,
 } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { Framework } from '../../src/models/Framework';
 import { Framework as FrameworkModel } from '../../src/models/Framework';
@@ -67,7 +68,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
 
   return (
     <Section
-      icon={<Icon.FormIcon size="M" />}
+      icon={<Icon.Table styles={iconStyle({ size: 'XL' })} />}
       title="Project Configuration"
       description="Define your project settings and team structure."
     >

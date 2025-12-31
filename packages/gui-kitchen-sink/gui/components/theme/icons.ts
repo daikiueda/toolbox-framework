@@ -1,14 +1,19 @@
-export { default as Add } from '@spectrum-icons/workflow/Add';
-export { default as CCLibrary } from '@spectrum-icons/workflow/CCLibrary';
-export { default as Data } from '@spectrum-icons/workflow/Data';
-export { default as Delete } from '@spectrum-icons/workflow/Delete';
-export { default as FileCode } from '@spectrum-icons/workflow/FileCode';
-export { default as FileJson } from '@spectrum-icons/workflow/FileJson';
-export { default as FormIcon } from '@spectrum-icons/workflow/Form';
-export { default as ModernGridView } from '@spectrum-icons/workflow/ModernGridView';
-export { default as SaveFloppy } from '@spectrum-icons/workflow/SaveFloppy';
-export { default as UploadToCloud } from '@spectrum-icons/workflow/UploadToCloud';
-export { default as ViewCard } from '@spectrum-icons/workflow/ViewCard';
-export { default as ViewColumn } from '@spectrum-icons/workflow/ViewColumn';
-export { default as ViewDay } from '@spectrum-icons/workflow/ViewDay';
-export { default as Settings } from '@spectrum-icons/workflow/Settings';
+export { default as BetaApp } from '@react-spectrum/s2/icons/BetaApp';
+export { default as Settings } from '@react-spectrum/s2/icons/Settings';
+
+export { default as SaveFloppy } from '@react-spectrum/s2/icons/SaveFloppy';
+export { default as Add } from '@react-spectrum/s2/icons/Add';
+export { default as Delete } from '@react-spectrum/s2/icons/Delete';
+export { default as ViewGridFluid } from '@react-spectrum/s2/icons/ViewGridFluid';
+
+export { default as Table } from '@react-spectrum/s2/icons/Table';
+
+export { default as Layout } from '@react-spectrum/s2/icons/Layout';
+export { default as SpeedFast } from '@react-spectrum/s2/icons/SpeedFast';
+export { default as OrderBottom } from '@react-spectrum/s2/icons/OrderBottom';
+export { default as StickyNote } from '@react-spectrum/s2/icons/StickyNote';
+
+export { default as Data } from '@react-spectrum/s2/icons/Data';
+
+export { default as UploadToCloud } from '@react-spectrum/s2/icons/UploadToCloud';
+export { default as File } from '@react-spectrum/s2/icons/File';

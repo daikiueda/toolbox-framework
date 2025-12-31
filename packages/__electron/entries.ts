@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconPropsWithoutChildren } from '@react-spectrum/icon';
+import { IconProps } from '@react-spectrum/s2';
 
 import { kitchenSink } from '@toolbox/gui-kitchen-sink/entry';
 import { orgAndLoginUser } from '@toolbox/org-and-login-user/entry';
@@ -10,7 +10,7 @@ import { orgAndLoginUser } from '@toolbox/org-and-login-user/entry';
 export type Entry = {
   label: string;
   App: React.ComponentType;
-  Icon?: React.FC<IconPropsWithoutChildren>;
+  Icon?: React.FC<IconProps>;
 };
 
 const entries: { [appKey: string]: Entry } = {

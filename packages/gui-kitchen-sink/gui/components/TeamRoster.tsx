@@ -10,6 +10,7 @@ import {
   TableView,
   TableViewUtil,
 } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { SAMPLE_MEMBERS } from '../sample-data/members';
 
@@ -35,7 +36,7 @@ const TeamRoster: React.FC<TeamRosterProps> = ({ sortMemberDescriptor, updateSet
 
   return (
     <Section
-      icon={<Icon.Data size="M" />}
+      icon={<Icon.Data styles={iconStyle({ size: 'XL' })} />}
       title="Team Roster"
       description="View and manage team members."
     >

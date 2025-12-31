@@ -3,6 +3,7 @@ import React from 'react';
 import type { Key } from '@react-types/shared';
 
 import { Flex, Text, ToggleButton, ToggleButtonGroup, Well } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { Layout } from '../../src/models/Layout';
 import { Layout as LayoutModel } from '../../src/models/Layout';
@@ -11,9 +12,21 @@ import Section from './layout/Section';
 import * as Icon from './theme/icons';
 
 const LAYOUT_OPTIONS = [
-  { id: 'dashboard' as Layout, label: 'Dashboard', icon: () => <Icon.ViewCard size="S" /> },
-  { id: 'timeline' as Layout, label: 'Timeline', icon: () => <Icon.ViewDay size="S" /> },
-  { id: 'board' as Layout, label: 'Board', icon: () => <Icon.ViewColumn size="S" /> },
+  {
+    id: 'dashboard' as Layout,
+    label: 'Dashboard',
+    Icon: Icon.SpeedFast,
+  },
+  {
+    id: 'timeline' as Layout,
+    label: 'Timeline',
+    Icon: Icon.OrderBottom,
+  },
+  {
+    id: 'board' as Layout,
+    label: 'Board',
+    Icon: Icon.StickyNote,
+  },
 ];
 
 type ViewPreferencesProps = {
@@ -26,7 +39,7 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
 
   return (
     <Section
-      icon={<Icon.ModernGridView size="M" />}
+      icon={<Icon.Layout styles={iconStyle({ size: 'XL' })} />}
       title="View Preferences"
       description="Switch between different project views."
     >
@@ -40,11 +53,11 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
           }}
           aria-label="Choose layout"
         >
-          {LAYOUT_OPTIONS.map((layout) => (
-            <ToggleButton key={layout.id}>
+          {LAYOUT_OPTIONS.map(({ id, label, Icon }) => (
+            <ToggleButton key={id}>
               <Flex alignItems="center" gap="size-100">
-                {layout.icon()}
-                <Text>{layout.label}</Text>
+                <Icon />
+                <Text>{label}</Text>
               </Flex>
             </ToggleButton>
           ))}

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import AppIcon from '@spectrum-icons/workflow/Organisations';
+import AppIcon from '@react-spectrum/s2/icons/Buildings';
 
 import { Flex, Heading } from '@toolbox/design-system';
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 import { useSalesforce } from '@toolbox/salesforce';
 
 import LoginHistoryTable from './components/LoginHistoryTable';
@@ -17,7 +18,7 @@ const App: React.FC = () => {
     <LoginGate>
       <PageWithTheme>
         <Heading level={1}>
-          <AppIcon size="L" />
+          <AppIcon styles={iconStyle({ size: 'XL' })} />
           組織とログインユーザー
         </Heading>
         <Flex direction="column" gap="size-400">
