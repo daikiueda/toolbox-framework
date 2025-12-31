@@ -90,7 +90,7 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
     <NavPanel {...navPanelProps}>
       {/* スクロール可能な上部エリア */}
       <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
-        <Header marginX="24px">
+        <Header styles={style({ marginX: 24, marginBottom: 12 })}>
           <Flex direction="row" alignItems="center">
             <ProjectIcon styles={iconStyle({ size: 'XL', color: 'informative' })} />
             <Heading level={1} styles={style({ marginY: 20, marginStart: 8 })}>
