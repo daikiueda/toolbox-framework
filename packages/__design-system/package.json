@@ -16,13 +16,11 @@
   "dependencies": {
     "@react-spectrum/actiongroup": "^3.11.5",
     "@react-spectrum/badge": "^3.1.31",
-    "@react-spectrum/button": "^3.17.5",
     "@react-spectrum/buttongroup": "^3.6.27",
     "@react-spectrum/contextualhelp": "^3.6.29",
     "@react-spectrum/dialog": "^3.9.5",
     "@react-spectrum/divider": "^3.5.28",
     "@react-spectrum/dropzone": "^3.0.19",
-    "@react-spectrum/filetrigger": "^3.0.19",
     "@react-spectrum/form": "^3.7.20",
     "@react-spectrum/inlinealert": "^3.2.21",
     "@react-spectrum/labeledvalue": "^3.2.8",

@@ -31,7 +31,7 @@ const SalesforceConnectionBar: React.FC<Props> = ({
         <OrgName>{orgInfo.orgName}</OrgName>
       </Flex>
 
-      <Button variant="primary" style="fill" onPress={onLogout}>
+      <Button variant="primary" fillStyle="fill" onPress={onLogout}>
         ログアウト
       </Button>
     </Connected>
