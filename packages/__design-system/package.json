@@ -28,7 +28,6 @@
     "@react-spectrum/radio": "^3.7.22",
     "@react-spectrum/s2": "^1.0.0",
     "@react-spectrum/switch": "^3.6.7",
-    "@react-spectrum/table": "^3.17.9",
     "@react-spectrum/textfield": "^3.14.3",
     "@react-spectrum/theme-default": "^3.5.22",
     "@react-spectrum/utils": "^3.12.10",

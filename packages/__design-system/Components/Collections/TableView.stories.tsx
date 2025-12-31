@@ -26,7 +26,7 @@ const characters: Character[] = [
 ];
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TableView.html
+ * https://react-spectrum.adobe.com/TableView
  */
 const meta: Meta<typeof TableView> = {
   title: 'Components/Collections/TableView',

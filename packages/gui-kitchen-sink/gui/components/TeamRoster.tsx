@@ -10,7 +10,7 @@ import {
   TableView,
   TableViewUtil,
 } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { SAMPLE_MEMBERS } from '../sample-data/members';
 
@@ -44,7 +44,7 @@ const TeamRoster: React.FC<TeamRosterProps> = ({ sortMemberDescriptor, updateSet
         aria-label="Team roster"
         sortDescriptor={sortMemberDescriptor}
         onSortChange={updateSetting('sortMemberDescriptor')}
-        width="100%"
+        styles={style({ width: '100%' })}
       >
         <TableHeader>
           <Column key="name" allowsSorting>

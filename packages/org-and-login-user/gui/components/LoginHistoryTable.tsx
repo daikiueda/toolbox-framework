@@ -13,6 +13,7 @@ import {
   TableView,
   Text,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginHistoryRecord } from '../../src/models';
 
@@ -51,7 +52,7 @@ const LoginHistoryTable: React.FC = () => {
       ) : loginHistory.length === 0 ? (
         <Text>ログイン履歴がありません</Text>
       ) : (
-        <TableView aria-label="ログイン履歴" maxHeight="size-4600">
+        <TableView aria-label="ログイン履歴" styles={style({ height: 368 })}>
           <TableHeader>
             <Column width={200}>ログイン時刻 ({getTimezoneName()})</Column>
             <Column allowsResizing>状況</Column>
