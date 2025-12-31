@@ -7,7 +7,7 @@ import ProjectIcon from '@react-spectrum/s2/icons/Project';
 import '@spectrum-css/sidenav';
 
 import { Flex, Header, Heading } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 
@@ -93,7 +93,7 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
         <Header marginX="24px">
           <Flex direction="row" alignItems="center">
             <ProjectIcon styles={iconStyle({ size: 'XL', color: 'informative' })} />
-            <Heading level={1} marginStart="size-100" marginY="24px">
+            <Heading level={1} styles={style({ marginY: 20, marginStart: 8 })}>
               Toolbox
             </Heading>
           </Flex>
