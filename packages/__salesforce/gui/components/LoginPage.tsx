@@ -223,10 +223,10 @@ const App: React.FC<Props> = ({
             value={customDomain}
             onChange={setCustomDomain}
             isRequired
-            validationState={urlError ? 'invalid' : undefined}
+            isInvalid={!!urlError}
             errorMessage={urlError}
             description={normalizedCustomDomain ?? undefined}
-            width="size-6000"
+            styles={style({ width: 480 })}
           />
         ) : (
           <></>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import template from '../src/main';
 
@@ -14,7 +15,7 @@ function Template() {
       <Heading level={1}>Template</Heading>
       <Form>
         <TextField
-          width="size-3000"
+          styles={style({ width: 240 })}
           label="Who to greet"
           value={whoToGreet}
           onChange={setWhoToGreet}

@@ -94,12 +94,12 @@ export const Required: StoryObj<typeof Examples> = {
 
 export const ValidationError: StoryObj<typeof Examples> = {
   argTypes: {
-    validationState: allCommonArgTypes.validationState,
+    isInvalid: allCommonArgTypes.isInvalid,
     errorMessage: allCommonArgTypes.errorMessage,
     ...basicVariation.argTypes,
   },
   args: {
-    validationState: 'invalid',
+    isInvalid: true,
     errorMessage: 'Error message',
     ...basicVariation.args,
   },

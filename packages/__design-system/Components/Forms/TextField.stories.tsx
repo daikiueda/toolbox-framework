@@ -9,7 +9,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TextField.html
+ * https://react-spectrum.adobe.com/TextField
  */
 const meta: Meta<typeof TextField> = {
   title: 'Components/Forms/Text Field Family/TextField',

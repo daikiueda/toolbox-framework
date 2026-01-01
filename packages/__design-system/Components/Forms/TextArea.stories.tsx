@@ -17,7 +17,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TextArea.html
+ * https://react-spectrum.adobe.com/TextArea
  */
 const meta: Meta<typeof TextArea> = {
   title: 'Components/Forms/Text Field Family/TextArea',

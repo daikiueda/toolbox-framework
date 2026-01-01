@@ -21,7 +21,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/NumberField.html
+ * https://react-spectrum.adobe.com/NumberField
  */
 const meta: Meta<typeof NumberField> = {
   title: 'Components/Forms/Text Field Family/NumberField',

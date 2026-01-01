@@ -45,13 +45,8 @@ export const WithValidation: StoryObj<typeof Form> = {
   },
   render: (args) => (
     <Form {...args}>
-      <TextField
-        label="Name"
-        isRequired
-        validationState="invalid"
-        errorMessage="Name is required"
-      />
-      <TextField label="Email" type="email" validationState="valid" />
+      <TextField label="Name" isRequired isInvalid errorMessage="Name is required" />
+      <TextField label="Email" type="email" />
       <Button variant="accent" type="submit">
         Submit
       </Button>
