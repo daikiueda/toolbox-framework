@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { OrgDetail } from '../../src/models';
 import { getWorkspaceApi } from '../utils/getWorkspaceApi';
@@ -35,7 +36,7 @@ const OrgDetailView: React.FC = () => {
       <Heading level={2}>組織</Heading>
 
       <Flex direction="column" gap="size-250">
-        {error && <InlineError margin="size-300">{error}</InlineError>}
+        {error && <InlineError styles={style({ margin: 24 })}>{error}</InlineError>}
 
         {!error && (
           <Flex direction="column" gap="size-250">

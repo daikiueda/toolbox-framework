@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { InlineAlert } from '@react-spectrum/inlinealert';
-
 import { Heading } from '../Content';
 import { Content } from '../Layout';
+
+import { InlineAlert } from './index';
 
 type Props = {
   title?: React.ReactNode;

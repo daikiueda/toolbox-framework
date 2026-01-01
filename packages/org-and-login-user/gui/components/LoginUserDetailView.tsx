@@ -9,6 +9,7 @@ import {
   View,
   repeat,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginUserDetail } from '../../src/models';
 
@@ -43,7 +44,7 @@ const LoginUserDetailView: React.FC = () => {
       <Heading level={2}>ログインユーザー</Heading>
 
       <Flex direction="column" gap="size-250">
-        {error && <InlineError margin="size-300">{error}</InlineError>}
+        {error && <InlineError styles={style({ margin: 24 })}>{error}</InlineError>}
 
         {!error && (
           <>

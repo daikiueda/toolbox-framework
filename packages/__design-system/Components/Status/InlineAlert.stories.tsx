@@ -11,7 +11,7 @@ import { InlineAlert } from './index';
  * Inline alerts display a non-modal message associated with objects in a view.
  * These are often used in form validation, providing a place to aggregate feedback related to multiple fields.
  *
- * https://react-spectrum.adobe.com/react-spectrum/InlineAlert.html
+ * https://react-spectrum.adobe.com/InlineAlert
  */
 const meta: Meta<typeof InlineAlert> = {
   title: 'Components/Status/InlineAlert',
@@ -51,7 +51,7 @@ export const Neutral: StoryObj<typeof InlineAlert> = {
 };
 
 export const Informative: StoryObj<typeof InlineAlert> = {
-  args: { variant: 'info' },
+  args: { variant: 'informative' },
   render: (args) => (
     <InlineAlert {...args}>
       <Heading>Information</Heading>
@@ -97,7 +97,7 @@ export const AllVariants: StoryObj<typeof InlineAlert> = {
         <Heading>Neutral</Heading>
         <Content>This is a neutral alert.</Content>
       </InlineAlert>
-      <InlineAlert variant="info">
+      <InlineAlert variant="informative">
         <Heading>Info</Heading>
         <Content>This is an info alert.</Content>
       </InlineAlert>
