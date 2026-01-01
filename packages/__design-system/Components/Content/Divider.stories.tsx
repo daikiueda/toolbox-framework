@@ -5,7 +5,7 @@ import React from 'react';
 import { Divider, Text } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/Divider.html
+ * https://react-spectrum.adobe.com/Divider
  */
 const meta: Meta<typeof Divider> = {
   title: 'Components/Content/Divider',

@@ -8,7 +8,6 @@ import {
   Content,
   Dialog,
   DialogTrigger,
-  Divider,
   Heading,
   Text,
 } from '@toolbox/design-system';
@@ -29,7 +28,6 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
       {({ close: closeDialog }) => (
         <>
           <Heading level={3}>Settings</Heading>
-          <Divider marginTop="size-150" />
           <Content>
             <Text>Reset all persisted values back to their defaults. This cannot be undone.</Text>
           </Content>

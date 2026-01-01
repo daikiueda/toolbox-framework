@@ -18,6 +18,7 @@ import {
   Text,
   TextField,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { AuthOrg, AuthOrgError, AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
@@ -246,7 +247,7 @@ const App: React.FC<Props> = ({
 
       {(isLoadingAuthenticatedOrgs || authOrgError || authenticatedOrgs.length > 0) && (
         <>
-          <Divider size="S" marginTop="size-600" marginBottom="size-400" />
+          <Divider styles={style({ marginTop: 48, marginBottom: 32 })} />
 
           <Flex direction="column" gap="size-200">
             <Heading level={2}>認証済み組織でログイン</Heading>

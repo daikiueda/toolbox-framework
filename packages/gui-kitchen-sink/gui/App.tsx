@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider, Flex, Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
+import { Flex, Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
 import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Setting } from './Setting';
@@ -44,11 +44,8 @@ const App: React.FC = () => {
       <View marginTop="size-150">
         <Text>Explore the entire component palette at a glance.</Text>
       </View>
-      <Divider marginTop="size-250" />
 
       <ProjectActions activeLayout={activeLayout} />
-      <Divider marginTop="size-350" />
-
       <ProjectConfiguration
         projectName={projectName}
         memberCount={memberCount}
@@ -57,14 +54,8 @@ const App: React.FC = () => {
         isPublished={isPublished}
         updateSetting={updateSetting}
       />
-      <Divider marginTop="size-350" />
-
       <ViewPreferences activeLayout={activeLayout} updateSetting={updateSetting} />
-      <Divider marginTop="size-350" />
-
       <TeamRoster sortMemberDescriptor={sortMemberDescriptor} updateSetting={updateSetting} />
-      <Divider marginTop="size-350" />
-
       <DocumentUpload />
     </PageWithTheme>
   );
