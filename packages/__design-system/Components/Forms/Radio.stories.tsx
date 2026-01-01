@@ -13,7 +13,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/RadioGroup.html
+ * https://react-spectrum.adobe.com/RadioGroup
  */
 const meta: Meta<typeof RadioGroup> = {
   title: 'Components/Forms/RadioGroup',
