@@ -15,7 +15,7 @@ import {
   TextField,
   View,
 } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { Framework } from '../../src/models/Framework';
 import { Framework as FrameworkModel } from '../../src/models/Framework';
@@ -72,7 +72,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
       title="Project Configuration"
       description="Define your project settings and team structure."
     >
-      <Form maxWidth="size-4600" labelPosition="side">
+      <Form labelPosition="side" styles={style({ maxWidth: 480 })}>
         <TextField
           label="Project name"
           value={projectName}

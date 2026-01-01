@@ -8,18 +8,15 @@ import { Button } from '../Buttons';
 import { Form, TextField } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/Form.html
+ * https://react-spectrum.adobe.com/Form
  */
 const meta: Meta<typeof Form> = {
   title: 'Components/Forms/Form',
   component: Form,
   tags: ['autodocs'],
   argTypes: {
-    isQuiet: { control: 'boolean' },
     isDisabled: { control: 'boolean' },
-    isReadOnly: { control: 'boolean' },
     isRequired: { control: 'boolean' },
-    validationState: { control: 'inline-radio', options: ['valid', 'invalid'] },
   },
   args: {
     onSubmit: fn(),
@@ -41,27 +38,12 @@ export const Basic: StoryObj<typeof Form> = {
 
 export const WithValidation: StoryObj<typeof Form> = {
   args: {
-    validationState: 'invalid',
+    validationErrors: { name: 'Name is required', email: 'EMail is required' },
   },
   render: (args) => (
     <Form {...args}>
-      <TextField label="Name" isRequired isInvalid errorMessage="Name is required" />
-      <TextField label="Email" type="email" />
-      <Button variant="accent" type="submit">
-        Submit
-      </Button>
-    </Form>
-  ),
-};
-
-export const ReadOnly: StoryObj<typeof Form> = {
-  args: {
-    isReadOnly: true,
-  },
-  render: (args) => (
-    <Form {...args}>
-      <TextField label="Name" value="John Doe" />
-      <TextField label="Email" value="john@example.com" type="email" />
+      <TextField name="name" label="Name" isRequired />
+      <TextField name="email" label="Email" type="email" isRequired />
       <Button variant="accent" type="submit">
         Submit
       </Button>
