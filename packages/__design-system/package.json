@@ -21,7 +21,6 @@
     "@react-spectrum/progress": "^3.7.21",
     "@react-spectrum/provider": "^3.10.12",
     "@react-spectrum/s2": "^1.0.0",
-    "@react-spectrum/switch": "^3.6.7",
     "@react-spectrum/theme-default": "^3.5.22",
     "@react-spectrum/utils": "^3.12.10",
     "@react-spectrum/view": "^3.6.24",
