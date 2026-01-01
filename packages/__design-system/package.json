@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@react-spectrum/badge": "^3.1.31",
-    "@react-spectrum/contextualhelp": "^3.6.29",
     "@react-spectrum/divider": "^3.5.28",
     "@react-spectrum/form": "^3.7.20",
     "@react-spectrum/inlinealert": "^3.2.21",
