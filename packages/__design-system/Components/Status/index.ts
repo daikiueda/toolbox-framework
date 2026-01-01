@@ -1,5 +1,5 @@
 export { Badge } from '@react-spectrum/s2';
-export { ProgressBar } from '@react-spectrum/progress';
+export { ProgressBar } from '@react-spectrum/s2';
 
 export { default as Skeleton } from './Skeleton';
 

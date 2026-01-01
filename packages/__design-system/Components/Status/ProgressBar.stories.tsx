@@ -5,7 +5,7 @@ import { ProgressBar } from './index';
 /**
  * ProgressBars show the progression of a system operation: downloading, uploading, processing, etc., in a visual way.
  *
- * https://react-spectrum.adobe.com/react-spectrum/ProgressBar.html
+ * https://react-spectrum.adobe.com/ProgressBar
  */
 const meta: Meta<typeof ProgressBar> = {
   title: 'Components/Status/ProgressBar',
@@ -16,7 +16,8 @@ const meta: Meta<typeof ProgressBar> = {
     size: { control: 'radio', options: ['S', 'L'] },
     labelPosition: { control: 'radio', options: ['top', 'side'] },
     isIndeterminate: { control: 'boolean' },
-    showValueLabel: { control: 'boolean' },
+    // it has not been implemented yet
+    // showValueLabel: { control: 'boolean' },
     label: { control: 'text' },
   },
   args: {
@@ -25,7 +26,6 @@ const meta: Meta<typeof ProgressBar> = {
     size: 'L',
     labelPosition: 'top',
     isIndeterminate: false,
-    showValueLabel: true,
   },
 };
 export default meta;
