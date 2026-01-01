@@ -19,7 +19,6 @@
     "@react-spectrum/inlinealert": "^3.2.21",
     "@react-spectrum/labeledvalue": "^3.2.8",
     "@react-spectrum/layout": "^3.6.20",
-    "@react-spectrum/picker": "^3.16.5",
     "@react-spectrum/progress": "^3.7.21",
     "@react-spectrum/provider": "^3.10.12",
     "@react-spectrum/radio": "^3.7.22",

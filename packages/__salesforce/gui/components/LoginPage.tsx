@@ -260,12 +260,16 @@ const App: React.FC<Props> = ({
               <>
                 <Picker
                   label="組織を選択"
-                  selectedKey={selectedOrgUsername}
-                  onSelectionChange={(key) => setSelectedOrgUsername(key as string)}
-                  width="size-6000"
+                  value={selectedOrgUsername}
+                  onChange={(key) => setSelectedOrgUsername(key as string)}
+                  styles={style({ width: 480 })}
                 >
                   {authenticatedOrgs.map((org) => (
-                    <PickerItem key={org.username} textValue={org.alias || org.username}>
+                    <PickerItem
+                      key={org.username}
+                      id={org.username}
+                      textValue={org.alias || org.username}
+                    >
                       {org.alias ? `${org.alias} (${org.username})` : org.username}
                     </PickerItem>
                   ))}
