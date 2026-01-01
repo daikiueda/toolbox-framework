@@ -24,7 +24,7 @@ const SalesforceConnectionBar: React.FC<Props> = ({
   return (
     <Connected>
       <Flex alignItems="center" gap="size-100">
-        <Badge variant={orgInfo.orgType === 'Production' ? 'info' : 'neutral'}>
+        <Badge variant={orgInfo.orgType === 'Production' ? 'informative' : 'neutral'}>
           {orgInfo.orgType}
         </Badge>
         <OrgId>{orgInfo.orgId}</OrgId>

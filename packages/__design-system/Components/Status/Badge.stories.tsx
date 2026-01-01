@@ -7,7 +7,7 @@ import { Badge } from './index';
 /**
  * Badges are used for showing a small amount of color-categorized metadata, ideal for getting a user's attention.
  *
- * https://react-spectrum.adobe.com/react-spectrum/Badge.html
+ * https://react-spectrum.adobe.com/Badge
  */
 const meta: Meta<typeof Badge> = {
   title: 'Components/Status/Badge',
@@ -51,7 +51,7 @@ export const Semantic: StoryObj<typeof Badge> = {
   render: () => (
     <>
       <Badge variant="neutral">Neutral</Badge>
-      <Badge variant="info">Info</Badge>
+      <Badge variant="informative">Informative</Badge>
       <Badge variant="positive">Positive</Badge>
       <Badge variant="negative">Negative</Badge>
     </>
