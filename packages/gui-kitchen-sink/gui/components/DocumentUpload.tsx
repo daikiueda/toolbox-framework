@@ -83,7 +83,6 @@ const DocumentUpload: React.FC = () => {
                 </Flex>
                 <View
                   marginTop="size-100"
-                  backgroundColor="gray-75"
                   padding="size-150"
                   borderRadius="regular"
                   UNSAFE_style={{ whiteSpace: 'pre-wrap' }}

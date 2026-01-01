@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Well } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/Well.html
+ * https://react-spectrum.adobe.com/migrating#well
  */
 const meta: Meta<typeof Well> = {
   title: 'Components/Content/Well',
