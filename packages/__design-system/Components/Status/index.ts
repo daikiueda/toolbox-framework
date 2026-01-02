@@ -6,5 +6,5 @@ export { default as Skeleton } from './Skeleton';
 export { InlineAlert } from '@react-spectrum/s2';
 export { default as InlineError } from './InlineError';
 
-export { LabeledValue } from '@react-spectrum/labeledvalue';
+export { LabeledValue, type LabeledValueProps } from './LabeledValue';
 export { default as AsyncLabeledValue } from './AsyncLabeledValue';
