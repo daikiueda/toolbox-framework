@@ -1,18 +1,19 @@
 import React, { useId } from 'react';
 
-import { style } from '../../style' with { type: 'macro' };
+import { style } from '../../../style' with { type: 'macro' };
 
 type LabelPosition = 'top' | 'side';
 
 export type LabeledValueProps = {
   /** The content to display as the label. */
   label: React.ReactNode;
-  /** The value to display. */
-  value: React.ReactNode;
   /** The label's overall position relative to the value. */
   labelPosition?: LabelPosition;
   /** Alignment of the label. */
   labelAlign?: 'start' | 'end';
+
+  /** The value to display. */
+  children: React.ReactNode;
 };
 
 const containerStylesTop = style({
@@ -44,9 +45,9 @@ const valueStyles = style({
   color: 'neutral',
 });
 
-export const LabeledValue: React.FC<LabeledValueProps> = ({
+const LabeledValue: React.FC<LabeledValueProps> = ({
   label,
-  value,
+  children,
   labelPosition = 'top',
   labelAlign = 'start',
 }) => {
@@ -63,8 +64,9 @@ export const LabeledValue: React.FC<LabeledValueProps> = ({
         {label}
       </span>
       <span aria-labelledby={labelId} className={valueStyles}>
-        {value}
+        {children}
       </span>
     </div>
   );
 };
+export default LabeledValue;

@@ -48,43 +48,29 @@ const LoginUserDetailView: React.FC = () => {
 
         {!error && (
           <>
-            <AsyncLabeledValue
-              label="氏名"
-              labelPosition="side"
-              value={loginUserDetail.name}
-              isLoading={isLoading}
-            />
+            <AsyncLabeledValue label="氏名" labelPosition="side" isLoading={isLoading}>
+              {loginUserDetail.name}
+            </AsyncLabeledValue>
             <Grid columns={repeat('auto-fit', 'size-3400')} gap="size-250">
-              <AsyncLabeledValue
-                label="ユーザー ID"
-                value={loginUserDetail.id}
-                isLoading={isLoading}
-              />
-              <AsyncLabeledValue
-                label="ユーザー名"
-                value={loginUserDetail.username}
-                isLoading={isLoading}
-              />
-              <AsyncLabeledValue
-                label="メールアドレス"
-                value={loginUserDetail.email}
-                isLoading={isLoading}
-              />
-              <AsyncLabeledValue
-                label="プロファイル"
-                value={loginUserDetail.profileName}
-                isLoading={isLoading}
-              />
-              <AsyncLabeledValue
-                label="ロール"
-                value={loginUserDetail.roleName || 'なし'}
-                isLoading={isLoading}
-              />
-              <AsyncLabeledValue
-                label="従業員番号"
-                value={loginUserDetail.employeeNumber || '未設定'}
-                isLoading={isLoading}
-              />
+              <AsyncLabeledValue label="ユーザー ID" isLoading={isLoading}>
+                {loginUserDetail.id}
+              </AsyncLabeledValue>
+              <AsyncLabeledValue label="ユーザー名" isLoading={isLoading}>
+                {loginUserDetail.username}
+              </AsyncLabeledValue>
+              <AsyncLabeledValue label="メールアドレス" isLoading={isLoading}>
+                {loginUserDetail.email}
+              </AsyncLabeledValue>
+
+              <AsyncLabeledValue label="プロファイル" isLoading={isLoading}>
+                {loginUserDetail.profileName}
+              </AsyncLabeledValue>
+              <AsyncLabeledValue label="ロール" isLoading={isLoading}>
+                {loginUserDetail.roleName || 'なし'}
+              </AsyncLabeledValue>
+              <AsyncLabeledValue label="従業員番号" isLoading={isLoading}>
+                {loginUserDetail.employeeNumber || '未設定'}
+              </AsyncLabeledValue>
             </Grid>
           </>
         )}

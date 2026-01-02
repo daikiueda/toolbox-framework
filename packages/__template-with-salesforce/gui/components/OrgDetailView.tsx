@@ -40,28 +40,21 @@ const OrgDetailView: React.FC = () => {
 
         {!error && (
           <Flex direction="column" gap="size-250">
-            <AsyncLabeledValue
-              label="組織名"
-              labelPosition="side"
-              value={orgDetail.orgName}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue label="組織 ID" value={orgDetail.orgId} isLoading={isLoading} />
-            <AsyncLabeledValue
-              label="環境"
-              value={orgDetail.orgType === 'Sandbox' ? 'Sandbox' : 'Production'}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="エディション"
-              value={orgDetail.organizationType}
-              isLoading={isLoading}
-            />
-            <AsyncLabeledValue
-              label="インスタンス"
-              value={orgDetail.instanceName}
-              isLoading={isLoading}
-            />
+            <AsyncLabeledValue label="組織名" labelPosition="side" isLoading={isLoading}>
+              {orgDetail.orgName}
+            </AsyncLabeledValue>
+            <AsyncLabeledValue label="組織 ID" isLoading={isLoading}>
+              {orgDetail.orgId}
+            </AsyncLabeledValue>
+            <AsyncLabeledValue label="環境" isLoading={isLoading}>
+              {orgDetail.orgType === 'Sandbox' ? 'Sandbox' : 'Production'}
+            </AsyncLabeledValue>
+            <AsyncLabeledValue label="エディション" isLoading={isLoading}>
+              {orgDetail.organizationType}
+            </AsyncLabeledValue>
+            <AsyncLabeledValue label="インスタンス" isLoading={isLoading}>
+              {orgDetail.instanceName}
+            </AsyncLabeledValue>
           </Flex>
         )}
       </Flex>

@@ -2,10 +2,9 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import React from 'react';
 
-import { style } from '../../style' with { type: 'macro' };
-import { Text } from '../Content';
-
-import { Skeleton } from './index';
+import { style } from '../../../style' with { type: 'macro' };
+import { Text } from '../../Content';
+import { Skeleton } from '../index';
 
 /**
  * https://react-spectrum.adobe.com/Skeleton

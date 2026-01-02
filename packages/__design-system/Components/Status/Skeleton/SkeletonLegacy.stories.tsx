@@ -11,7 +11,7 @@ import Skeleton from './SkeletonLegacy';
  * Based on react-loading-skeleton with Spectrum color theming.
  */
 const meta: Meta<typeof Skeleton> = {
-  title: 'Components/Status/SkeletonLegacy',
+  title: 'Components/Status/Skeleton/Skeleton (Legacy)',
   component: Skeleton,
   tags: ['autodocs'],
   argTypes: {
