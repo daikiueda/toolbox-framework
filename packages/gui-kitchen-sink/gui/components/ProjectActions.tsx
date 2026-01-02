@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ActionButton, Button, FileTrigger, Flex, Text, Toast } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { ActionButton, Button, FileTrigger, Text, Toast } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
@@ -38,7 +38,7 @@ const ProjectActions: React.FC<ProjectActionsProps> = ({ activeLayout }) => {
       title="Project Actions"
       description="Save, publish, and manage your project."
     >
-      <Flex gap="size-150" wrap alignItems="center">
+      <div className={style({ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' })}>
         <Button variant="accent" onPress={handleSave}>
           <Icon.SaveFloppy />
           <Text>Save</Text>
@@ -58,7 +58,7 @@ const ProjectActions: React.FC<ProjectActionsProps> = ({ activeLayout }) => {
         <FileTrigger allowsMultiple onSelect={handleBrowseFiles}>
           <Button variant="primary">Browse files</Button>
         </FileTrigger>
-      </Flex>
+      </div>
     </Section>
   );
 };

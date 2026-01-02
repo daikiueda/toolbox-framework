@@ -2,8 +2,8 @@ import React from 'react';
 
 import type { Key } from '@react-types/shared';
 
-import { Flex, Text, ToggleButton, ToggleButtonGroup, Well } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { Text, ToggleButton, ToggleButtonGroup, Well } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { Layout } from '../../src/models/Layout';
 import { Layout as LayoutModel } from '../../src/models/Layout';
@@ -43,7 +43,7 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
       title="View Preferences"
       description="Switch between different project views."
     >
-      <Flex direction="column" gap="size-200">
+      <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
         <ToggleButtonGroup
           selectionMode="single"
           selectedKeys={selectedLayoutKeys}
@@ -55,17 +55,17 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
         >
           {LAYOUT_OPTIONS.map(({ id, label, Icon }) => (
             <ToggleButton key={id}>
-              <Flex alignItems="center" gap="size-100">
+              <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
                 <Icon />
                 <Text>{label}</Text>
-              </Flex>
+              </div>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
         <Well>
           <Text>{`Selected: ${LAYOUT_OPTIONS.find((layout) => layout.id === activeLayout)?.label ?? 'None'}`}</Text>
         </Well>
-      </Flex>
+      </div>
     </Section>
   );
 };

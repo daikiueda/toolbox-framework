@@ -5,7 +5,7 @@ import GlobalThemeProvider from './GlobalThemeProvider';
 
 import { ToastContainer } from '../GlobalUI/Toast';
 
-import { Flex } from '../Components/Layout';
+import { style } from '../style' with { type: 'macro' };
 
 import { AppearanceProvider } from './AppearanceContext';
 
@@ -27,9 +27,16 @@ const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
     <AppEnvProvider onElectron={onElectron}>
       <AppearanceProvider>
         <GlobalThemeProvider>
-          <Flex width="100%" minHeight="100vh" justifyContent="start">
+          <div
+            className={style({
+              display: 'flex',
+              width: 'full',
+              minHeight: 'screen',
+              justifyContent: 'start',
+            })}
+          >
             {children}
-          </Flex>
+          </div>
           <ToastContainer />
         </GlobalThemeProvider>
       </AppearanceProvider>

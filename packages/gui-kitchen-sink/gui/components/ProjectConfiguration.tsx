@@ -3,7 +3,6 @@ import React from 'react';
 import type { Key } from '@react-types/shared';
 
 import {
-  Flex,
   Form,
   NumberField,
   Picker,
@@ -113,7 +112,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
           ))}
         </RadioGroup>
       </Form>
-      <Flex alignItems="center" gap="size-200" marginTop="size-200">
+      <div className={style({ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16 })}>
         <View width="size-2000">
           <Text id={publishLabelId}>Publish on launch</Text>
         </View>
@@ -124,7 +123,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
         >
           Enabled
         </Switch>
-      </Flex>
+      </div>
     </Section>
   );
 };

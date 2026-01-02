@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
+import { AsyncLabeledValue, Heading, InlineError, View } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginUserDetail } from '../../src/models';
@@ -35,7 +35,7 @@ const LoginUserDetailView: React.FC = () => {
     <View>
       <Heading level={2}>ログインユーザー</Heading>
 
-      <Flex direction="column" gap="size-250">
+      <div className={style({ display: 'flex', flexDirection: 'column', gap: 20 })}>
         {error && <InlineError styles={style({ margin: 24 })}>{error}</InlineError>}
 
         {!error && (
@@ -72,7 +72,7 @@ const LoginUserDetailView: React.FC = () => {
             </div>
           </>
         )}
-      </Flex>
+      </div>
     </View>
   );
 };

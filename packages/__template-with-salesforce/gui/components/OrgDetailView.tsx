@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
+import { AsyncLabeledValue, Heading, InlineError, View } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { OrgDetail } from '../../src/models';
@@ -35,11 +35,11 @@ const OrgDetailView: React.FC = () => {
     <View>
       <Heading level={2}>組織</Heading>
 
-      <Flex direction="column" gap="size-250">
+      <div className={style({ display: 'flex', flexDirection: 'column', gap: 20 })}>
         {error && <InlineError styles={style({ margin: 24 })}>{error}</InlineError>}
 
         {!error && (
-          <Flex direction="column" gap="size-250">
+          <div className={style({ display: 'flex', flexDirection: 'column', gap: 20 })}>
             <AsyncLabeledValue label="組織名" labelPosition="side" isLoading={isLoading}>
               {orgDetail.orgName}
             </AsyncLabeledValue>
@@ -55,9 +55,9 @@ const OrgDetailView: React.FC = () => {
             <AsyncLabeledValue label="インスタンス" isLoading={isLoading}>
               {orgDetail.instanceName}
             </AsyncLabeledValue>
-          </Flex>
+          </div>
         )}
-      </Flex>
+      </div>
     </View>
   );
 };

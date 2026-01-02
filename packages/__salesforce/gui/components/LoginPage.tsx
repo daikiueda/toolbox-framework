@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {
   Button,
   Divider,
-  Flex,
   Form,
   Heading,
   InlineError,
@@ -186,7 +185,9 @@ const App: React.FC<Props> = ({
     return (
       <PageWithTheme>
         <Heading level={1}>Salesforce CLI が必要です</Heading>
-        <Flex direction="column" gap="size-200" maxWidth="size-6000">
+        <div
+          className={style({ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 480 })}
+        >
           <Text>この機能は Salesforce CLI がインストールされている環境で動作します。</Text>
           <Text>まだインストールしていない場合は、以下のページからセットアップしてください。</Text>
           <Text>
@@ -198,7 +199,7 @@ const App: React.FC<Props> = ({
               Salesforce CLI のインストール手順
             </a>
           </Text>
-        </Flex>
+        </div>
       </PageWithTheme>
     );
   }
@@ -232,7 +233,7 @@ const App: React.FC<Props> = ({
           <></>
         )}
 
-        <Flex justifyContent="start" marginTop="size-400">
+        <div className={style({ display: 'flex', justifyContent: 'start', marginTop: 32 })}>
           <Button type="submit" variant="accent" isDisabled={isSubmitDisabled}>
             {useSfdxSession
               ? isLoggingIn
@@ -242,14 +243,14 @@ const App: React.FC<Props> = ({
                 ? 'ログイン中...'
                 : 'ログイン'}
           </Button>
-        </Flex>
+        </div>
       </Form>
 
       {(isLoadingAuthenticatedOrgs || authOrgError || authenticatedOrgs.length > 0) && (
         <>
           <Divider styles={style({ marginTop: 48, marginBottom: 32 })} />
 
-          <Flex direction="column" gap="size-200">
+          <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
             <Heading level={2}>認証済み組織でログイン</Heading>
 
             {!isLoadingAuthenticatedOrgs && authOrgError ? (
@@ -277,7 +278,7 @@ const App: React.FC<Props> = ({
               </Skeleton>
             )}
 
-            <Flex justifyContent="start" marginTop="size-200">
+            <div className={style({ display: 'flex', justifyContent: 'start', marginTop: 16 })}>
               <Button
                 variant="accent"
                 onPress={handleAuthOrgLogin}
@@ -285,8 +286,8 @@ const App: React.FC<Props> = ({
               >
                 {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
               </Button>
-            </Flex>
-          </Flex>
+            </div>
+          </div>
         </>
       )}
     </PageWithTheme>

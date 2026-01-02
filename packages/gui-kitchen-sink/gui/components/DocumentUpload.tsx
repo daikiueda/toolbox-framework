@@ -6,7 +6,6 @@ import {
   DropZone,
   DropZoneFileContent,
   FileTrigger,
-  Flex,
   Heading,
   Text,
   Toast,
@@ -14,7 +13,7 @@ import {
   Well,
   useFileSelection,
 } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
@@ -57,7 +56,14 @@ const DocumentUpload: React.FC = () => {
     >
       <DropZone onDrop={handleDrop}>
         <View padding="size-200">
-          <Flex direction="column" alignItems="center" gap="size-100">
+          <div
+            className={style({
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 8,
+            })}
+          >
             <Illustration.Document />
             <Heading level={3}>Drop files here</Heading>
             <Text>…or pick files with the button below.</Text>
@@ -66,7 +72,7 @@ const DocumentUpload: React.FC = () => {
                 <Button variant="primary">Open file picker</Button>
               </FileTrigger>
             </Content>
-          </Flex>
+          </div>
         </View>
       </DropZone>
 
@@ -74,13 +80,13 @@ const DocumentUpload: React.FC = () => {
         {filePreviews.length === 0 ? (
           <Text>Previews of dropped or selected files appear here.</Text>
         ) : (
-          <Flex direction="column" gap="size-200">
+          <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
             {filePreviews.map((file) => (
               <Well key={file.path}>
-                <Flex alignItems="center" gap="size-100">
+                <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
                   <Icon.File styles={iconStyle({ size: 'S' })} />
                   <Heading level={4}>{file.path}</Heading>
-                </Flex>
+                </div>
                 <View
                   marginTop="size-100"
                   padding="size-150"
@@ -91,7 +97,7 @@ const DocumentUpload: React.FC = () => {
                 </View>
               </Well>
             ))}
-          </Flex>
+          </div>
         )}
       </View>
     </Section>

@@ -2,7 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { Badge, Button, Flex } from '@toolbox/design-system';
+import { Badge, Button } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { OrgInfo } from '../../lib';
 
@@ -23,13 +24,13 @@ const SalesforceConnectionBar: React.FC<Props> = ({
 
   return (
     <Connected>
-      <Flex alignItems="center" gap="size-100">
+      <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
         <Badge variant={orgInfo.orgType === 'Production' ? 'informative' : 'neutral'}>
           {orgInfo.orgType}
         </Badge>
         <OrgId>{orgInfo.orgId}</OrgId>
         <OrgName>{orgInfo.orgName}</OrgName>
-      </Flex>
+      </div>
 
       <Button variant="primary" fillStyle="fill" onPress={onLogout}>
         ログアウト

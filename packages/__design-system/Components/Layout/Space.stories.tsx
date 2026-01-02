@@ -2,10 +2,11 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import React from 'react';
 
+import { style } from '../../style' with { type: 'macro' };
 import { Text } from '../Content';
 
 import * as Space from './Space';
-import { Flex, View } from './index';
+import { View } from './index';
 
 /**
  * Space utility constants for consistent spacing throughout the application.
@@ -24,8 +25,8 @@ export const SpaceConstants: StoryObj = {
         <strong>Space Constants Reference</strong>
       </Text>
       <View paddingTop="size-200">
-        <Flex direction="column" gap="size-150">
-          <Flex alignItems="center" gap="size-100">
+        <div className={style({ display: 'flex', flexDirection: 'column', gap: 12 })}>
+          <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
             <View
               backgroundColor="gray-100"
               width={Space.OneLine}
@@ -35,9 +36,9 @@ export const SpaceConstants: StoryObj = {
             <Text>
               <code>OneLine</code>: {Space.OneLine} (28px) - Line height spacing
             </Text>
-          </Flex>
+          </div>
 
-          <Flex alignItems="center" gap="size-100">
+          <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
             <View
               backgroundColor="gray-100"
               width={Space.OneLetter}
@@ -47,9 +48,9 @@ export const SpaceConstants: StoryObj = {
             <Text>
               <code>OneLetter</code>: {Space.OneLetter} (14px) - Letter spacing
             </Text>
-          </Flex>
+          </div>
 
-          <Flex alignItems="center" gap="size-100">
+          <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
             <View
               backgroundColor="gray-100"
               width={Space.Closest}
@@ -59,8 +60,8 @@ export const SpaceConstants: StoryObj = {
             <Text>
               <code>Closest</code>: {Space.Closest} (4px) - Minimal spacing
             </Text>
-          </Flex>
-        </Flex>
+          </div>
+        </div>
       </View>
     </View>
   ),
@@ -73,43 +74,43 @@ export const SpacingComparison: StoryObj = {
         <strong>Spacing Comparison</strong>
       </Text>
       <View paddingTop="size-200">
-        <Flex direction="column" gap="size-200">
+        <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
           <View>
             <Text>OneLine spacing between elements:</Text>
-            <Flex marginTop={Space.OneLine}>
+            <div className={style({ display: 'flex', marginTop: 28 })}>
               <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
                 <Text>Element 1</Text>
               </View>
               <View backgroundColor="green-400" padding="size-100" borderRadius="small">
                 <Text>Element 2</Text>
               </View>
-            </Flex>
+            </div>
           </View>
 
           <View>
             <Text>OneLetter spacing between elements:</Text>
-            <Flex marginTop={Space.OneLetter}>
+            <div className={style({ display: 'flex', marginTop: 12 })}>
               <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
                 <Text>Element 1</Text>
               </View>
               <View backgroundColor="green-400" padding="size-100" borderRadius="small">
                 <Text>Element 2</Text>
               </View>
-            </Flex>
+            </div>
           </View>
 
           <View>
             <Text>Closest spacing between elements:</Text>
-            <Flex marginTop={Space.Closest}>
+            <div className={style({ display: 'flex', marginTop: 4 })}>
               <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
                 <Text>Element 1</Text>
               </View>
               <View backgroundColor="green-400" padding="size-100" borderRadius="small">
                 <Text>Element 2</Text>
               </View>
-            </Flex>
+            </div>
           </View>
-        </Flex>
+        </div>
       </View>
     </View>
   ),
@@ -122,7 +123,7 @@ export const TypicalUsage: StoryObj = {
         <strong>Typical Usage Examples</strong>
       </Text>
       <View paddingTop={Space.OneLine}>
-        <Flex direction="column" gap={Space.OneLine}>
+        <div className={style({ display: 'flex', flexDirection: 'column', gap: 28 })}>
           <View>
             <Text>
               <strong>Card with OneLine spacing:</strong>
@@ -145,7 +146,7 @@ export const TypicalUsage: StoryObj = {
             <Text>
               <strong>Tight layout with Closest spacing:</strong>
             </Text>
-            <Flex marginTop={Space.OneLetter} gap={Space.Closest}>
+            <div className={style({ display: 'flex', marginTop: 12, gap: 4 })}>
               <View backgroundColor="blue-400" padding={Space.Closest} borderRadius="small">
                 <Text>Tag 1</Text>
               </View>
@@ -155,9 +156,9 @@ export const TypicalUsage: StoryObj = {
               <View backgroundColor="red-400" padding={Space.Closest} borderRadius="small">
                 <Text>Tag 3</Text>
               </View>
-            </Flex>
+            </div>
           </View>
-        </Flex>
+        </div>
       </View>
     </View>
   ),

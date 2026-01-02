@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import ProjectIcon from '@react-spectrum/s2/icons/Project';
 import '@spectrum-css/sidenav';
 
-import { Flex, Header, Heading } from '@toolbox/design-system';
+import { Header, Heading } from '@toolbox/design-system';
 import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Entry as MenuItemEntry } from '../../../../entries';
@@ -89,14 +89,21 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
   return (
     <NavPanel {...navPanelProps}>
       {/* スクロール可能な上部エリア */}
-      <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
+      <div
+        className={style({
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          overflow: 'auto',
+        })}
+      >
         <Header styles={style({ marginX: 24, marginBottom: 12 })}>
-          <Flex direction="row" alignItems="center">
+          <div className={style({ display: 'flex', flexDirection: 'row', alignItems: 'center' })}>
             <ProjectIcon styles={iconStyle({ size: 'XL', color: 'informative' })} />
             <Heading level={1} styles={style({ marginY: 20, marginStart: 8 })}>
               Toolbox
             </Heading>
-          </Flex>
+          </div>
         </Header>
 
         <Spectrum.SideNav>
@@ -108,12 +115,12 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
             </Spectrum.Item>
           ))}
         </Spectrum.SideNav>
-      </Flex>
+      </div>
 
       {/* 固定表示の下部エリア */}
-      <Flex direction="column" marginTop="auto">
+      <div className={style({ display: 'flex', flexDirection: 'column', marginTop: 'auto' })}>
         <Versions />
-      </Flex>
+      </div>
     </NavPanel>
   );
 };

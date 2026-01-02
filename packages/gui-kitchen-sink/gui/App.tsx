@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Flex, Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
-import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
+import { Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Setting } from './Setting';
 import DocumentUpload from './components/DocumentUpload';
@@ -34,13 +34,20 @@ const App: React.FC = () => {
 
   return (
     <PageWithTheme>
-      <Flex alignItems="center" justifyContent="space-between" gap="size-200">
-        <Flex alignItems="center" gap="size-125">
+      <div
+        className={style({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+        })}
+      >
+        <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
           <AppIcon styles={iconStyle({ size: 'XL' })} />
           <Heading level={1}>Design System Kitchen Sink</Heading>
-        </Flex>
+        </div>
         <SettingsDialog onReset={handleResetSettings} />
-      </Flex>
+      </div>
       <View marginTop="size-150">
         <Text>Explore the entire component palette at a glance.</Text>
       </View>

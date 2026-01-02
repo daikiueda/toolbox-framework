@@ -2,18 +2,20 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import React from 'react';
 
-import { Content, ContextualHelp, Flex, Heading } from './../../index';
+import { style } from '../../style' with { type: 'macro' };
+
+import { Content, ContextualHelp, Heading } from './../../index';
 import { NumberField, Picker, PickerItem, Radio, RadioGroup, TextArea, TextField } from './index';
 import { type CommonProps, allCommonArgTypes } from './storybook-helper/common-props';
 
 const Examples: React.FC<CommonProps> = (args) => (
-  <Flex direction="column" gap="size-400">
-    <Flex direction="row" gap="size-400">
+  <div className={style({ display: 'flex', flexDirection: 'column', gap: 32 })}>
+    <div className={style({ display: 'flex', flexDirection: 'row', gap: 32 })}>
       <TextField label="TextField" {...args} />
       <NumberField label="NumberField" {...args} />
       <TextArea label="NumberField" {...args} />
-    </Flex>
-    <Flex direction="row" gap="size-400">
+    </div>
+    <div className={style({ display: 'flex', flexDirection: 'row', gap: 32 })}>
       <Picker label="Picker" {...args}>
         <PickerItem key="red">Red</PickerItem>
         <PickerItem key="green">Green</PickerItem>
@@ -24,8 +26,8 @@ const Examples: React.FC<CommonProps> = (args) => (
         <Radio value="green">Green</Radio>
         <Radio value="blue">Blue</Radio>
       </RadioGroup>
-    </Flex>
-  </Flex>
+    </div>
+  </div>
 );
 
 const meta: Meta<typeof Examples> = {

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Cell,
   Column,
-  Flex,
   Heading,
   InlineError,
   Row,
@@ -44,7 +43,7 @@ const LoginHistoryTable: React.FC = () => {
   }, []);
 
   return (
-    <Flex direction="column" gap="size-200" width="100%">
+    <div className={style({ display: 'flex', flexDirection: 'column', gap: 16, width: 'full' })}>
       <Heading level={3}>ログイン履歴</Heading>
 
       {error ? (
@@ -98,7 +97,7 @@ const LoginHistoryTable: React.FC = () => {
           </TableBody>
         </TableView>
       )}
-    </Flex>
+    </div>
   );
 };
 export default LoginHistoryTable;

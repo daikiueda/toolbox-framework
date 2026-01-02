@@ -14,7 +14,6 @@
     "test": "node --import tsx/esm --test ./**/__tests__/**/*.test.ts"
   },
   "dependencies": {
-    "@react-spectrum/layout": "^3.6.20",
     "@react-spectrum/provider": "^3.10.12",
     "@react-spectrum/s2": "^1.0.0",
     "@react-spectrum/theme-default": "^3.5.22",
