@@ -63,16 +63,35 @@ const LoginHistoryTable: React.FC = () => {
           <TableBody>
             {loginHistory.map((record) => (
               <Row key={record.id}>
-                <Cell>{isLoading ? <Skeleton /> : formatLoginTime(record.loginTime)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.status)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.application)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.sourceIp)}</Cell>
                 <Cell>
-                  {isLoading ? (
-                    <Skeleton />
-                  ) : (
-                    formatLocation(record.loginGeo?.country ?? null, record.loginGeo?.city ?? null)
-                  )}
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatLoginTime(record.loginTime)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.status)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.application)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.sourceIp)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>
+                      {formatLocation(
+                        record.loginGeo?.country ?? null,
+                        record.loginGeo?.city ?? null
+                      )}
+                    </Text>
+                  </Skeleton>
                 </Cell>
               </Row>
             ))}

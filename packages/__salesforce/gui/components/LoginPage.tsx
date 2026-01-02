@@ -252,12 +252,12 @@ const App: React.FC<Props> = ({
           <Flex direction="column" gap="size-200">
             <Heading level={2}>認証済み組織でログイン</Heading>
 
-            {isLoadingAuthenticatedOrgs ? (
-              <Skeleton height={32} width={360} />
-            ) : authOrgError ? (
+            {!isLoadingAuthenticatedOrgs && authOrgError ? (
               <InlineError>{authOrgError.message}</InlineError>
-            ) : authenticatedOrgs.length > 0 ? (
-              <>
+            ) : !isLoadingAuthenticatedOrgs && authenticatedOrgs.length === 0 ? (
+              <InlineError>認証済みの組織がありません。</InlineError>
+            ) : (
+              <Skeleton isLoading={isLoadingAuthenticatedOrgs}>
                 <Picker
                   label="組織を選択"
                   value={selectedOrgUsername}
@@ -274,20 +274,18 @@ const App: React.FC<Props> = ({
                     </PickerItem>
                   ))}
                 </Picker>
-
-                <Flex justifyContent="start" marginTop="size-200">
-                  <Button
-                    variant="accent"
-                    onPress={handleAuthOrgLogin}
-                    isDisabled={!selectedOrgUsername || isLoggingIn}
-                  >
-                    {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
-                  </Button>
-                </Flex>
-              </>
-            ) : (
-              <Text>認証済みの組織がありません。</Text>
+              </Skeleton>
             )}
+
+            <Flex justifyContent="start" marginTop="size-200">
+              <Button
+                variant="accent"
+                onPress={handleAuthOrgLogin}
+                isDisabled={!selectedOrgUsername || isLoggingIn}
+              >
+                {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
+              </Button>
+            </Flex>
           </Flex>
         </>
       )}
