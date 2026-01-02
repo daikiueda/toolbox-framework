@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  AsyncLabeledValue,
-  Flex,
-  Grid,
-  Heading,
-  InlineError,
-  View,
-  repeat,
-} from '@toolbox/design-system';
+import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginUserDetail } from '../../src/models';
@@ -51,7 +43,13 @@ const LoginUserDetailView: React.FC = () => {
             <AsyncLabeledValue label="氏名" labelPosition="side" isLoading={isLoading}>
               {loginUserDetail.name}
             </AsyncLabeledValue>
-            <Grid columns={repeat('auto-fit', 'size-3400')} gap="size-250">
+            <div
+              className={style({
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(272px, 1fr))',
+                gap: 20,
+              })}
+            >
               <AsyncLabeledValue label="ユーザー ID" isLoading={isLoading}>
                 {loginUserDetail.id}
               </AsyncLabeledValue>
@@ -71,7 +69,7 @@ const LoginUserDetailView: React.FC = () => {
               <AsyncLabeledValue label="従業員番号" isLoading={isLoading}>
                 {loginUserDetail.employeeNumber || '未設定'}
               </AsyncLabeledValue>
-            </Grid>
+            </div>
           </>
         )}
       </Flex>

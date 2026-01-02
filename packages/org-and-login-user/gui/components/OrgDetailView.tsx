@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  AsyncLabeledValue,
-  Flex,
-  Grid,
-  Heading,
-  InlineError,
-  View,
-  repeat,
-} from '@toolbox/design-system';
+import { AsyncLabeledValue, Flex, Heading, InlineError, View } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { OrgDetail } from '../../src/models';
@@ -54,7 +46,13 @@ const OrgDetailView: React.FC = () => {
             <AsyncLabeledValue label="組織名" labelPosition="side" isLoading={isLoading}>
               {orgDetail.orgName}
             </AsyncLabeledValue>
-            <Grid columns={repeat('auto-fit', 'size-2400')} gap="size-250">
+            <div
+              className={style({
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(192px, 1fr))',
+                gap: 20,
+              })}
+            >
               <AsyncLabeledValue label="組織 ID" isLoading={isLoading}>
                 {orgDetail.orgId}
               </AsyncLabeledValue>
@@ -76,7 +74,7 @@ const OrgDetailView: React.FC = () => {
               <AsyncLabeledValue label="API 要求数" isLoading={isLoading}>
                 {`${formatNumber(orgDetail.apiRequestsUsed)} / ${formatNumber(orgDetail.apiRequestsMax)}`}
               </AsyncLabeledValue>
-            </Grid>
+            </div>
           </>
         )}
       </Flex>
