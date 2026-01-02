@@ -6,7 +6,7 @@ import React from 'react';
 import Add from '@react-spectrum/s2/icons/Add';
 import Edit from '@react-spectrum/s2/icons/Edit';
 
-import { Text, View } from './../../index';
+import { Text } from './../../index';
 import { ActionButton } from './index';
 
 /**
@@ -84,11 +84,15 @@ export const StaticColor: StoryObj<typeof ActionButton> = {
     isQuiet: true,
   },
   render: (args) => (
-    <View backgroundColor={args.staticColor === 'white' ? 'blue-400' : 'transparent'}>
+    <div
+      style={{
+        backgroundColor: args.staticColor === 'white' ? 'var(--spectrum-blue-400)' : 'transparent',
+      }}
+    >
       <ActionButton {...args}>
         <Add />
         <Text>Add Item</Text>
       </ActionButton>
-    </View>
+    </div>
   ),
 };

@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { SortDescriptor } from '@react-types/shared';
 
-import { ActionButton, View } from '../../index';
+import { ActionButton } from '../../index';
+import * as Space from '../Layout/Space';
 
 import { Cell, Column, Row, TableBody, TableHeader, TableView, TableViewUtil } from './index';
 
@@ -46,9 +47,7 @@ const meta: Meta<typeof TableView> = {
 export default meta;
 
 const Stage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <View paddingX="single-line-width" paddingY="single-line-height">
-    {children}
-  </View>
+  <div style={{ paddingInline: Space.OneLetter, paddingBlock: Space.OneLine }}>{children}</div>
 );
 
 export const Basic: StoryObj<typeof TableView> = {

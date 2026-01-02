@@ -2,39 +2,44 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { View } from '@react-spectrum/view';
-
 import useAppEnv from '../../hooks/useAppEnv';
+import { style } from '../../style' with { type: 'macro' };
 
-import { OneLine } from './Space';
-
-type Props = React.ComponentProps<typeof View> & {
+type Props = {
   className?: string;
+  children: React.ReactNode;
 };
 
 const PageContainer = styled.div`
   width: 100%;
 `;
 
-const Page: React.FC<Props> = ({ className, children, ...viewProps }) => {
-  const appEnv = useAppEnv();
+const PageBody = styled.div`
+  max-width: 960px;
+`;
 
-  const innerProps = React.useMemo(
-    () => (appEnv.onElectron ? {} : { margin: '0 auto' }),
-    [appEnv.onElectron]
-  );
+const COMMON_SPACING = {
+  paddingX: 28,
+  paddingBottom: 56,
+} as const;
+
+const pageBodySpacing = (onElectron: boolean | undefined) =>
+  onElectron
+    ? style({
+        ...COMMON_SPACING,
+        marginX: 0,
+      })
+    : style({
+        ...COMMON_SPACING,
+        marginX: 'auto',
+      });
+
+const Page: React.FC<Props> = ({ className, children }) => {
+  const appEnv = useAppEnv();
 
   return (
     <PageContainer className={className}>
-      <View
-        paddingX="single-line-height"
-        maxWidth="960px"
-        paddingBottom={`calc(${OneLine} * 2)`}
-        {...innerProps}
-        {...viewProps}
-      >
-        {children}
-      </View>
+      <PageBody className={pageBodySpacing(appEnv.onElectron)}>{children}</PageBody>
     </PageContainer>
   );
 };

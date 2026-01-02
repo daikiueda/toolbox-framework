@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Heading, InlineError, View } from '@toolbox/design-system';
+import { AsyncLabeledValue, Heading, InlineError } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginUserDetail } from '../../src/models';
@@ -32,7 +32,7 @@ const LoginUserDetailView: React.FC = () => {
   }, []);
 
   return (
-    <View>
+    <div>
       <Heading level={2}>ログインユーザー</Heading>
 
       <div className={style({ display: 'flex', flexDirection: 'column', gap: 20 })}>
@@ -73,7 +73,7 @@ const LoginUserDetailView: React.FC = () => {
           </>
         )}
       </div>
-    </View>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { AsyncLabeledValue, Heading, InlineError, View } from '@toolbox/design-system';
+import { AsyncLabeledValue, Heading, InlineError } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { OrgDetail } from '../../src/models';
@@ -35,7 +35,7 @@ const OrgDetailView: React.FC = () => {
   }, []);
 
   return (
-    <View>
+    <div>
       <Heading level={2}>組織</Heading>
 
       <div className={style({ display: 'flex', flexDirection: 'column', gap: 20 })}>
@@ -78,7 +78,7 @@ const OrgDetailView: React.FC = () => {
           </>
         )}
       </div>
-    </View>
+    </div>
   );
 };
 

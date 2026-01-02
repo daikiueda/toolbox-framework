@@ -12,7 +12,6 @@ import {
   Switch,
   Text,
   TextField,
-  View,
 } from '@toolbox/design-system';
 import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
@@ -113,9 +112,9 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
         </RadioGroup>
       </Form>
       <div className={style({ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16 })}>
-        <View width="size-2000">
+        <div className={style({ width: 160 })}>
           <Text id={publishLabelId}>Publish on launch</Text>
-        </View>
+        </div>
         <Switch
           aria-labelledby={publishLabelId}
           isSelected={isPublished}

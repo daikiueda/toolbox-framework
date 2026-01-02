@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
+import { Heading, Text, Toast, useSetting } from '@toolbox/design-system';
 import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Setting } from './Setting';
@@ -48,9 +48,9 @@ const App: React.FC = () => {
         </div>
         <SettingsDialog onReset={handleResetSettings} />
       </div>
-      <View marginTop="size-150">
+      <div className={style({ marginTop: 12 })}>
         <Text>Explore the entire component palette at a glance.</Text>
-      </View>
+      </div>
 
       <ProjectActions activeLayout={activeLayout} />
       <ProjectConfiguration

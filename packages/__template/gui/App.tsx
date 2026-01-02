@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Form, Heading, Text, TextField, View } from '@toolbox/design-system';
+import { Form, Heading, Text, TextField } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import template from '../src/main';
@@ -21,9 +21,9 @@ function Template() {
           onChange={setWhoToGreet}
           isRequired
         />
-        <View marginTop="size-400">
+        <div className={style({ marginTop: 32 })}>
           <Text>{template(whoToGreet)}</Text>
-        </View>
+        </div>
       </Form>
     </PageWithTheme>
   );

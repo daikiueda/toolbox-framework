@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider, Heading, Text, View } from '@toolbox/design-system';
+import { Divider, Heading, Text } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 type SectionProps = {
@@ -11,19 +11,19 @@ type SectionProps = {
 };
 
 const Section: React.FC<SectionProps> = ({ title, description, icon, children }) => (
-  <View>
+  <div>
     <Divider styles={style({ marginTop: 40, marginBottom: 16 })} />
     <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
       {icon}
       <Heading level={2}>{title}</Heading>
     </div>
     {description && (
-      <View marginTop="size-100">
+      <div className={style({ marginTop: 8 })}>
         <Text>{description}</Text>
-      </View>
+      </div>
     )}
-    <View marginTop="size-200">{children}</View>
-  </View>
+    <div className={style({ marginTop: 16 })}>{children}</div>
+  </div>
 );
 
 export default Section;

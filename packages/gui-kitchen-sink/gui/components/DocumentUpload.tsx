@@ -9,7 +9,6 @@ import {
   Heading,
   Text,
   Toast,
-  View,
   Well,
   useFileSelection,
 } from '@toolbox/design-system';
@@ -55,7 +54,7 @@ const DocumentUpload: React.FC = () => {
       description="Upload project documents and attachments."
     >
       <DropZone onDrop={handleDrop}>
-        <View padding="size-200">
+        <div className={style({ padding: 16 })}>
           <div
             className={style({
               display: 'flex',
@@ -73,10 +72,10 @@ const DocumentUpload: React.FC = () => {
               </FileTrigger>
             </Content>
           </div>
-        </View>
+        </div>
       </DropZone>
 
-      <View marginTop="size-250">
+      <div className={style({ marginTop: 20 })}>
         {filePreviews.length === 0 ? (
           <Text>Previews of dropped or selected files appear here.</Text>
         ) : (
@@ -87,19 +86,17 @@ const DocumentUpload: React.FC = () => {
                   <Icon.File styles={iconStyle({ size: 'S' })} />
                   <Heading level={4}>{file.path}</Heading>
                 </div>
-                <View
-                  marginTop="size-100"
-                  padding="size-150"
-                  borderRadius="regular"
-                  UNSAFE_style={{ whiteSpace: 'pre-wrap' }}
+                <div
+                  className={style({ marginTop: 8, padding: 12, borderRadius: 'default' })}
+                  style={{ whiteSpace: 'pre-wrap' }}
                 >
                   {file.preview}
-                </View>
+                </div>
               </Well>
             ))}
           </div>
         )}
-      </View>
+      </div>
     </Section>
   );
 };

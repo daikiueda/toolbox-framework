@@ -6,7 +6,6 @@ import { style } from '../../style' with { type: 'macro' };
 import { Text } from '../Content';
 
 import * as Space from './Space';
-import { View } from './index';
 
 /**
  * Space utility constants for consistent spacing throughout the application.
@@ -20,18 +19,16 @@ export default meta;
 
 export const SpaceConstants: StoryObj = {
   render: () => (
-    <View padding="size-200">
+    <div className={style({ padding: 16 })}>
       <Text>
         <strong>Space Constants Reference</strong>
       </Text>
-      <View paddingTop="size-200">
+      <div className={style({ paddingTop: 16 })}>
         <div className={style({ display: 'flex', flexDirection: 'column', gap: 12 })}>
           <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
-            <View
-              backgroundColor="gray-100"
-              width={Space.OneLine}
-              height="size-100"
-              borderRadius="small"
+            <div
+              className={style({ backgroundColor: 'gray-100', height: 8, borderRadius: 'sm' })}
+              style={{ width: Space.OneLine }}
             />
             <Text>
               <code>OneLine</code>: {Space.OneLine} (28px) - Line height spacing
@@ -39,11 +36,9 @@ export const SpaceConstants: StoryObj = {
           </div>
 
           <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
-            <View
-              backgroundColor="gray-100"
-              width={Space.OneLetter}
-              height="size-100"
-              borderRadius="small"
+            <div
+              className={style({ backgroundColor: 'gray-100', height: 8, borderRadius: 'sm' })}
+              style={{ width: Space.OneLetter }}
             />
             <Text>
               <code>OneLetter</code>: {Space.OneLetter} (14px) - Letter spacing
@@ -51,115 +46,144 @@ export const SpaceConstants: StoryObj = {
           </div>
 
           <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
-            <View
-              backgroundColor="gray-100"
-              width={Space.Closest}
-              height="size-100"
-              borderRadius="small"
+            <div
+              className={style({ backgroundColor: 'gray-100', height: 8, borderRadius: 'sm' })}
+              style={{ width: Space.Closest }}
             />
             <Text>
               <code>Closest</code>: {Space.Closest} (4px) - Minimal spacing
             </Text>
           </div>
         </div>
-      </View>
-    </View>
+      </div>
+    </div>
   ),
 };
 
 export const SpacingComparison: StoryObj = {
   render: () => (
-    <View padding="size-200">
+    <div className={style({ padding: 16 })}>
       <Text>
         <strong>Spacing Comparison</strong>
       </Text>
-      <View paddingTop="size-200">
+      <div className={style({ paddingTop: 16 })}>
         <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
-          <View>
+          <div>
             <Text>OneLine spacing between elements:</Text>
             <div className={style({ display: 'flex', marginTop: 28 })}>
-              <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
+              <div
+                className={style({ backgroundColor: 'blue-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 1</Text>
-              </View>
-              <View backgroundColor="green-400" padding="size-100" borderRadius="small">
+              </div>
+              <div
+                className={style({ backgroundColor: 'green-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 2</Text>
-              </View>
+              </div>
             </div>
-          </View>
+          </div>
 
-          <View>
+          <div>
             <Text>OneLetter spacing between elements:</Text>
             <div className={style({ display: 'flex', marginTop: 12 })}>
-              <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
+              <div
+                className={style({ backgroundColor: 'blue-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 1</Text>
-              </View>
-              <View backgroundColor="green-400" padding="size-100" borderRadius="small">
+              </div>
+              <div
+                className={style({ backgroundColor: 'green-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 2</Text>
-              </View>
+              </div>
             </div>
-          </View>
+          </div>
 
-          <View>
+          <div>
             <Text>Closest spacing between elements:</Text>
             <div className={style({ display: 'flex', marginTop: 4 })}>
-              <View backgroundColor="blue-400" padding="size-100" borderRadius="small">
+              <div
+                className={style({ backgroundColor: 'blue-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 1</Text>
-              </View>
-              <View backgroundColor="green-400" padding="size-100" borderRadius="small">
+              </div>
+              <div
+                className={style({ backgroundColor: 'green-400', padding: 8, borderRadius: 'sm' })}
+              >
                 <Text>Element 2</Text>
-              </View>
+              </div>
             </div>
-          </View>
+          </div>
         </div>
-      </View>
-    </View>
+      </div>
+    </div>
   ),
 };
 
 export const TypicalUsage: StoryObj = {
   render: () => (
-    <View padding="size-200">
+    <div className={style({ padding: 16 })}>
       <Text>
         <strong>Typical Usage Examples</strong>
       </Text>
-      <View paddingTop={Space.OneLine}>
+      <div style={{ paddingTop: Space.OneLine }}>
         <div className={style({ display: 'flex', flexDirection: 'column', gap: 28 })}>
-          <View>
+          <div>
             <Text>
               <strong>Card with OneLine spacing:</strong>
             </Text>
-            <View
-              backgroundColor="gray-50"
-              padding={Space.OneLine}
-              marginTop={Space.OneLetter}
-              borderRadius="medium"
-              borderWidth="thin"
+            <div
+              className={style({
+                backgroundColor: 'gray-50',
+                borderRadius: 'default',
+                borderWidth: 1,
+              })}
+              style={{ padding: Space.OneLine, marginTop: Space.OneLetter }}
             >
               <Text>This card uses OneLine for internal padding</Text>
-              <View paddingTop={Space.OneLetter}>
+              <div style={{ paddingTop: Space.OneLetter }}>
                 <Text>And OneLetter for text spacing</Text>
-              </View>
-            </View>
-          </View>
+              </div>
+            </div>
+          </div>
 
-          <View>
+          <div>
             <Text>
               <strong>Tight layout with Closest spacing:</strong>
             </Text>
             <div className={style({ display: 'flex', marginTop: 12, gap: 4 })}>
-              <View backgroundColor="blue-400" padding={Space.Closest} borderRadius="small">
+              <div
+                style={{
+                  backgroundColor: 'var(--spectrum-blue-400)',
+                  padding: Space.Closest,
+                  borderRadius: '4px',
+                }}
+              >
                 <Text>Tag 1</Text>
-              </View>
-              <View backgroundColor="green-400" padding={Space.Closest} borderRadius="small">
+              </div>
+              <div
+                style={{
+                  backgroundColor: 'var(--spectrum-green-400)',
+                  padding: Space.Closest,
+                  borderRadius: '4px',
+                }}
+              >
                 <Text>Tag 2</Text>
-              </View>
-              <View backgroundColor="red-400" padding={Space.Closest} borderRadius="small">
+              </div>
+              <div
+                style={{
+                  backgroundColor: 'var(--spectrum-red-400)',
+                  padding: Space.Closest,
+                  borderRadius: '4px',
+                }}
+              >
                 <Text>Tag 3</Text>
-              </View>
+              </div>
             </div>
-          </View>
+          </div>
         </div>
-      </View>
-    </View>
+      </div>
+    </div>
   ),
 };
