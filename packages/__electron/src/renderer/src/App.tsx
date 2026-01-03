@@ -64,6 +64,7 @@ const Main = styled.div`
 
 const MainPanelGroup = styled(PanelGroup)`
   height: 100%;
+  position: relative;
 `;
 
 const PaneBase = styled.div`
