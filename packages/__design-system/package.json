@@ -17,7 +17,6 @@
     "@react-spectrum/provider": "^3.10.12",
     "@react-spectrum/s2": "^1.0.0",
     "@react-spectrum/theme-default": "^3.5.22",
-    "@react-spectrum/utils": "^3.12.10",
     "@spectrum-css/tokens": "^16.0.2",
     "lodash": "^4.17.21",
     "react-loading-skeleton": "^3.5.0"
