@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Divider, Heading, Text } from '@toolbox/design-system';
-import { style } from '@toolbox/design-system/style' with { type: 'macro' };
+import { space, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 type SectionProps = {
   title: string;
@@ -22,7 +22,7 @@ const Section: React.FC<SectionProps> = ({ title, description, icon, children })
         <Text>{description}</Text>
       </div>
     )}
-    <div className={style({ marginTop: 16 })}>{children}</div>
+    <div className={style({ marginTop: space('OneLetter') })}>{children}</div>
   </div>
 );
 
