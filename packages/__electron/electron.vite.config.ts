@@ -36,9 +36,21 @@ export default defineConfig(({ mode }) => ({
   renderer: {
     root: resolve(__dirname, 'src/renderer/'),
     build: {
+      cssMinify: 'lightningcss',
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'src/renderer/index.html'),
+        },
+        output: {
+          // Bundle all S2 and style-macro generated CSS into a single bundle instead of code splitting.
+          // Because atomic CSS has so much overlap between components, loading all CSS up front results in
+          // smaller bundles instead of producing duplication between pages.
+          manualChunks(id) {
+            if (/macro-(.*)\.css$/.test(id) || /@react-spectrum\/s2\/.*\.css$/.test(id)) {
+              return 's2-styles';
+            }
+            return null;
+          },
         },
       },
     },
