@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { style } from '@react-spectrum/s2/style' with { type: 'macro' };
+
 import { Heading } from '../Content';
 import { Content } from '../Layout';
 
@@ -13,9 +15,7 @@ type Props = {
 const InlineError = ({ children, title, ...props }: Props) => (
   <InlineAlert {...props} variant="negative">
     <Heading>
-      <span style={{ color: 'var(--spectrum-global-color-red-600)' }}>
-        {title || 'Oops! Something went wrong.'}
-      </span>
+      <span className={style({ color: 'negative' })}>{title || 'Oops! Something went wrong.'}</span>
     </Heading>
     <Content>{children}</Content>
   </InlineAlert>

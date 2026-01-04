@@ -17,10 +17,10 @@ const App: React.FC = () => {
   return (
     <LoginGate>
       <PageWithTheme>
-        <Heading level={1}>
+        <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
           <AppIcon styles={iconStyle({ size: 'XL' })} />
-          組織とログインユーザー
-        </Heading>
+          <Heading level={1}>組織とログインユーザー</Heading>
+        </div>
         <div className={style({ display: 'flex', flexDirection: 'column', gap: 32 })}>
           <OrgDetailView />
           <LoginUserDetailView />

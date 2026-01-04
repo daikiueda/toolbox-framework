@@ -23,10 +23,8 @@ const NavPanel = styled.nav`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--spectrum-blue-100);
 
   h1 {
-    color: var(--spectrum-blue-1300);
     font-weight: normal;
   }
 `;
@@ -99,7 +97,7 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
       >
         <Header styles={style({ marginX: 24, marginBottom: 12 })}>
           <div className={style({ display: 'flex', flexDirection: 'row', alignItems: 'center' })}>
-            <ProjectIcon styles={iconStyle({ size: 'XL', color: 'informative' })} />
+            <ProjectIcon styles={iconStyle({ size: 'XL', color: 'accent' })} />
             <Heading level={1} styles={style({ marginY: 20, marginStart: 8 })}>
               Toolbox
             </Heading>
