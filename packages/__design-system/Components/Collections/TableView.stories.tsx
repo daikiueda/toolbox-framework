@@ -57,7 +57,9 @@ export const Basic: StoryObj<typeof TableView> = {
     <Stage>
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
           <Column key="birth_year">Birth Year</Column>
@@ -98,7 +100,7 @@ export const WithSorting: StoryObj<typeof TableView> = {
           onSortChange={onSortChange}
         >
           <TableHeader>
-            <Column key="name" allowsSorting>
+            <Column key="name" isRowHeader allowsSorting>
               Name
             </Column>
             <Column key="height" allowsSorting>
@@ -131,7 +133,9 @@ export const WithActions: StoryObj<typeof TableView> = {
       {' '}
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="actions">Actions</Column>
         </TableHeader>
@@ -161,7 +165,9 @@ export const SingleSelection: StoryObj<typeof TableView> = {
     <Stage>
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
         </TableHeader>
@@ -189,7 +195,9 @@ export const Compact: StoryObj<typeof TableView> = {
       {' '}
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
           <Column key="birth_year">Birth Year</Column>

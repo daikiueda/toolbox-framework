@@ -47,7 +47,7 @@ const TeamRoster: React.FC<TeamRosterProps> = ({ sortMemberDescriptor, updateSet
         styles={style({ width: '100%' })}
       >
         <TableHeader>
-          <Column key="name" allowsSorting>
+          <Column key="name" isRowHeader allowsSorting>
             Name
           </Column>
           <Column key="role" allowsSorting>

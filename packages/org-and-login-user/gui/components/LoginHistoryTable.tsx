@@ -53,7 +53,9 @@ const LoginHistoryTable: React.FC = () => {
       ) : (
         <TableView aria-label="ログイン履歴" styles={style({ height: 368 })}>
           <TableHeader>
-            <Column width={200}>ログイン時刻 ({getTimezoneName()})</Column>
+            <Column isRowHeader width={200}>
+              ログイン時刻 ({getTimezoneName()})
+            </Column>
             <Column allowsResizing>状況</Column>
             <Column allowsResizing>アプリケーション</Column>
             <Column allowsResizing>アクセス元 IP</Column>
