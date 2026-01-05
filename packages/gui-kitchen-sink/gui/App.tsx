@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Divider, Flex, Heading, Text, Toast, View, useSetting } from '@toolbox/design-system';
+import { Heading, Text, Toast, useSetting } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Setting } from './Setting';
 import DocumentUpload from './components/DocumentUpload';
@@ -10,7 +11,7 @@ import TeamRoster from './components/TeamRoster';
 import ViewPreferences from './components/ViewPreferences';
 import SettingsDialog from './components/dialogs/SettingsDialog';
 import PageWithTheme from './components/theme/PageWithTheme';
-import { CCLibrary as AppIcon } from './components/theme/icons';
+import { BetaApp as AppIcon } from './components/theme/icons';
 
 const App: React.FC = () => {
   const [setting, updateSetting] = useSetting(Setting.default(), {
@@ -33,21 +34,25 @@ const App: React.FC = () => {
 
   return (
     <PageWithTheme>
-      <Flex alignItems="center" justifyContent="space-between" gap="size-200">
-        <Flex alignItems="center" gap="size-125">
-          <AppIcon size="L" />
+      <div
+        className={style({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+        })}
+      >
+        <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
+          <AppIcon styles={iconStyle({ size: 'XL' })} />
           <Heading level={1}>Design System Kitchen Sink</Heading>
-        </Flex>
+        </div>
         <SettingsDialog onReset={handleResetSettings} />
-      </Flex>
-      <View marginTop="size-150">
+      </div>
+      <div className={style({ marginTop: 12 })}>
         <Text>Explore the entire component palette at a glance.</Text>
-      </View>
-      <Divider marginTop="size-250" />
+      </div>
 
       <ProjectActions activeLayout={activeLayout} />
-      <Divider marginTop="size-350" />
-
       <ProjectConfiguration
         projectName={projectName}
         memberCount={memberCount}
@@ -56,14 +61,8 @@ const App: React.FC = () => {
         isPublished={isPublished}
         updateSetting={updateSetting}
       />
-      <Divider marginTop="size-350" />
-
       <ViewPreferences activeLayout={activeLayout} updateSetting={updateSetting} />
-      <Divider marginTop="size-350" />
-
       <TeamRoster sortMemberDescriptor={sortMemberDescriptor} updateSetting={updateSetting} />
-      <Divider marginTop="size-350" />
-
       <DocumentUpload />
     </PageWithTheme>
   );

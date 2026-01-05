@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { SortDescriptor } from '@react-types/shared';
 
-import { ActionButton, View } from '../../index';
+import { ActionButton } from '../../index';
+import { space, style } from '../../style' with { type: 'macro' };
 
 import { Cell, Column, Row, TableBody, TableHeader, TableView, TableViewUtil } from './index';
 
@@ -26,7 +27,7 @@ const characters: Character[] = [
 ];
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TableView.html
+ * https://react-spectrum.adobe.com/TableView
  */
 const meta: Meta<typeof TableView> = {
   title: 'Components/Collections/TableView',
@@ -46,9 +47,9 @@ const meta: Meta<typeof TableView> = {
 export default meta;
 
 const Stage: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <View paddingX="single-line-width" paddingY="single-line-height">
+  <div className={style({ paddingX: space('OneLine'), paddingY: space('OneLine') })}>
     {children}
-  </View>
+  </div>
 );
 
 export const Basic: StoryObj<typeof TableView> = {
@@ -56,7 +57,9 @@ export const Basic: StoryObj<typeof TableView> = {
     <Stage>
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
           <Column key="birth_year">Birth Year</Column>
@@ -97,7 +100,7 @@ export const WithSorting: StoryObj<typeof TableView> = {
           onSortChange={onSortChange}
         >
           <TableHeader>
-            <Column key="name" allowsSorting>
+            <Column key="name" isRowHeader allowsSorting>
               Name
             </Column>
             <Column key="height" allowsSorting>
@@ -130,7 +133,9 @@ export const WithActions: StoryObj<typeof TableView> = {
       {' '}
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="actions">Actions</Column>
         </TableHeader>
@@ -160,7 +165,9 @@ export const SingleSelection: StoryObj<typeof TableView> = {
     <Stage>
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
         </TableHeader>
@@ -188,7 +195,9 @@ export const Compact: StoryObj<typeof TableView> = {
       {' '}
       <TableView {...args}>
         <TableHeader>
-          <Column key="name">Name</Column>
+          <Column key="name" isRowHeader>
+            Name
+          </Column>
           <Column key="height">Height</Column>
           <Column key="mass">Mass</Column>
           <Column key="birth_year">Birth Year</Column>

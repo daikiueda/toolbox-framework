@@ -3,20 +3,21 @@ import { fn } from 'storybook/test';
 
 import React from 'react';
 
-import Add from '@spectrum-icons/workflow/Add';
-import Edit from '@spectrum-icons/workflow/Edit';
+import Add from '@react-spectrum/s2/icons/Add';
+import Edit from '@react-spectrum/s2/icons/Edit';
 
-import { Text, View } from './../../index';
+import { Text } from './../../index';
 import { ActionButton } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/ActionButton.html
+ * https://react-spectrum.adobe.com/ActionButton
  */
 const meta: Meta<typeof ActionButton> = {
   title: 'Components/Buttons/ActionButton',
   component: ActionButton,
   tags: ['autodocs'],
   argTypes: {
+    size: { control: 'inline-radio', options: ['XS', 'S', 'M', 'L', 'XL'] },
     isQuiet: { control: 'boolean' },
     isDisabled: { control: 'boolean' },
     children: { control: 'text' },
@@ -83,11 +84,15 @@ export const StaticColor: StoryObj<typeof ActionButton> = {
     isQuiet: true,
   },
   render: (args) => (
-    <View backgroundColor={args.staticColor === 'white' ? 'blue-400' : 'transparent'}>
+    <div
+      style={{
+        backgroundColor: args.staticColor === 'white' ? 'var(--spectrum-blue-400)' : 'transparent',
+      }}
+    >
       <ActionButton {...args}>
         <Add />
         <Text>Add Item</Text>
       </ActionButton>
-    </View>
+    </div>
   ),
 };

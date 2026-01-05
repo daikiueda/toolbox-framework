@@ -1,8 +1,9 @@
 import React from 'react';
 
-import AppIcon from '@spectrum-icons/workflow/Organisations';
+import AppIcon from '@react-spectrum/s2/icons/Buildings';
 
-import { Flex, Heading } from '@toolbox/design-system';
+import { Heading } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 import { useSalesforce } from '@toolbox/salesforce';
 
 import OrgDetailView from './components/OrgDetailView';
@@ -15,12 +16,12 @@ const App: React.FC = () => {
     <LoginGate>
       <PageWithTheme>
         <Heading level={1}>
-          <AppIcon size="L" />
+          <AppIcon styles={iconStyle({ size: 'XL' })} />
           Template
         </Heading>
-        <Flex direction="column" gap="size-400">
+        <div className={style({ display: 'flex', flexDirection: 'column', gap: 32 })}>
           <OrgDetailView />
-        </Flex>
+        </div>
       </PageWithTheme>
     </LoginGate>
   );

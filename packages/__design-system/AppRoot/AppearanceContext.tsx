@@ -67,7 +67,7 @@ const readAppearanceAPI = (): AppearanceAPI | undefined => {
 };
 
 const AppearanceProvider: React.FC<AppearanceProviderProps> = ({ children }) => {
-  const appearanceAPIRef = useRef<AppearanceAPI | undefined>();
+  const appearanceAPIRef = useRef<AppearanceAPI | undefined>(undefined);
   const mediaQueryRef = useRef<MediaQueryList | null>(null);
   const [state, setState] = useState<AppearanceState>(() => {
     const systemIsDark = prefersDark();

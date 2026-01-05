@@ -2,6 +2,8 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import macros from 'unplugin-parcel-macros';
+
 /**
  * This function is used to resolve the absolute path of a package.
  * It is needed in projects that use Yarn PnP or are set up within a monorepo.
@@ -31,6 +33,7 @@ const config = {
       ...config.define,
       'process.env.NODE_ENV': JSON.stringify('development'),
     };
+    config.plugins = [macros.vite(), ...(config.plugins || [])];
     return config;
   },
 };

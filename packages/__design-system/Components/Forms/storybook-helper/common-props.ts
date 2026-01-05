@@ -14,7 +14,7 @@ export type CommonProps = {
   isRequired?: boolean;
   necessityIndicator: 'label' | 'icon';
 
-  validationState?: 'valid' | 'invalid';
+  isInvalid?: boolean;
   errorMessage?: string;
 
   description?: string;
@@ -41,7 +41,7 @@ export const allCommonArgTypes: ArgTypes = {
     options: ['label', 'icon'],
   },
 
-  validationState: { control: 'inline-radio', options: ['valid', 'invalid'] },
+  isInvalid: { control: 'boolean' },
   errorMessage: { if: { arg: 'validationState', eq: 'invalid' }, control: 'text' },
 
   description: { control: 'text' },

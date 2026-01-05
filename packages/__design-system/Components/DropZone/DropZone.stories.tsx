@@ -3,17 +3,17 @@ import { fn } from 'storybook/test';
 
 import React, { useCallback } from 'react';
 
-import FileJson from '@spectrum-icons/workflow/FileJson';
+import Document from '@react-spectrum/s2/illustrations/gradient/generic1/Document';
 
 import useFileSelection, { DropZoneFileContent } from '../../hooks/useFileSelection';
-import { Button, FileTrigger } from '../Buttons';
-import { Heading } from '../Content';
+import { Button, ButtonGroup, FileTrigger } from '../Buttons';
+import { Heading, IllustratedMessage } from '../Content';
 import { Content } from '../Layout';
 
 import { DropZone } from './index';
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/DropZone.html
+ * https://react-spectrum.adobe.com/DropZone
  */
 const meta: Meta<typeof DropZone> = {
   title: 'Components/DropZone/DropZone',
@@ -43,13 +43,16 @@ export const Composition: StoryObj<typeof DropZone> = {
 
     return (
       <DropZone {...args} onDrop={handleDrop}>
-        <FileJson size="XXL" />
-        <Heading>Drop your file</Heading>
-        <Content>
-          <FileTrigger allowsMultiple onSelect={handleSelect}>
-            <Button variant="primary">Browse</Button>
-          </FileTrigger>
-        </Content>
+        <IllustratedMessage>
+          <Document />
+          <Heading>Drag and drop your file</Heading>
+          <Content>Or, select a file from your computer</Content>
+          <ButtonGroup>
+            <FileTrigger allowsMultiple onSelect={handleSelect}>
+              <Button variant="primary">Browse</Button>
+            </FileTrigger>
+          </ButtonGroup>
+        </IllustratedMessage>
       </DropZone>
     );
   },

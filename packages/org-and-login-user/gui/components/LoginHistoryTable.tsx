@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Cell,
   Column,
-  Flex,
   Heading,
   InlineError,
   Row,
@@ -13,6 +12,7 @@ import {
   TableView,
   Text,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { LoginHistoryRecord } from '../../src/models';
 
@@ -43,7 +43,7 @@ const LoginHistoryTable: React.FC = () => {
   }, []);
 
   return (
-    <Flex direction="column" gap="size-200" width="100%">
+    <div className={style({ display: 'flex', flexDirection: 'column', gap: 16, width: 'full' })}>
       <Heading level={3}>ログイン履歴</Heading>
 
       {error ? (
@@ -51,9 +51,11 @@ const LoginHistoryTable: React.FC = () => {
       ) : loginHistory.length === 0 ? (
         <Text>ログイン履歴がありません</Text>
       ) : (
-        <TableView aria-label="ログイン履歴" maxHeight="size-4600">
+        <TableView aria-label="ログイン履歴" styles={style({ height: 368 })}>
           <TableHeader>
-            <Column width={200}>ログイン時刻 ({getTimezoneName()})</Column>
+            <Column isRowHeader width={200}>
+              ログイン時刻 ({getTimezoneName()})
+            </Column>
             <Column allowsResizing>状況</Column>
             <Column allowsResizing>アプリケーション</Column>
             <Column allowsResizing>アクセス元 IP</Column>
@@ -62,23 +64,42 @@ const LoginHistoryTable: React.FC = () => {
           <TableBody>
             {loginHistory.map((record) => (
               <Row key={record.id}>
-                <Cell>{isLoading ? <Skeleton /> : formatLoginTime(record.loginTime)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.status)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.application)}</Cell>
-                <Cell>{isLoading ? <Skeleton /> : formatNullable(record.sourceIp)}</Cell>
                 <Cell>
-                  {isLoading ? (
-                    <Skeleton />
-                  ) : (
-                    formatLocation(record.loginGeo?.country ?? null, record.loginGeo?.city ?? null)
-                  )}
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatLoginTime(record.loginTime)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.status)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.application)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>{formatNullable(record.sourceIp)}</Text>
+                  </Skeleton>
+                </Cell>
+                <Cell>
+                  <Skeleton isLoading={isLoading}>
+                    <Text>
+                      {formatLocation(
+                        record.loginGeo?.country ?? null,
+                        record.loginGeo?.city ?? null
+                      )}
+                    </Text>
+                  </Skeleton>
                 </Cell>
               </Row>
             ))}
           </TableBody>
         </TableView>
       )}
-    </Flex>
+    </div>
   );
 };
 export default LoginHistoryTable;

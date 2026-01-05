@@ -3,7 +3,6 @@ import React from 'react';
 import type { Key } from '@react-types/shared';
 
 import {
-  Flex,
   Form,
   NumberField,
   Picker,
@@ -13,8 +12,8 @@ import {
   Switch,
   Text,
   TextField,
-  View,
 } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { Framework } from '../../src/models/Framework';
 import { Framework as FrameworkModel } from '../../src/models/Framework';
@@ -67,11 +66,11 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
 
   return (
     <Section
-      icon={<Icon.FormIcon size="M" />}
+      icon={<Icon.Table styles={iconStyle({ size: 'XL' })} />}
       title="Project Configuration"
       description="Define your project settings and team structure."
     >
-      <Form maxWidth="size-4600" labelPosition="side">
+      <Form labelPosition="side" styles={style({ maxWidth: 480 })}>
         <TextField
           label="Project name"
           value={projectName}
@@ -112,10 +111,10 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
           ))}
         </RadioGroup>
       </Form>
-      <Flex alignItems="center" gap="size-200" marginTop="size-200">
-        <View width="size-2000">
+      <div className={style({ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16 })}>
+        <div className={style({ width: 160 })}>
           <Text id={publishLabelId}>Publish on launch</Text>
-        </View>
+        </div>
         <Switch
           aria-labelledby={publishLabelId}
           isSelected={isPublished}
@@ -123,7 +122,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
         >
           Enabled
         </Switch>
-      </Flex>
+      </div>
     </Section>
   );
 };

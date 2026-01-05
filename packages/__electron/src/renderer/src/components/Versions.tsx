@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import type { ElectronAPI } from '@electron-toolkit/preload';
 
@@ -7,7 +7,7 @@ const getElectron = (): ElectronAPI | undefined =>
 
 type VersionMap = ElectronAPI['process']['versions'];
 
-function Versions(): JSX.Element | null {
+function Versions(): ReactNode | null {
   const [versions] = useState<VersionMap | undefined>(() => getElectron()?.process?.versions);
 
   if (!versions) {

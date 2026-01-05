@@ -57,13 +57,17 @@ const Root = styled.div`
   flex-direction: column;
 `;
 
-const Main = styled.div`
-  flex: 1;
-  overflow-y: hidden;
-`;
-
 const MainPanelGroup = styled(PanelGroup)`
   height: 100%;
+  position: relative;
+`;
+
+const Main = styled.div`
+  flex: 1;
+
+  &:has(${MainPanelGroup}) {
+    overflow-y: hidden;
+  }
 `;
 
 const PaneBase = styled.div`
@@ -72,7 +76,9 @@ const PaneBase = styled.div`
   overscroll-behavior: contain;
 `;
 
-const PaneLeft = styled(PaneBase)``;
+const PaneLeft = styled(PaneBase)`
+  background: var(--spectrum-gray-50);
+`;
 
 const PaneRight = styled(PaneBase)``;
 
@@ -80,7 +86,7 @@ const Handle = styled(PanelResizeHandle)`
   width: 4px;
   position: relative;
   background: transparent;
-  outline-color: var(--spectrum-alias-border-color-focus);
+  outline-color: var(--spectrum-blue-600);
 
   &:before {
     content: '';

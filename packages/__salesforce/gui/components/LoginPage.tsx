@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import {
   Button,
   Divider,
-  Flex,
   Form,
   Heading,
   InlineError,
@@ -18,6 +17,7 @@ import {
   Text,
   TextField,
 } from '@toolbox/design-system';
+import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import type { AuthOrg, AuthOrgError, AuthOrgResult } from '../../lib/core/sfdx/SfdxAuthService';
 import type { ConnectionState } from '../../lib/models/ConnectionState';
@@ -185,7 +185,9 @@ const App: React.FC<Props> = ({
     return (
       <PageWithTheme>
         <Heading level={1}>Salesforce CLI が必要です</Heading>
-        <Flex direction="column" gap="size-200" maxWidth="size-6000">
+        <div
+          className={style({ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 480 })}
+        >
           <Text>この機能は Salesforce CLI がインストールされている環境で動作します。</Text>
           <Text>まだインストールしていない場合は、以下のページからセットアップしてください。</Text>
           <Text>
@@ -197,7 +199,7 @@ const App: React.FC<Props> = ({
               Salesforce CLI のインストール手順
             </a>
           </Text>
-        </Flex>
+        </div>
       </PageWithTheme>
     );
   }
@@ -222,16 +224,16 @@ const App: React.FC<Props> = ({
             value={customDomain}
             onChange={setCustomDomain}
             isRequired
-            validationState={urlError ? 'invalid' : undefined}
+            isInvalid={!!urlError}
             errorMessage={urlError}
             description={normalizedCustomDomain ?? undefined}
-            width="size-6000"
+            styles={style({ width: 480 })}
           />
         ) : (
           <></>
         )}
 
-        <Flex justifyContent="start" marginTop="size-400">
+        <div className={style({ display: 'flex', justifyContent: 'start', marginTop: 32 })}>
           <Button type="submit" variant="accent" isDisabled={isSubmitDisabled}>
             {useSfdxSession
               ? isLoggingIn
@@ -241,49 +243,51 @@ const App: React.FC<Props> = ({
                 ? 'ログイン中...'
                 : 'ログイン'}
           </Button>
-        </Flex>
+        </div>
       </Form>
 
       {(isLoadingAuthenticatedOrgs || authOrgError || authenticatedOrgs.length > 0) && (
         <>
-          <Divider size="S" marginTop="size-600" marginBottom="size-400" />
+          <Divider styles={style({ marginTop: 48, marginBottom: 32 })} />
 
-          <Flex direction="column" gap="size-200">
+          <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
             <Heading level={2}>認証済み組織でログイン</Heading>
 
-            {isLoadingAuthenticatedOrgs ? (
-              <Skeleton height={32} width={360} />
-            ) : authOrgError ? (
+            {!isLoadingAuthenticatedOrgs && authOrgError ? (
               <InlineError>{authOrgError.message}</InlineError>
-            ) : authenticatedOrgs.length > 0 ? (
-              <>
+            ) : !isLoadingAuthenticatedOrgs && authenticatedOrgs.length === 0 ? (
+              <InlineError>認証済みの組織がありません。</InlineError>
+            ) : (
+              <Skeleton isLoading={isLoadingAuthenticatedOrgs}>
                 <Picker
                   label="組織を選択"
-                  selectedKey={selectedOrgUsername}
-                  onSelectionChange={(key) => setSelectedOrgUsername(key as string)}
-                  width="size-6000"
+                  value={selectedOrgUsername}
+                  onChange={(key) => setSelectedOrgUsername(key as string)}
+                  styles={style({ width: 480 })}
                 >
                   {authenticatedOrgs.map((org) => (
-                    <PickerItem key={org.username} textValue={org.alias || org.username}>
+                    <PickerItem
+                      key={org.username}
+                      id={org.username}
+                      textValue={org.alias || org.username}
+                    >
                       {org.alias ? `${org.alias} (${org.username})` : org.username}
                     </PickerItem>
                   ))}
                 </Picker>
-
-                <Flex justifyContent="start" marginTop="size-200">
-                  <Button
-                    variant="accent"
-                    onPress={handleAuthOrgLogin}
-                    isDisabled={!selectedOrgUsername || isLoggingIn}
-                  >
-                    {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
-                  </Button>
-                </Flex>
-              </>
-            ) : (
-              <Text>認証済みの組織がありません。</Text>
+              </Skeleton>
             )}
-          </Flex>
+
+            <div className={style({ display: 'flex', justifyContent: 'start', marginTop: 16 })}>
+              <Button
+                variant="accent"
+                onPress={handleAuthOrgLogin}
+                isDisabled={!selectedOrgUsername || isLoggingIn}
+              >
+                {isLoggingIn ? '認証中...' : '選択した組織でログイン'}
+              </Button>
+            </div>
+          </div>
         </>
       )}
     </PageWithTheme>

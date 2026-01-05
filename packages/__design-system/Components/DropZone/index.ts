@@ -1,1 +1,1 @@
-export { DropZone } from '@react-spectrum/dropzone';
+export { DropZone } from '@react-spectrum/s2';

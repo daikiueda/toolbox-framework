@@ -1,10 +1,6 @@
 import { ArgTypes, Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
-import React from 'react';
-
-import Edit from '@spectrum-icons/workflow/Edit';
-
 import { TextArea } from './index';
 import { allCommonArgTypes } from './storybook-helper/common-props';
 
@@ -21,7 +17,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/TextArea.html
+ * https://react-spectrum.adobe.com/TextArea
  */
 const meta: Meta<typeof TextArea> = {
   title: 'Components/Forms/Text Field Family/TextArea',
@@ -45,14 +41,15 @@ export const Basic: Story = {
   },
 };
 
-export const WithIcon: Story = {
-  args: {
-    icon: <Edit />,
-  },
-  argTypes: {
-    icon: allSpecificArgTypes.icon,
-  },
-};
+// NOTE: it has not been implemented yet(s2)
+// export const WithIcon: Story = {
+//   args: {
+//     icon: <Edit />,
+//   },
+//   argTypes: {
+//     icon: allSpecificArgTypes.icon,
+//   },
+// };
 
 export const WithMaxLength: Story = {
   args: {

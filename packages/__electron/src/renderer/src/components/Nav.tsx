@@ -3,10 +3,11 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 
+import ProjectIcon from '@react-spectrum/s2/icons/Project';
 import '@spectrum-css/sidenav';
-import Box from '@spectrum-icons/workflow/Box';
 
-import { Flex, Header, Heading } from '@toolbox/design-system';
+import { Header, Heading } from '@toolbox/design-system';
+import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { Entry as MenuItemEntry } from '../../../../entries';
 
@@ -22,10 +23,8 @@ const NavPanel = styled.nav`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--spectrum-blue-100);
 
   h1 {
-    color: var(--spectrum-blue-1300);
     font-weight: normal;
   }
 `;
@@ -88,14 +87,21 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
   return (
     <NavPanel {...navPanelProps}>
       {/* スクロール可能な上部エリア */}
-      <Flex direction="column" flex="1" UNSAFE_style={{ overflow: 'auto' }}>
-        <Header marginX="24px">
-          <Flex direction="row" alignItems="center">
-            <Box color="informative" size="L" />
-            <Heading level={1} marginStart="size-100" marginY="24px">
+      <div
+        className={style({
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          overflow: 'auto',
+        })}
+      >
+        <Header styles={style({ marginX: 24, marginBottom: 12 })}>
+          <div className={style({ display: 'flex', flexDirection: 'row', alignItems: 'center' })}>
+            <ProjectIcon styles={iconStyle({ size: 'XL', color: 'accent' })} />
+            <Heading level={1} styles={style({ marginY: 20, marginStart: 8 })}>
               Toolbox
             </Heading>
-          </Flex>
+          </div>
         </Header>
 
         <Spectrum.SideNav>
@@ -107,12 +113,12 @@ const Nav: React.FC<Props> = ({ menuItems, currentApp, switchApp, ...navPanelPro
             </Spectrum.Item>
           ))}
         </Spectrum.SideNav>
-      </Flex>
+      </div>
 
       {/* 固定表示の下部エリア */}
-      <Flex direction="column" marginTop="auto">
+      <div className={style({ display: 'flex', flexDirection: 'column', marginTop: 'auto' })}>
         <Versions />
-      </Flex>
+      </div>
     </NavPanel>
   );
 };

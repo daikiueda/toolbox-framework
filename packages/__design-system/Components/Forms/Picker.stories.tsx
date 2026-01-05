@@ -3,7 +3,10 @@ import { fn } from 'storybook/test';
 
 import React from 'react';
 
-import { Picker, PickerItem, Section } from './index';
+import { Heading, Text } from '../Content';
+import { Header } from '../Layout';
+
+import { Picker, PickerItem, PickerSection } from './index';
 import { allCommonArgTypes } from './storybook-helper/common-props';
 
 const allSpecificArgTypes: ArgTypes = {
@@ -23,7 +26,7 @@ const allSpecificArgTypes: ArgTypes = {
 };
 
 /**
- * https://react-spectrum.adobe.com/react-spectrum/Picker.html
+ * https://react-spectrum.adobe.com/Picker
  */
 const meta: Meta<typeof Picker> = {
   title: 'Components/Forms/Picker',
@@ -42,7 +45,7 @@ export const Basic: StoryObj<typeof Picker> = {
   },
   args: {
     label: 'Choose an option',
-    menuWidth: 'size-3000',
+    menuWidth: 240,
   },
   render: (args) => (
     <Picker {...args}>
@@ -96,21 +99,33 @@ export const WithPlaceholder: StoryObj<typeof Picker> = {
 export const WithSections: StoryObj<typeof Picker> = {
   render: (args) => (
     <Picker {...args}>
-      <Section title="Mammals">
+      <PickerSection>
+        <Header>
+          <Heading>Mammals</Heading>
+          <Text slot="description">description</Text>
+        </Header>
         <PickerItem key="dog">Dog</PickerItem>
         <PickerItem key="cat">Cat</PickerItem>
         <PickerItem key="elephant">Elephant</PickerItem>
-      </Section>
-      <Section title="Birds">
+      </PickerSection>
+      <PickerSection>
+        <Header>
+          <Heading>Birds</Heading>
+          <Text slot="description">description</Text>
+        </Header>
         <PickerItem key="eagle">Eagle</PickerItem>
         <PickerItem key="parrot">Parrot</PickerItem>
         <PickerItem key="penguin">Penguin</PickerItem>
-      </Section>
-      <Section title="Fish">
+      </PickerSection>
+      <PickerSection>
+        <Header>
+          <Heading>Fish</Heading>
+          <Text slot="description">description</Text>
+        </Header>
         <PickerItem key="shark">Shark</PickerItem>
         <PickerItem key="salmon">Salmon</PickerItem>
         <PickerItem key="tuna">Tuna</PickerItem>
-      </Section>
+      </PickerSection>
     </Picker>
   ),
 };
