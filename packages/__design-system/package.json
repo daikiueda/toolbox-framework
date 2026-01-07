@@ -6,6 +6,7 @@
     ".": "./index.ts",
     "./AppRoot": "./AppRoot/index.tsx",
     "./style": "./style/index.ts",
+    "./hooks": "./hooks/index.ts",
     "./utils": "./utils/index.ts"
   },
   "scripts": {
