@@ -5,9 +5,8 @@ import GlobalThemeProvider from './GlobalThemeProvider';
 
 import { ToastContainer } from '../GlobalUI/Toast';
 
-import { style } from '../style' with { type: 'macro' };
-
 import { AppearanceProvider } from './AppearanceContext';
+import { ErrorBoundary } from './ErrorBoundary';
 
 import './BaseStyle.scss';
 
@@ -27,16 +26,7 @@ const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
     <AppEnvProvider onElectron={onElectron}>
       <AppearanceProvider>
         <GlobalThemeProvider>
-          <div
-            className={style({
-              display: 'flex',
-              width: 'full',
-              minHeight: 'screen',
-              justifyContent: 'start',
-            })}
-          >
-            {children}
-          </div>
+          <ErrorBoundary>{children}</ErrorBoundary>
           <ToastContainer />
         </GlobalThemeProvider>
       </AppearanceProvider>
