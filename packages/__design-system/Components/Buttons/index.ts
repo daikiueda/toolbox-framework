@@ -7,3 +7,5 @@ export {
   ToggleButtonGroup,
   FileTrigger,
 } from '@react-spectrum/s2';
+
+export { default as PressToCopy } from './PressToCopy';
