@@ -2,9 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import useAppEnv from '../../hooks/useAppEnv';
-import { style } from '../../style' with { type: 'macro' };
-
 type Props = {
   className?: string;
   children: React.ReactNode;
@@ -16,32 +13,15 @@ const PageContainer = styled.div`
 
 const PageBody = styled.div`
   max-width: 960px;
+  margin: 0 auto;
+  padding: 0 28px 56px;
 `;
+export const __PAGE_BODY_CLASS_NAME = PageBody.toString();
 
-const COMMON_SPACING = {
-  paddingX: 28,
-  paddingBottom: 56,
-} as const;
-
-const pageBodySpacing = (onElectron: boolean | undefined) =>
-  onElectron
-    ? style({
-        ...COMMON_SPACING,
-        marginX: 0,
-      })
-    : style({
-        ...COMMON_SPACING,
-        marginX: 'auto',
-      });
-
-const Page: React.FC<Props> = ({ className, children }) => {
-  const appEnv = useAppEnv();
-
-  return (
-    <PageContainer className={className}>
-      <PageBody className={pageBodySpacing(appEnv.onElectron)}>{children}</PageBody>
-    </PageContainer>
-  );
-};
+const Page: React.FC<Props> = ({ className, children }) => (
+  <PageContainer className={className}>
+    <PageBody>{children}</PageBody>
+  </PageContainer>
+);
 
 export default Page;

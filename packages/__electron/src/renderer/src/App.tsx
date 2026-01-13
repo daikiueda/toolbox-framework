@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from 'react-resizable-panels';
 
+import { __PAGE_BODY_CLASS_NAME } from '@toolbox/design-system';
 import { SalesforceConnectionBarContainer, SalesforceProvider } from '@toolbox/salesforce';
 
 import entries, { Entry as AppEntry } from '../../../entries';
@@ -80,7 +81,11 @@ const PaneLeft = styled(PaneBase)`
   background: var(--spectrum-gray-50);
 `;
 
-const PaneRight = styled(PaneBase)``;
+const PaneRight = styled(PaneBase)`
+  ${__PAGE_BODY_CLASS_NAME} {
+    margin: 0;
+  }
+`;
 
 const Handle = styled(PanelResizeHandle)`
   width: 4px;
