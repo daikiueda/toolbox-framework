@@ -8,16 +8,21 @@ import {
   Content,
   Dialog,
   DialogTrigger,
+  Divider,
   Heading,
   Text,
 } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
+import AppearanceModeSelector from '../AppearanceModeSelector';
 import * as Icon from '../theme/icons';
 
 type SettingsDialogProps = {
   onReset: () => void;
 };
+
+const sectionStyle = style({ marginTop: 16 });
+const labelStyle = style({ marginBottom: 8, fontWeight: 'bold' });
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
   <DialogTrigger>
@@ -29,7 +34,19 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
         <>
           <Heading level={3}>Settings</Heading>
           <Content>
-            <Text>Reset all persisted values back to their defaults. This cannot be undone.</Text>
+            <div className={sectionStyle}>
+              <div className={labelStyle}>
+                <Text>Appearance</Text>
+              </div>
+              <AppearanceModeSelector />
+            </div>
+            <Divider styles={style({ marginY: 20 })} />
+            <div>
+              <div className={labelStyle}>
+                <Text>Data management</Text>
+              </div>
+              <Text>Reset all persisted values back to their defaults. This cannot be undone.</Text>
+            </div>
           </Content>
           <ButtonGroup
             styles={style({ marginTop: 20 })}
