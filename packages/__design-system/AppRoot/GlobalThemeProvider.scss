@@ -1,2 +1,4 @@
-@import '@spectrum-css/tokens/dist/index.css';
+@layer reset, _;
+@import './reset.css' layer(reset);
+@import '@spectrum-css/tokens/dist/css/index.css';
 @import '@react-spectrum/s2/page.css';

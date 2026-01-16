@@ -1,18 +1,19 @@
 import React from 'react';
 
 import { AppEnvProvider } from './AppEnvContext';
-import GlobalThemeProvider from './GlobalThemeProvider';
+import GlobalThemeProvider, { type BackgroundLayer } from './GlobalThemeProvider';
 
 import { ToastContainer } from '../GlobalUI/Toast';
 
 import { AppearanceProvider } from './AppearanceContext';
 import { ErrorBoundary } from './ErrorBoundary';
 
-import './BaseStyle.scss';
+export type { BackgroundLayer };
 
 type Props = {
   children: React.ReactNode;
   onElectron?: boolean;
+  backgroundLayer?: BackgroundLayer;
 };
 
 // const Compose = ({ items, children }) =>
@@ -21,11 +22,11 @@ type Props = {
 //     children
 //   );
 
-const AppRoot: React.FC<Props> = ({ children, onElectron = false }) => {
+const AppRoot: React.FC<Props> = ({ children, onElectron = false, backgroundLayer = 'base' }) => {
   return (
     <AppEnvProvider onElectron={onElectron}>
       <AppearanceProvider>
-        <GlobalThemeProvider>
+        <GlobalThemeProvider background={backgroundLayer}>
           <ErrorBoundary>{children}</ErrorBoundary>
           <ToastContainer />
         </GlobalThemeProvider>

@@ -6,7 +6,9 @@ import { type AppearanceMode, useAppearance } from '../hooks';
 
 import './GlobalThemeProvider.scss';
 
-const injectClassNameToDocumentElement = (mode: AppearanceMode) => {
+export type BackgroundLayer = 'base' | 'layer-1' | 'layer-2';
+
+const injectClassNameToDocumentElement = (mode: AppearanceMode, background?: BackgroundLayer) => {
   const documentElement = document.documentElement;
 
   const prevClassName = documentElement.className.trim();
@@ -20,14 +22,25 @@ const injectClassNameToDocumentElement = (mode: AppearanceMode) => {
   if (nextClassName !== prevClassName) {
     documentElement.className = nextClassName.trim();
   }
+
+  // Set background layer for Spectrum 2
+  // 'base' means no attribute (default style)
+  if (background && background !== 'base') {
+    documentElement.setAttribute('data-background', background);
+  } else {
+    documentElement.removeAttribute('data-background');
+  }
 };
 
-const GlobalThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const GlobalThemeProvider: React.FC<{
+  children: React.ReactNode;
+  background?: BackgroundLayer;
+}> = ({ children, background }) => {
   const { mode } = useAppearance();
 
   React.useEffect(() => {
-    injectClassNameToDocumentElement(mode);
-  }, [mode]);
+    injectClassNameToDocumentElement(mode, background);
+  }, [mode, background]);
 
   return <Provider colorScheme={mode}>{children}</Provider>;
 };
