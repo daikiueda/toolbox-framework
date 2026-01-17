@@ -10,7 +10,7 @@ import {
   TableView,
   TableViewUtil,
 } from '@toolbox/design-system';
-import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
+import { iconStyle } from '@toolbox/design-system/style' with { type: 'macro' };
 
 import { SAMPLE_MEMBERS } from '../sample-data/members';
 
@@ -41,13 +41,13 @@ const TeamRoster: React.FC<TeamRosterProps> = ({ sortMemberDescriptor, updateSet
       description="View and manage team members."
     >
       <TableView
+        selectionMode="multiple"
         aria-label="Team roster"
         sortDescriptor={sortMemberDescriptor}
         onSortChange={updateSetting('sortMemberDescriptor')}
-        styles={style({ width: '100%' })}
       >
         <TableHeader>
-          <Column key="name" isRowHeader allowsSorting>
+          <Column key="name" allowsSorting isRowHeader>
             Name
           </Column>
           <Column key="role" allowsSorting>
@@ -62,7 +62,7 @@ const TeamRoster: React.FC<TeamRosterProps> = ({ sortMemberDescriptor, updateSet
             <Row key={member.id}>
               <Cell>{member.name}</Cell>
               <Cell>{member.role}</Cell>
-              <Cell>{`${member.experience} yrs`}</Cell>
+              <Cell align="end">{`${member.experience} yrs`}</Cell>
             </Row>
           ))}
         </TableBody>

@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { Key } from '@react-types/shared';
 
-import { Text, ToggleButton, ToggleButtonGroup, Well } from '@toolbox/design-system';
+import { Text, ToggleButton, ToggleButtonGroup, UpdateSetting, Well } from '@toolbox/design-system';
 import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
-import type { Layout } from '../../src/models/Layout';
-import { Layout as LayoutModel } from '../../src/models/Layout';
+import { Layout } from '../../src/models/Layout';
+import { Setting } from '../Setting';
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
@@ -31,11 +31,16 @@ const LAYOUT_OPTIONS = [
 
 type ViewPreferencesProps = {
   activeLayout: string;
-  updateSetting: (key: 'activeLayout') => (value: string) => void;
+  updateSetting: UpdateSetting<Setting>;
 };
 
 const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateSetting }) => {
   const selectedLayoutKeys = React.useMemo(() => new Set<Key>([activeLayout]), [activeLayout]);
+
+  const selectionChangeHandler = React.useMemo(() => {
+    const updateLayout = updateSetting('activeLayout', Layout.guard);
+    return (newKeys: Set<Key>) => updateLayout(newKeys.values().next().value);
+  }, [updateSetting]);
 
   return (
     <Section
@@ -45,20 +50,15 @@ const ViewPreferences: React.FC<ViewPreferencesProps> = ({ activeLayout, updateS
     >
       <div className={style({ display: 'flex', flexDirection: 'column', gap: 16 })}>
         <ToggleButtonGroup
+          aria-label="Choose layout"
           selectionMode="single"
           selectedKeys={selectedLayoutKeys}
-          onSelectionChange={(key) => {
-            const guardedKey = LayoutModel.guard(key) ? key : 'dashboard';
-            updateSetting('activeLayout')(guardedKey);
-          }}
-          aria-label="Choose layout"
+          onSelectionChange={selectionChangeHandler}
         >
           {LAYOUT_OPTIONS.map(({ id, label, Icon }) => (
-            <ToggleButton key={id}>
-              <div className={style({ display: 'flex', alignItems: 'center', gap: 8 })}>
-                <Icon />
-                <Text>{label}</Text>
-              </div>
+            <ToggleButton id={id} key={id}>
+              <Icon />
+              <Text>{label}</Text>
             </ToggleButton>
           ))}
         </ToggleButtonGroup>

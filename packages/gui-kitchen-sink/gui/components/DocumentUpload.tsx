@@ -2,11 +2,13 @@ import React from 'react';
 
 import {
   Button,
+  ButtonGroup,
   Content,
   DropZone,
   DropZoneFileContent,
   FileTrigger,
   Heading,
+  IllustratedMessage,
   Text,
   Toast,
   Well,
@@ -54,25 +56,16 @@ const DocumentUpload: React.FC = () => {
       description="Upload project documents and attachments."
     >
       <DropZone onDrop={handleDrop}>
-        <div className={style({ padding: 16 })}>
-          <div
-            className={style({
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 8,
-            })}
-          >
-            <Illustration.Document />
-            <Heading level={3}>Drop files here</Heading>
-            <Text>…or pick files with the button below.</Text>
-            <Content>
-              <FileTrigger allowsMultiple onSelect={handleSelect}>
-                <Button variant="primary">Open file picker</Button>
-              </FileTrigger>
-            </Content>
-          </div>
-        </div>
+        <IllustratedMessage>
+          <Illustration.Document />
+          <Heading>Drop files here</Heading>
+          <Content>…or pick files with the button below.</Content>
+          <ButtonGroup>
+            <FileTrigger allowsMultiple onSelect={handleSelect}>
+              <Button variant="primary">Open file picker</Button>
+            </FileTrigger>
+          </ButtonGroup>
+        </IllustratedMessage>
       </DropZone>
 
       <div className={style({ marginTop: 20 })}>

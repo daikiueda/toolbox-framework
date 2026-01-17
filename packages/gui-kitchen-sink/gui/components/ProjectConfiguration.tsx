@@ -1,7 +1,5 @@
 import React from 'react';
 
-import type { Key } from '@react-types/shared';
-
 import {
   Form,
   NumberField,
@@ -10,15 +8,15 @@ import {
   Radio,
   RadioGroup,
   Switch,
-  Text,
   TextField,
+  UpdateSetting,
 } from '@toolbox/design-system';
 import { iconStyle, style } from '@toolbox/design-system/style' with { type: 'macro' };
 
-import type { Framework } from '../../src/models/Framework';
-import { Framework as FrameworkModel } from '../../src/models/Framework';
-import type { Plan } from '../../src/models/Plan';
-import { Plan as PlanModel } from '../../src/models/Plan';
+import { Framework } from '../../src/models/Framework';
+import { Plan } from '../../src/models/Plan';
+import { Project } from '../../src/models/Project';
+import { Setting } from '../Setting';
 
 import Section from './layout/Section';
 import * as Icon from './theme/icons';
@@ -35,26 +33,11 @@ const PLAN_OPTIONS = [
   { id: 'enterprise' as Plan, label: 'Enterprise' },
 ];
 
-type ProjectConfigurationProps = {
-  projectName: string;
-  memberCount: number;
-  selectedFramework: Key | undefined;
-  selectedPlan: string | undefined;
-  isPublished: boolean;
-  updateSetting: <K extends keyof ProjectConfigurationState>(
-    key: K
-  ) => (value: ProjectConfigurationState[K]) => void;
+type Props = Project & {
+  updateSetting: UpdateSetting<Setting>;
 };
 
-type ProjectConfigurationState = {
-  projectName: string;
-  memberCount: number;
-  selectedFramework: Key | undefined;
-  selectedPlan: string | undefined;
-  isPublished: boolean;
-};
-
-const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
+const ProjectConfiguration: React.FC<Props> = ({
   projectName,
   memberCount,
   selectedFramework,
@@ -85,11 +68,8 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
         />
         <Picker
           label="Frontend framework"
-          selectedKey={selectedFramework}
-          onSelectionChange={(key) => {
-            const guardedKey = FrameworkModel.guard(key) ? key : undefined;
-            updateSetting('selectedFramework')(guardedKey);
-          }}
+          value={selectedFramework}
+          onChange={updateSetting('selectedFramework', Framework.guard)}
         >
           {FRAMEWORK_OPTIONS.map((framework) => (
             <PickerItem key={framework.id}>{framework.label}</PickerItem>
@@ -98,10 +78,7 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
         <RadioGroup
           label="Pricing plan"
           value={selectedPlan}
-          onChange={(value) => {
-            const guardedValue = PlanModel.guard(value) ? value : undefined;
-            updateSetting('selectedPlan')(guardedValue);
-          }}
+          onChange={updateSetting('selectedPlan', Plan.guard)}
           orientation="horizontal"
         >
           {PLAN_OPTIONS.map((plan) => (
@@ -110,19 +87,16 @@ const ProjectConfiguration: React.FC<ProjectConfigurationProps> = ({
             </Radio>
           ))}
         </RadioGroup>
+        <RadioGroup label="Publish on launch" orientation="vertical">
+          <Switch
+            aria-labelledby={publishLabelId}
+            isSelected={isPublished}
+            onChange={updateSetting('isPublished')}
+          >
+            Enabled
+          </Switch>
+        </RadioGroup>
       </Form>
-      <div className={style({ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16 })}>
-        <div className={style({ width: 160 })}>
-          <Text id={publishLabelId}>Publish on launch</Text>
-        </div>
-        <Switch
-          aria-labelledby={publishLabelId}
-          isSelected={isPublished}
-          onChange={updateSetting('isPublished')}
-        >
-          Enabled
-        </Switch>
-      </div>
     </Section>
   );
 };

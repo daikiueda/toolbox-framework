@@ -8,14 +8,14 @@ import {
   Content,
   Dialog,
   DialogTrigger,
-  Divider,
+  Footer,
   Heading,
-  Text,
 } from '@toolbox/design-system';
 import { style } from '@toolbox/design-system/style' with { type: 'macro' };
 
-import AppearanceModeSelector from '../AppearanceModeSelector';
 import * as Icon from '../theme/icons';
+
+import AppearanceModeSelector from './AppearanceModeSelector';
 
 type SettingsDialogProps = {
   onReset: () => void;
@@ -35,28 +35,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
           <Heading level={3}>Settings</Heading>
           <Content>
             <div className={sectionStyle}>
-              <div className={labelStyle}>
-                <Text>Appearance</Text>
-              </div>
+              <div className={labelStyle}>Appearance</div>
               <AppearanceModeSelector />
             </div>
-            <Divider styles={style({ marginY: 20 })} />
-            <div>
-              <div className={labelStyle}>
-                <Text>Data management</Text>
-              </div>
-              <Text>Reset all persisted values back to their defaults. This cannot be undone.</Text>
-            </div>
           </Content>
-          <ButtonGroup
-            styles={style({ marginTop: 20 })}
-            align="end"
-            isDisabled={false}
-            orientation="horizontal"
-          >
-            <Button variant="secondary" onPress={closeDialog}>
-              Close
-            </Button>
+          <Footer>
             <DialogTrigger>
               <Button variant="negative">Reset settings</Button>
               <AlertDialog
@@ -72,6 +55,16 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({ onReset }) => (
                 Resetting will restore all fields to their original defaults. Continue?
               </AlertDialog>
             </DialogTrigger>
+          </Footer>
+          <ButtonGroup
+            styles={style({ marginTop: 20 })}
+            align="end"
+            isDisabled={false}
+            orientation="horizontal"
+          >
+            <Button variant="secondary" onPress={closeDialog}>
+              Close
+            </Button>
           </ButtonGroup>
         </>
       )}
