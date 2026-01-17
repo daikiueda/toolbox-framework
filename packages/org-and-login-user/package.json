@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@toolbox/design-system": "^0.0.0",
-    "jsforce": "^3.10.10"
+    "jsforce": "^3.10.13"
   },
   "peerDependencies": {
     "react": "^19.2.3",
