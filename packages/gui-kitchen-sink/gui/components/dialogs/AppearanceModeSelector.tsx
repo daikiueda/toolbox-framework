@@ -10,12 +10,12 @@ import {
 } from '@toolbox/design-system';
 
 const AppearanceModeSelector: React.FC = () => {
-  const { source, setSource } = useAppearance();
+  const { source, persistSource } = useAppearance();
 
   const handleSelectionChange = (keys: Set<Key>) => {
     const selected = [...keys][0];
     if (selected && isAppearanceSource(selected)) {
-      setSource(selected);
+      persistSource(selected);
     }
   };
 

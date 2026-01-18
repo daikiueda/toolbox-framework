@@ -6,7 +6,9 @@ export type AppearanceSource = 'system' | 'light' | 'dark';
 export type AppearanceMode = 'light' | 'dark';
 
 type AppearanceContextValue = AppearanceState & {
-  setSource: (next: AppearanceSource) => void;
+  previewSource: (next: AppearanceSource) => void;
+  persistSource: (next: AppearanceSource) => void;
+  revertSource: () => void;
 };
 
 type AppearanceState = {
@@ -59,7 +61,9 @@ const defaultValue: AppearanceContextValue = {
   source: DEFAULT_SOURCE,
   shouldUseHighContrastColors: false,
   shouldUseInvertedColorScheme: false,
-  setSource: () => undefined,
+  previewSource: () => undefined,
+  persistSource: () => undefined,
+  revertSource: () => undefined,
 };
 
 const AppearanceContext = createContext<AppearanceContextValue>(defaultValue);
@@ -78,6 +82,7 @@ const AppearanceProvider: React.FC<AppearanceProviderProps> = ({ children }) => 
   const appearanceAPIRef = useRef<AppearanceAPI | undefined>(undefined);
   const mediaQueryRef = useRef<MediaQueryList | null>(null);
   const isHydratedRef = useRef(false);
+  const persistedSourceRef = useRef<AppearanceSource>(DEFAULT_SOURCE);
 
   const storage = useMemo(() => getGlobalAPI()?.persistence, []);
 
@@ -121,6 +126,7 @@ const AppearanceProvider: React.FC<AppearanceProviderProps> = ({ children }) => 
           const stored = await storage.read(STORAGE_KEY);
           if (!cancelled && stored && isAppearanceSource(stored)) {
             const systemIsDark = systemMediaQuery?.matches ?? prefersDark();
+            persistedSourceRef.current = stored;
             setState({
               mode: computeMode(stored, systemIsDark),
               source: stored,
@@ -187,18 +193,7 @@ const AppearanceProvider: React.FC<AppearanceProviderProps> = ({ children }) => 
     };
   }, [updateFromPayload, storage]);
 
-  // source が変更されたら永続化
-  useEffect(() => {
-    if (!STORAGE_KEY || !storage || !isHydratedRef.current) {
-      return;
-    }
-
-    storage.write(STORAGE_KEY, state.source).catch((error) => {
-      console.warn('[design-system] Failed to persist appearance source:', error);
-    });
-  }, [storage, state.source]);
-
-  const setSource = useCallback(
+  const applySource = useCallback(
     (source: AppearanceSource) => {
       const api = appearanceAPIRef.current;
       if (api) {
@@ -228,12 +223,39 @@ const AppearanceProvider: React.FC<AppearanceProviderProps> = ({ children }) => 
     [updateFromPayload]
   );
 
+  const previewSource = useCallback(
+    (source: AppearanceSource) => {
+      applySource(source);
+    },
+    [applySource]
+  );
+
+  const persistSource = useCallback(
+    (source: AppearanceSource) => {
+      applySource(source);
+      persistedSourceRef.current = source;
+
+      if (storage) {
+        storage.write(STORAGE_KEY, source).catch((error) => {
+          console.warn('[design-system] Failed to persist appearance source:', error);
+        });
+      }
+    },
+    [applySource, storage]
+  );
+
+  const revertSource = useCallback(() => {
+    applySource(persistedSourceRef.current);
+  }, [applySource]);
+
   const value = useMemo<AppearanceContextValue>(
     () => ({
       ...state,
-      setSource,
+      previewSource,
+      persistSource,
+      revertSource,
     }),
-    [setSource, state]
+    [persistSource, previewSource, revertSource, state]
   );
 
   return <AppearanceContext.Provider value={value}>{children}</AppearanceContext.Provider>;

@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Provider } from '@react-spectrum/s2';
 
-import { type AppearanceMode, useAppearance } from '../hooks';
+import { useAppearance } from '../hooks';
+
+import { type AppearanceMode } from './AppearanceContext';
 
 import './GlobalThemeProvider.scss';
 
