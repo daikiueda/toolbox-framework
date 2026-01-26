@@ -17,17 +17,17 @@
   "dependencies": {
     "@react-spectrum/s2": "^1.0.0",
     "@spectrum-css/tokens": "^16.0.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.0",
-    "@storybook/addon-docs": "^10.1.11",
-    "@storybook/addon-links": "^10.1.11",
-    "@storybook/react-vite": "^10.1.11",
+    "@storybook/addon-docs": "^10.2.0",
+    "@storybook/addon-links": "^10.2.0",
+    "@storybook/react-vite": "^10.2.0",
     "@types/lodash": "^4.17.23",
-    "eslint-plugin-storybook": "10.1.11",
+    "eslint-plugin-storybook": "10.2.0",
     "prop-types": "^15.8.1",
-    "storybook": "^10.1.11"
+    "storybook": "^10.2.0"
   }
 }
