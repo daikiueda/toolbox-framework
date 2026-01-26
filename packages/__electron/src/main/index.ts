@@ -32,14 +32,18 @@ import {
 
 import createWindow from './createWindow';
 
-// プロジェクトルートの package.json から name を取得
-const getRootPackageName = (): string => {
+// プロジェクトルートの package.json から情報を取得
+const getRootPackageInfo = () => {
   const packageJsonPath = join(app.getAppPath(), 'package.json');
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-  return packageJson.name;
+  return {
+    name: packageJson.name as string,
+    author: packageJson.author as string | undefined,
+  };
 };
 
-const protocolName = getRootPackageName();
+const packageInfo = getRootPackageInfo();
+const protocolName = packageInfo.name;
 
 const registerHandlers = (window: BrowserWindow) => {
   registerAppearanceHandlers();
@@ -116,6 +120,13 @@ if (!gotTheLock) {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron');
+
+  // Set about panel options
+  app.setAboutPanelOptions({
+    applicationName: app.getName(),
+    applicationVersion: app.getVersion(),
+    copyright: packageInfo.author || '',
+  });
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
