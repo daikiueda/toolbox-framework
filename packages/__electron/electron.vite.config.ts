@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import { resolve } from 'path';
 
 import react from '@vitejs/plugin-react';
@@ -8,6 +9,39 @@ import macros from 'unplugin-parcel-macros';
 // 開発時に.envを読み込む
 config({ path: resolve(__dirname, '.env') });
 
+// ビルド時にgitリビジョンハッシュを取得
+const getGitRevision = (): string => {
+  try {
+    return execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+  } catch {
+    return '';
+  }
+};
+
+// ビルド時に最初のgitコミットの年を取得
+const getFirstGitCommitYear = (): string => {
+  try {
+    const commitDate = execSync('git log --reverse --format=%ci | head -1', {
+      encoding: 'utf-8',
+    }).trim();
+    const year = commitDate.split('-')[0];
+    return year;
+  } catch {
+    return new Date().getFullYear().toString();
+  }
+};
+
+// ビルド時に最新gitコミットの年を取得
+const getLatestGitCommitYear = (): string => {
+  try {
+    const commitDate = execSync('git log -1 --format=%ci', { encoding: 'utf-8' }).trim();
+    const year = commitDate.split('-')[0];
+    return year;
+  } catch {
+    return new Date().getFullYear().toString();
+  }
+};
+
 export default defineConfig(({ mode }) => ({
   main: {
     build: {
@@ -17,11 +51,14 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
-    // ビルド時に環境変数を埋め込む
+    // ビルド時に環境変数とgitリビジョンを埋め込む
     define: {
       'import.meta.env.VITE_SALESFORCE_CLIENT_ID': JSON.stringify(
         process.env.VITE_SALESFORCE_CLIENT_ID || ''
       ),
+      __GIT_REVISION__: JSON.stringify(getGitRevision()),
+      __GIT_FIRST_COMMIT_YEAR__: JSON.stringify(getFirstGitCommitYear()),
+      __GIT_LATEST_COMMIT_YEAR__: JSON.stringify(getLatestGitCommitYear()),
     },
   },
   preload: {

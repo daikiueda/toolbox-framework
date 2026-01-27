@@ -32,12 +32,18 @@ import {
 
 import createWindow from './createWindow';
 
+// ビルド時に埋め込まれるgit情報
+declare const __GIT_REVISION__: string;
+declare const __GIT_FIRST_COMMIT_YEAR__: string;
+declare const __GIT_LATEST_COMMIT_YEAR__: string;
+
 // プロジェクトルートの package.json から情報を取得
 const getRootPackageInfo = () => {
   const packageJsonPath = join(app.getAppPath(), 'package.json');
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
   return {
     name: packageJson.name as string,
+    version: packageJson.version as string,
     author: packageJson.author as string | undefined,
   };
 };
@@ -122,10 +128,19 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron');
 
   // Set about panel options
+  const startYear = __GIT_FIRST_COMMIT_YEAR__
+    ? parseInt(__GIT_FIRST_COMMIT_YEAR__, 10)
+    : new Date().getFullYear();
+  const endYear = __GIT_LATEST_COMMIT_YEAR__
+    ? parseInt(__GIT_LATEST_COMMIT_YEAR__, 10)
+    : new Date().getFullYear();
+  const yearRange = startYear === endYear ? `${startYear}` : `${startYear}-${endYear}`;
+  const copyright = packageInfo.author ? `© ${yearRange} ${packageInfo.author}` : undefined;
   app.setAboutPanelOptions({
     applicationName: app.getName(),
-    applicationVersion: app.getVersion(),
-    copyright: packageInfo.author || '',
+    applicationVersion: packageInfo.version,
+    version: __GIT_REVISION__ || packageInfo.version,
+    copyright,
   });
 
   // Default open or close DevTools by F12 in development
