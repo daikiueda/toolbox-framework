@@ -6,7 +6,8 @@
     "toolbox-template": "./bin/cli.js"
   },
   "exports": {
-    "./entry": "./entry.ts"
+    "./entry": "./entry.ts",
+    "./electron": "./gui/electron/index.ts"
   },
   "scripts": {
     "test": "node --require tsx/cjs --test ./**/__tests__/**/*.test.ts",
