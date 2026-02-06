@@ -51,6 +51,10 @@ npm run dev                                     # 統合確認
 - `npm run build`: 事前に `typecheck` を行った上で Electron レンダラ／メインをビルドし、配布用アーティファクトを生成します。
 - `npm run build:unpack` / `npm run build:win` / `npm run build:mac` / `npm run build:linux`: `packages/__electron/electron-builder.yml` を参照してターゲット別の配布物やディレクトリ構成を出力します。
 
+## 作業完了チェックリスト
+
+- 作業完了時は `npm run quality:check` を毎回実行する
+
 ### Kitchen Sink
 
 - `npm run --workspace packages/gui-kitchen-sink gui`: デザインシステムの Kitchen Sink を単体で起動し、ブラウザでコンポーネント挙動を確認します。
