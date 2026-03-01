@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
-    "@storybook/addon-docs": "^10.2.10",
-    "@storybook/addon-links": "^10.2.10",
-    "@storybook/react-vite": "^10.2.10",
-    "@types/lodash": "^4.17.23",
-    "eslint-plugin-storybook": "10.2.10",
+    "@storybook/addon-docs": "^10.2.13",
+    "@storybook/addon-links": "^10.2.13",
+    "@storybook/react-vite": "^10.2.13",
+    "@types/lodash": "^4.17.24",
+    "eslint-plugin-storybook": "10.2.13",
     "prop-types": "^15.8.1",
-    "storybook": "^10.2.10"
+    "storybook": "^10.2.13"
   }
 }
